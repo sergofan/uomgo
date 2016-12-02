@@ -1,3 +1,2 @@
 # uomgo
-SPA app for
-Education Management Myski urban district
+SPA for Education Management Myski urban district
