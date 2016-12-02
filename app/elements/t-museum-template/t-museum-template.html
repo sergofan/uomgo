@@ -1,0 +1,97 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<dom-module id="t-museum-template">
+	<template>
+		<style is="custom-style" include="shared-styles">
+			:host {
+				display: block;
+				word-wrap: break-word;
+				word-break: break-all;
+			}
+			paper-card {
+				width: 100%;
+				border-radius: 8px;
+				--paper-card-header-text: {
+					text-align: center;
+				};
+				--paper-card-content: {
+				};
+			}
+			iron-accordion {
+				/*padding: 8px 0;*/
+				background-color: var(--paper-blue-grey-50);
+			}
+			.paper-font-headline {
+				padding: 8px;
+			}
+			.accordionContent {
+				background-color: white;
+			}
+		</style>
+
+<!--
+		<firebase-document id="firebaseDocument"
+											 app-name="uomgo"
+											 path="/sections/legal"
+											 data="{{docData}}"></firebase-document>
+ -->
+		<paper-card heading="Виртуальный музей"
+								image=""
+								elevation="4"
+								animated-shadow="false">
+
+			<div class="card-content">
+
+				<div class="content">
+<!--
+					<template is="juicy-html"
+										content$="[[docData.text]]"></template>
+ -->
+					<iron-accordions>
+						<iron-accordion>
+							<div header class="paper-font-headline">
+								История развития муниципальной системы образования МГО
+							</div>
+							<div class="accordionContent shadow">
+								<p>История развития муниципальной системы образования МГО</p>
+							</div>
+						</iron-accordion>
+						<iron-accordion>
+							<div header class="paper-font-headline">
+								История образовательных организаций города
+							</div>
+							<div class="accordionContent shadow">
+								<p>История образовательных организаций города</p>
+							</div>
+						</iron-accordion>
+						<iron-accordion>
+							<div header class="paper-font-headline">
+								Доска почёта
+							</div>
+							<div class="accordionContent shadow">
+								<div>
+									<ul>
+										<li>Заслуженные работники образования</li>
+										<li>Победители конкурсов профессионального мастерства</li>
+										<li>Наша гордость</li>
+									</ul>
+								</div>
+							</div>
+						</iron-accordion>
+					<iron-accordions>
+
+				</div>
+			</div>
+		</paper-card>
+
+	</template>
+	<script>
+	(function() {
+		'use strict';
+
+		Polymer({
+			is: 't-museum-template'
+		});
+	})();
+	</script>
+</dom-module>

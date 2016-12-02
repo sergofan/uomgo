@@ -1,0 +1,87 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<dom-module id="x-about-local-gov">
+	<template>
+		<style is="custom-style" include="shared-styles">
+			:host {
+				display: block;
+				word-wrap: break-word;
+			}
+			paper-material {
+				background-color: white;
+				border-radius: 0 0 8px 8px;
+			}
+			iron-accordion {
+				/*padding: 8px 0;*/
+				background-color: var(--paper-blue-grey-50);
+			}
+			.paper-font-headline {
+				padding: 8px;
+			}
+			.accordionContent {
+				background-color: white;
+			}
+		</style>
+		<firebase-document id="firebaseDocument"
+											 app-name="uomgo"
+											 path="/about/localGov"
+											 data="{{docData}}"></firebase-document>
+
+		<paper-material elevation="4" class="content">
+<!--
+			<div class="content">
+				<template is="juicy-html"
+									content$="[[docData.text]]"></template>
+			</div>
+ -->
+<!--
+			<div class="paper-font-display1">
+			</div>
+ -->
+					<iron-accordions>
+						<iron-accordion>
+							<div header class="paper-font-headline">
+								Коллегия МКУ УО МГО
+							</div>
+							<div class="accordionContent shadow">
+								Коллегия МКУ УО МГО
+							</div>
+						</iron-accordion>
+						<iron-accordion>
+							<div header class="paper-font-headline">
+								Муниципальный управляющий совет
+							</div>
+							<div class="accordionContent shadow">
+								<template is="juicy-html"
+													content$="[[docData.municipalGoverningCouncil.text]]"></template>
+							</div>
+						</iron-accordion>
+						<iron-accordion>
+							<div header class="paper-font-headline">
+								Комиссия
+							</div>
+							<div class="accordionContent shadow">
+								Комиссия
+							</div>
+						</iron-accordion>
+					<iron-accordions>
+
+		</paper-material>
+
+	</template>
+	<script>
+	(function() {
+		'use strict';
+
+		Polymer({
+			is: 'x-about-local-gov',
+			ready: function() {
+
+			},
+			properties: {
+
+			}
+		});
+	})();
+	</script>
+</dom-module>

@@ -1,0 +1,106 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<dom-module id="x-about-boss">
+	<template>
+		<style is="custom-style" include="shared-styles">
+			:host {
+				display: block;
+				word-wrap: break-word;
+			}
+			img, iron-image {
+				width: 28%;
+				--iron-image-width: 100%;
+			}
+			paper-material {
+				max-width: 100%;
+				background-color: white;
+				border-radius: 0 0 8px 8px;
+			}
+			grid-element {
+				width: 100%;
+			}
+			grid-col {
+				text-align: center;
+			}
+		</style>
+
+		<paper-material elevation="4" class="layout horizontal center-center">
+			<grid-element ga="16px" center>
+
+				<grid-col s="2" class="shadow">
+					<p class="paper-font-headline">Начальник управления</p>
+					<iron-image src="[[app.baseUrl]]images/koval.jpg"
+											preload></iron-image>
+					<p>Коваль Светлана Александровна</p>
+				</grid-col>
+
+				<grid-col s="1" class="shadow">
+					<div class="yellow-gradient content">
+						<p><strong>Прием граждан<br>по личным вопросам</strong></p>
+					</div>
+					<div class="red-gradient content">
+						<p>2-я среда месяца с</p>
+						<p>
+							 <b>8 <sup><u>30</u></sup></b> до <b>10 <sup><u>00</u></sup></b>
+						</p>
+						<p>4-й четверг месяца с</p>
+						<p>
+							<b>14 <sup><u>00</u></sup></b> до <b>16 <sup><u>00</u></sup></b>
+						</p>
+					</div>
+					<div class="green-gradient content">
+						<p>Телефон предварительной записи</p>
+						<p><b>2-04-36</b></p>
+					</div>
+				</grid-col>
+			</grid-element>
+		</paper-material>
+
+<!-- 
+		<paper-material elevation="4" class="content layout horizontal center-justified wrap">
+
+			<div class="shadow layout vertical center-center wrap" style="text-align:center;">
+
+				<div class="paper-font-headline" style="width:100%">
+					<p>Начальник управления</p>
+				</div>
+
+				<iron-image src="[[app.baseUrl]]images/koval.jpg"
+										preload></iron-image>
+				<div style="width:100%"><p>Коваль Светлана Александровна</p></div>
+			
+			</div>
+
+			<div class="shadow layout vertical center-justified wrap">
+				
+				<div class="yellow-gradient content">
+					<div><b>Прием граждан по личным</b></div>
+					<div><b>вопросам</b></div>
+				</div>
+				
+				<div class="red-gradient content">
+					<div>2-я среда месяца</div>
+					<div>с <b>8 <sup><u>30</u></sup></b> до <b>10 <sup><u>00</u></sup></b></div>
+					<div>4-й четверг месяца</div>
+					<div>с <b>14 <sup><u>00</u></sup></b> до <b>16 <sup><u>00</u></sup></b></div>
+				</div>
+				
+				<div class="green-gradient content">
+					<div>Телефон предварительной</div>
+					<div>записи <b>2-04-36</b></div>
+				</div>
+			
+			</div>
+		</paper-material>
+ -->	
+	</template>
+	<script>
+	(function() {
+		'use strict';
+
+		Polymer({
+			is: 'x-about-boss'
+		});
+	})();
+	</script>
+</dom-module>

@@ -1,0 +1,59 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<dom-module id="t-virt-template">
+	<template>
+		<style is="custom-style" include="shared-styles">
+			:host {
+				display: block;
+				word-wrap: break-word;
+				/*word-break: break-all;*/
+			}
+			paper-card {
+				width: 100%;
+				border-radius: 8px;
+				--paper-card-header-text: {
+					text-align: center;
+				};
+				--paper-card-content: {
+				};
+				--paper-card-header-image: {
+					max-width: 100px;
+				}
+			}
+		</style>
+
+		<x-route subdata="{{data}}"></x-route>
+
+		<iron-pages id="pages"
+								selected="{{data.page}}"
+								attr-for-selected="data-route"
+								entry-animation="fade-in-animation"
+								exit-animation="fade-out-animation">
+
+			<!-- <template is="dom-if" data-route="rules"> -->
+				<x-virt-rules data-route="rules"></x-virt-rules>
+			<!-- </template> -->
+
+			<!-- <template is="dom-if" data-route="messages"> -->
+				<x-virt-messages data-route="messages" user="[[user]]"></x-virt-messages>
+			<!-- </template> -->
+
+		</iron-pages>
+
+
+	</template>
+	<script>
+	(function() {
+		'use strict';
+
+		Polymer({
+			is: 't-virt-template',
+			properties: {
+				user: {
+					type: Array
+				}
+			}
+		});
+	})();
+	</script>
+</dom-module>

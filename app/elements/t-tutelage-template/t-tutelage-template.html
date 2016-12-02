@@ -1,0 +1,129 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<dom-module id="t-tutelage-template">
+	<template>
+		<style is="custom-style" include="shared-styles">
+			:host {
+				display: block;
+				word-wrap: break-word;
+				/*word-break: break-all;*/
+			}
+			paper-card {
+				width: 100%;
+				border-radius: 8px;
+				--paper-card-header-text: {
+					text-align: center;
+				};
+				--paper-card-content: {
+				};
+			}
+			iron-accordion {
+				/*padding: 8px 0;*/
+				background-color: var(--paper-blue-grey-50);
+			}
+			.paper-font-headline {
+				padding: 8px;
+			}
+			.accordionContent {
+				background-color: white;
+			}
+		</style>
+
+		<firebase-document id="firebaseDocument"
+											 app-name="uomgo"
+											 path="/sections/tutelage"
+											 data="{{docData}}"></firebase-document>
+
+		<paper-card heading="Отдел опеки и попечительства"
+								image=""
+								elevation="4"
+								animated-shadow="false">
+
+			<div class="card-content">
+
+				<div class="content">
+
+					<template is="juicy-html"
+										content$="[[docData.text]]"></template>
+					<template is="juicy-html"
+										content$="[[docData.main.text]]"></template>
+
+					<iron-accordions>
+						<iron-accordion>
+							<div header class="paper-font-headline">
+								Законодательная база
+							</div>
+							<div class="accordionContent shadow">
+								<template is="juicy-html"
+													content$="[[docData.laws.text]]"></template>
+							</div>
+						</iron-accordion>
+						<iron-accordion>
+							<div header class="paper-font-headline">
+								Формы семейного устройства:
+							</div>
+							<div class="accordionContent shadow">
+								<template is="juicy-html"
+													content$="[[docData.formsOfFamily.text]]"></template>
+							</div>
+						</iron-accordion>
+						<iron-accordion>
+							<div header class="paper-font-headline">
+								Усыновление
+							</div>
+							<p class="accordionContent shadow">
+								<template is="juicy-html"
+													content$="[[docData.legitimation.text]]"></template>
+							</p>
+						</iron-accordion>
+						<iron-accordion>
+							<div header class="paper-font-headline">
+								Сделки
+							</div>
+							<p class="accordionContent shadow">
+								<template is="juicy-html"
+													content$="[[docData.dealings.text]]"></template>
+							</p>
+						</iron-accordion>
+						<iron-accordion>
+							<div header class="paper-font-headline">
+								Информация для граждан
+							</div>
+							<p class="accordionContent shadow">
+								<template is="juicy-html"
+													content$="[[docData.information.text]]"></template>
+							</p>
+						</iron-accordion>
+						<iron-accordion>
+							<div header class="paper-font-headline">
+								Мама, найди меня!</div>
+							<p class="accordionContent shadow">
+								<template is="juicy-html"
+													content$="[[docData.mama.text]]"></template>
+							</p>
+						</iron-accordion>
+						<iron-accordion>
+							<div header class="paper-font-headline">
+								Акция «Первое сентября – каждому школьнику»</div>
+							<p class="accordionContent shadow">
+								<template is="juicy-html"
+													content$="[[docData.september.text]]"></template>
+							</p>
+						</iron-accordion>
+					<iron-accordions>
+
+				</div>
+			</div>
+		</paper-card>
+
+	</template>
+	<script>
+	(function() {
+		'use strict';
+
+		Polymer({
+			is: 't-tutelage-template'
+		});
+	})();
+	</script>
+</dom-module>

@@ -1,0 +1,69 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<dom-module id="x-virt-rules">
+	<template>
+		<style is="custom-style" include="shared-styles">
+			:host {
+				display: block;
+				word-wrap: break-word;
+				/*word-break: break-all;*/
+			}
+			paper-card {
+				width: 100%;
+				border-radius: 8px;
+				--paper-card-header-text: {
+					text-align: center;
+				};
+				--paper-card-content: {
+				};
+			}
+			a paper-button,
+			a:active paper-button,
+			a:visited paper-button {
+				margin: 16px 0;
+				color: #000;
+				/*background-color: var(--paper-green-a400);*/
+			}
+			a:hover paper-button {
+				background-color: var(--paper-indigo-100);
+			}
+		</style>
+
+		<firebase-document id="firebaseDocument"
+											 app-name="uomgo"
+											 path="/virt/rules"
+											 data="{{docData}}"></firebase-document>
+
+		<paper-card image=""
+								elevation="4"
+								animated-shadow="false"
+								heading="Правила рассмотрения электронных обращений граждан">
+
+			<div class="card-content">
+				<template is="juicy-html"
+									content$="[[docData.text]]"></template>
+			</div>
+
+			<div class="card-actions">
+				<a href="#/virt/messages" tabindex="-1">
+					<paper-button raised on-tap="scrollPageToTop">
+						Я согласен с правилами электронного обращения
+					</paper-button>
+				</a>
+			</div>
+		</paper-card>
+
+	</template>
+	<script>
+	(function() {
+		'use strict';
+
+		Polymer({
+			is: 'x-virt-rules',
+			scrollPageToTop: function() {
+				app.scrollPageToTop();
+			}
+		});
+	})();
+	</script>
+</dom-module>

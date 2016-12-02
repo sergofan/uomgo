@@ -1,0 +1,159 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<dom-module id="t-upbringe-template">
+	<template>
+		<style is="custom-style" include="shared-styles">
+			:host {
+				display: block;
+				word-wrap: break-word;
+				/*word-break: break-all;*/
+			}
+			paper-card {
+				width: 100%;
+				border-radius: 8px;
+				--paper-card-header-text: {
+					text-align: center;
+				};
+				--paper-card-content: {
+				};
+			}
+			iron-accordion {
+				/*padding: 8px 0;*/
+				background-color: var(--paper-blue-grey-50);
+			}
+			.paper-font-headline {
+				padding: 8px;
+			}
+			.accordionContent {
+				background-color: white;
+			}
+		</style>
+
+		<firebase-document id="firebaseDocument"
+											 app-name="uomgo"
+											 path="/sections/upbringe"
+											 data="{{docData}}"></firebase-document>
+
+		<paper-card id="card"
+								heading="Отдел воспитательной работы и дополнительного образования"
+								image=""
+								elevation="4"
+								animated-shadow="false">
+
+			<div class="card-content"></div>
+				<div class="content">
+
+
+					<template is="juicy-html"
+										content$="[[docData.text]]"></template>
+
+					<iron-accordions>
+						<iron-accordion>
+							<div header class="paper-font-headline">
+								Концепция развития дополнительного образования детей
+							</div>
+							<p class="accordionContent shadow">
+								<template is="juicy-html"
+													content$="[[docData.conceptEducation.text]]"></template>
+							</p>
+						</iron-accordion>
+						<iron-accordion>
+							<div header class="paper-font-headline">
+								Оценка качества образования в организациях ДОД
+							</div>
+							<p class="accordionContent shadow">
+								<template is="juicy-html"
+													content$="[[docData.qualityEducation.text]]"></template>
+							</p>
+						</iron-accordion>
+						<iron-accordion>
+							<div header class="paper-font-headline">
+								Профильное обучение и профессиональная ориентация
+							</div>
+							<p class="accordionContent shadow">
+								<template is="juicy-html"
+													content$="[[docData.careerGuidance.text]]"></template>
+							</p>
+						</iron-accordion>
+						<iron-accordion>
+							<div header class="paper-font-headline">
+								Поддержка талантливой молодежи
+							</div>
+							<p class="accordionContent shadow">Поддержка талантливой молодежи</p>
+						</iron-accordion>
+						<iron-accordion>
+							<div header class="paper-font-headline">
+								Совет детей и молодежи
+							</div>
+							<p class="accordionContent shadow">Совет детей и молодежи</p>
+						</iron-accordion>
+						<iron-accordion>
+							<div header class="paper-font-headline">
+								Конкурсы
+							</div>
+							<p class="accordionContent shadow">
+								<template is="juicy-html"
+													content$="[[docData.competitions.text]]"></template>
+							</p>
+						</iron-accordion>
+						<iron-accordion>
+							<div header class="paper-font-headline">
+								Профилактика правонарушений
+							</div>
+							<p class="accordionContent shadow">
+								<template is="juicy-html"
+													content$="[[docData.crimePrevention.text]]"></template>
+							</p>
+						</iron-accordion>
+						<iron-accordion>
+							<div header class="paper-font-headline">
+								Профилактика употребления ПАВ
+							</div>
+							<p class="accordionContent shadow">
+								<template is="juicy-html"
+													content$="[[docData.preventionSubstanceUse.text]]"></template>
+							</p>
+						</iron-accordion>
+						<iron-accordion>
+							<div header class="paper-font-headline">
+								Военно-патриотическое и гражданское воспитание
+							</div>
+							<p class="accordionContent shadow">Военно-патриотическое и гражданское воспитание</p>
+						</iron-accordion>
+						<iron-accordion>
+							<div header class="paper-font-headline">
+								Губернаторские учреждения
+							</div>
+							<p class="accordionContent shadow">
+								<template is="juicy-html"
+													content$="[[docData.gubernatorialInstitutions.text]]"></template>
+							</p>
+						</iron-accordion>
+						<iron-accordion>
+							<div header class="paper-font-headline">
+								Летний отдых
+							</div>
+							<div class="accordionContent shadow">
+								<template is="juicy-html"
+													content$="[[docData.summer.text]]"></template>
+							</div>
+						</iron-accordion>
+					<iron-accordions>
+
+
+				</div>
+			</div>
+
+		</paper-card>
+
+	</template>
+	<script>
+	(function() {
+		'use strict';
+
+		Polymer({
+			is: 't-upbringe-template'
+		});
+	})();
+	</script>
+</dom-module>

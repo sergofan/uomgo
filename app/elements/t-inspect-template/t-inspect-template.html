@@ -1,0 +1,102 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<dom-module id="t-inspect-template">
+	<template>
+		<style is="custom-style" include="shared-styles">
+			:host {
+				display: block;
+				word-wrap: break-word;
+				/*word-break: break-all;*/
+			}
+			paper-card {
+				width: 100%;
+				border-radius: 8px;
+				--paper-card-content: {
+				};
+				--paper-card-header-text: {
+					text-align: center;
+				};
+			}
+			iron-accordion {
+				/*padding: 8px 0;*/
+				background-color: var(--paper-blue-grey-50);
+			}
+			.paper-font-headline {
+				padding: 8px;
+			}
+			.accordionContent {
+				background-color: white;
+			}
+		</style>
+
+		<firebase-document id="firebaseDocument"
+											 app-name="uomgo"
+											 path="/sections/inspect"
+											 data="{{docData}}"></firebase-document>
+
+		<paper-card id="card" heading="Отдел инспектирования качества образования" image="" elevation="4" animated-shadow="false">
+			<div class="content">
+
+				<template is="juicy-html"
+									content$="[[docData.text]]"></template>
+
+				<iron-accordions>
+					<iron-accordion>
+						<div header class="paper-font-headline">ФГОС</div>
+						<div class="accordionContent shadow">ФГОС</div>
+					</iron-accordion>
+					<iron-accordion>
+						<div header class="paper-font-headline">Оценка качества образования в ОО</div>
+						<div class="accordionContent shadow">Оценка качества образования в ОО</div>
+					</iron-accordion>
+					<iron-accordion>
+						<div header class="paper-font-headline">Государственная итоговая аттестация</div>
+							<div class="accordionContent shadow">
+								<x-inspect-GIA doc-data="[[docData]]"></x-inspect-GIA>
+							</div>
+					</iron-accordion>
+					<iron-accordion>
+						<div header class="paper-font-headline">Инклюзивное образование</div>
+						<div class="accordionContent shadow">Инклюзивное образование</div>
+					</iron-accordion>
+					<iron-accordion>
+						<div header class="paper-font-headline">Дистанционное образование</div>
+						<div class="accordionContent shadow">Дистанционное образование</div>
+					</iron-accordion>
+					<iron-accordion>
+						<div header class="paper-font-headline">ОРКСЭ</div>
+						<div class="accordionContent shadow">ОРКСЭ</div>
+					</iron-accordion>
+					<iron-accordion>
+						<div header class="paper-font-headline">Видеоконференцсвязь</div>
+						<div class="accordionContent shadow">Видеоконференцсвязь</div>
+					</iron-accordion>
+					<iron-accordion>
+						<div header class="paper-font-headline">Олимпиады</div>
+						<div class="accordionContent shadow">
+							<template is="juicy-html"
+												content$="[[docData.olympiad.text]]"></template>
+						</div>
+					</iron-accordion>
+					<iron-accordion>
+						<div header class="paper-font-headline">Муниципальный обменный фонд</div>
+						<div class="accordionContent shadow">Муниципальный обменный фонд</div>
+					</iron-accordion>
+				<iron-accordions>
+
+			</div>
+
+		</paper-card>
+
+	</template>
+<script>
+	(function() {
+		'use strict';
+
+		Polymer({
+			is: 't-inspect-template'
+		});
+
+	})();
+	</script>
+</dom-module>

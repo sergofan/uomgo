@@ -1,0 +1,83 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<dom-module id="t-counting-template">
+	<template>
+		<style is="custom-style" include="shared-styles">
+			:host {
+				display: block;
+				word-wrap: break-word;
+				word-break: break-all;
+			}
+			paper-card {
+				width: 100%;
+				border-radius: 8px;
+				--paper-card-header-text: {
+					text-align: center;
+				};
+				--paper-card-content: {
+				};
+			}
+			iron-accordion {
+				/*padding: 8px 0;*/
+				background-color: var(--paper-blue-grey-50);
+			}
+			.paper-font-headline {
+				padding: 8px;
+			}
+			.accordionContent {
+				background-color: white;
+			}
+		</style>
+
+
+		<firebase-document id="firebaseDocument"
+											 app-name="uomgo"
+											 path="/sections/counting"
+											 data="{{docData}}"></firebase-document>
+ 
+		<paper-card heading="МБУ Централизованная бухгалтерия УО МГО"
+								image=""
+								elevation="4"
+								animated-shadow="false">
+
+			<div class="card-content">
+
+				<div class="content">
+
+					<template is="juicy-html"
+										content$="[[docData.text]]"></template>
+ 
+					<iron-accordions>
+						<iron-accordion>
+							<div header class="paper-font-headline">
+								НСОТ
+							</div>
+							<div class="accordionContent shadow">
+								<p>НСОТ</p>
+							</div>
+						</iron-accordion>
+						<iron-accordion>
+							<div header class="paper-font-headline">
+								Начисление заработной платы
+							</div>
+							<div class="accordionContent shadow">
+								<p>Начисление заработной платы</p>
+							</div>
+						</iron-accordion>
+					<iron-accordions>
+
+				</div>
+			</div>
+		</paper-card>
+
+	</template>
+	<script>
+	(function() {
+		'use strict';
+
+		Polymer({
+			is: 't-counting-template'
+		});
+	})();
+	</script>
+</dom-module>

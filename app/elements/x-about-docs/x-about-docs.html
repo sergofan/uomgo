@@ -1,0 +1,84 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<dom-module id="x-about-docs">
+	<template>
+		<style is="custom-style" include="shared-styles">
+			:host {
+				display: block;
+				word-wrap: break-word;
+			}
+			paper-material {
+				background-color: white;
+				border-radius: 0 0 8px 8px;
+			}
+			iron-accordion {
+				/*padding: 8px 0;*/
+				background-color: var(--paper-blue-grey-50);
+			}
+			.paper-font-headline {
+				padding: 8px;
+			}
+			.accordionContent {
+				background-color: white;
+			}
+		</style>
+		<firebase-document id="firebaseDocument"
+											 app-name="uomgo"
+											 path="/about/docs"
+											 data="{{docData}}"></firebase-document>
+
+		<paper-material elevation="4">
+			<div class="content">
+
+				<template is="juicy-html"
+									content$="[[docData.text]]"></template>
+
+					<iron-accordions>
+						<iron-accordion>
+							<div header class="paper-font-headline">
+								Приказы департамента образования и науки Кемеровской области
+							</div>
+							<p class="accordionContent shadow">
+								<template is="juicy-html"
+													content$="[[docData.DOIN.text]]"></template>
+							</p>
+						</iron-accordion>
+						<iron-accordion>
+							<div header class="paper-font-headline">
+								Постановления администрации МГО
+							</div>
+							<p class="accordionContent shadow">
+								<template is="juicy-html"
+													content$="[[docData.adminMGO.text]]"></template>
+							</p>
+						</iron-accordion>
+						<iron-accordion>
+							<div header class="paper-font-headline">
+								Программы
+							</div>
+							<p class="accordionContent shadow">
+								<template is="juicy-html"
+													content$="[[docData.programs.text]]"></template>
+							</p>
+						</iron-accordion>
+					<iron-accordions>
+
+			</div>
+		</paper-material>
+
+	</template>
+	<script>
+	(function() {
+		'use strict';
+
+		Polymer({
+			is: 'x-about-docs',
+			properties: {
+			},
+			ready: function() {
+				var firebaseDocument = this.$.firebaseDocument;
+			}
+		});
+	})();
+	</script>
+</dom-module>

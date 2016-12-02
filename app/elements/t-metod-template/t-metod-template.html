@@ -1,0 +1,162 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<dom-module id="t-metod-template">
+	<template>
+		<style is="custom-style" include="shared-styles">
+			:host {
+				display: block;
+				word-wrap: break-word;
+				/*word-break: break-all;*/
+			}
+			paper-card {
+				width: 100%;
+				border-radius: 8px;
+				--paper-card-header-text: {
+					text-align: center;
+				};
+				--paper-card-content: {
+				};
+			}
+			iron-accordion {
+				/*padding: 8px 0;*/
+				background-color: var(--paper-blue-grey-50);
+			}
+			.paper-font-headline {
+				padding: 8px;
+			}
+			.accordionContent {
+				background-color: white;
+			}
+		</style>
+
+
+		<firebase-document id="firebaseDocument"
+											 app-name="uomgo"
+											 path="/sections/metod"
+											 data="{{docData}}"></firebase-document>
+
+		<paper-card heading="МБУ Информационно-методический центр УО МГО"
+								image=""
+								elevation="4"
+								animated-shadow="false">
+
+			<div class="card-content">
+
+				<div class="content">
+
+					<template is="juicy-html"
+										content$="[[docData.text]]"></template>
+
+					<iron-accordions>
+						<iron-accordion>
+							<div header class="paper-font-headline">
+								Новости
+							</div>
+							<div class="accordionContent shadow">
+								<template is="juicy-html"
+													content$="[[docData.news.text]]"></template>
+							</div>
+						</iron-accordion>
+						<iron-accordion>
+							<div header class="paper-font-headline">
+								Аттестация
+							</div>
+							<div class="accordionContent shadow">
+								<template is="juicy-html"
+													content$="[[docData.validation.text]]"></template>
+							</div>
+						</iron-accordion>
+						<iron-accordion>
+							<div header class="paper-font-headline">
+								Профессиональные стандарты
+							</div>
+							<div class="accordionContent shadow">
+								<template is="juicy-html"
+													content$="[[docData.standards.text]]"></template>
+							</div>
+						</iron-accordion>
+						<iron-accordion>
+							<div header class="paper-font-headline">
+								ФГОС
+							</div>
+							<div class="accordionContent shadow">
+								<p>ФГОС</p>
+							</div>
+						</iron-accordion>
+						<iron-accordion>
+							<div header class="paper-font-headline">
+								План работы
+							</div>
+							<div class="accordionContent shadow">
+								<template is="juicy-html"
+													content$="[[docData.plan.text]]"></template>
+							</div>
+						</iron-accordion>
+						<iron-accordion>
+							<div header class="paper-font-headline">
+								Муниципальные методические объединения
+							</div>
+							<div class="accordionContent shadow">
+								<template is="juicy-html"
+													content$="[[docData.unions.text]]"></template>
+							</div>
+						</iron-accordion>
+						<iron-accordion>
+							<div header class="paper-font-headline">
+								Муниципальные базовые методические площадки
+							</div>
+							<div class="accordionContent shadow">
+								<template is="juicy-html"
+													content$="[[docData.basePlaces.text]]"></template>
+							</div>
+						</iron-accordion>
+						<iron-accordion>
+							<div header class="paper-font-headline">
+								Повышение квалификации
+							</div>
+							<div class="accordionContent shadow">
+								<p>Повышение квалификации</p>
+							</div>
+						</iron-accordion>
+						<iron-accordion>
+							<div header class="paper-font-headline">
+								Школа Молодого педагога
+							</div>
+							<div class="accordionContent shadow">
+								<p>Школа Молодого педагога</p>
+							</div>
+						</iron-accordion>
+						<iron-accordion>
+							<div header class="paper-font-headline">
+								Конкурсное движение
+							</div>
+							<div class="accordionContent shadow">
+								<template is="juicy-html"
+													content$="[[docData.movement.text]]"></template>
+							</div>
+						</iron-accordion>
+						<iron-accordion>
+							<div header class="paper-font-headline">
+								Контакты
+							</div>
+							<div class="accordionContent shadow">
+								<p>Контакты</p>
+							</div>
+						</iron-accordion>
+					</iron-accordions>
+
+				</div>
+			</div>
+		</paper-card>
+
+	</template>
+	<script>
+	(function() {
+		'use strict';
+
+		Polymer({
+			is: 't-metod-template'
+		});
+	})();
+	</script>
+</dom-module>
