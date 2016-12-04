@@ -85,7 +85,7 @@
 				}
 			}
 			img, iron-image {
-				width: 100%;
+				max-width: 100px;
 				--iron-image-width: 100%;
 			}
 			.box {
@@ -105,7 +105,7 @@
 
 						<template is="dom-if" if="[[message.logo]]">
 							<grid-col s="1" stretch class="shadow layout vertical center-center">
-								<iron-image src="[[message.logo]]" fade width="100" preload></iron-image>
+								<iron-image src="[[message.logo]]" fade preload></iron-image>
 							</grid-col>
 						</template>
 
