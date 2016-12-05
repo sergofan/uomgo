@@ -123,6 +123,7 @@
 			},
 			ready: function() {
 				var firebaseDocument = this.$.firebaseDocument;
+				console.log(this.user);
 				// var toastMessage = this.$.toastMessage;
 				// toastMessage.fitInto = this.$.toastMessageContainer;
 				// setTimeout(function() {
@@ -171,7 +172,7 @@
 				return "/posts/" + key;
 			},
 			goToDocs: function() {
-				window.location.hash = '#about/docs';
+
 			}
 			// openToast: function(event) {
 				// toastMessage.open();

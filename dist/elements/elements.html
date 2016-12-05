@@ -45071,12 +45071,13 @@ v.RUNNING="running";v.PAUSED="paused";v.SUCCESS="success";v.CANCELED="canceled";
 			:host {
 				display: block;
 				word-wrap: break-word;
+				margin: 32px 0;
 			}
 			.yellow-button {
 				text-transform: none;
 				color: #eeff41;
 			}
-			#toastMessageContainer {
+			#collapsePanel {
 				background-color: #00E676;
 				position: fixed;
 				top: calc(50vh - 68px);
@@ -45092,7 +45093,7 @@ v.RUNNING="running";v.PAUSED="paused";v.SUCCESS="success";v.CANCELED="canceled";
 				cursor: pointer;
 				z-index: 1001;
 			}
-			#toastMessageContainer:hover {
+			#collapsePanel:hover {
 				right: 0px;
 			}
 			#verticalText {
@@ -45106,17 +45107,22 @@ v.RUNNING="running";v.PAUSED="paused";v.SUCCESS="success";v.CANCELED="canceled";
 			}
 		</style>
 
-		<div id="toastMessageContainer" class="layout horizontal">
+		<div id="collapsePanel" class="layout horizontal">
 			<div id="verticalText">
 				План работы УОМГО
 			</div>
-
+<!--
 			<div class="content layout vertical center-center">
-				<paper-button raised="" style="margin-left: 32px; text-align: center;">
+				<paper-button raised style="margin-left: 32px; text-align: center;">
 					<a href="#/about/docs" style="text-decoration: none; color: black;">Перейти в раздел документы</a><iron-icon icon="arrow-forward">
 				</iron-icon></paper-button>
 			</div>
-
+ -->
+			<div class="content layout vertical center-center">
+				<paper-button on-tap="goToDocs" raised="" style="margin-left: 32px; text-align: center;">
+					Перейти в раздел документы
+					<iron-icon icon="arrow-forward"></iron-icon></paper-button>
+			</div>
 		</div>
 
 		<firebase-document id="firebaseDocument" app-name="uomgo"></firebase-document>
@@ -45219,6 +45225,9 @@ v.RUNNING="running";v.PAUSED="paused";v.SUCCESS="success";v.CANCELED="canceled";
 			},
 			_computePath: function(key) {
 				return "/posts/" + key;
+			},
+			goToDocs: function() {
+				window.location.hash = '#about/docs';
 			}
 			// openToast: function(event) {
 				// toastMessage.open();
@@ -46686,6 +46695,7 @@ v.RUNNING="running";v.PAUSED="paused";v.SUCCESS="success";v.CANCELED="canceled";
 					text-align: center;
 				};
 				--paper-card-content: {
+					padding: 0 !important;
 					@apply(--layout-wrap);
 					@apply(--layout-vertical);
 					@apply(--layout-center-center);
@@ -46789,7 +46799,16 @@ v.RUNNING="running";v.PAUSED="paused";v.SUCCESS="success";v.CANCELED="canceled";
 				display: block;
 			}
 			x-message-item {
-				margin-bottom: 16px;
+				margin: 0 16px 16px;
+				/*margin-bottom: 16px;*/
+				/*margin-left: 16px;*/
+				/*margin-right: 16px;*/
+			}
+			@media (max-width: 600px) {
+				x-message-item {
+					/*margin-left: 16px;*/
+					/*margin-right: 16px;*/
+				}
 			}
 		</style>
 		<firebase-query id="firebaseQueryMessages" path="/messages" app-name="uomgo" order-by-child="date" data="{{dataDB}}"></firebase-query>
