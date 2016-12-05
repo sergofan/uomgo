@@ -7,7 +7,16 @@
 				display: block;
 			}
 			x-message-item {
-				margin-bottom: 16px;
+				margin: 0 16px 16px;
+				/*margin-bottom: 16px;*/
+				/*margin-left: 16px;*/
+				/*margin-right: 16px;*/
+			}
+			@media (max-width: 600px) {
+				x-message-item {
+					/*margin-left: 16px;*/
+					/*margin-right: 16px;*/
+				}
 			}
 		</style>
 		<firebase-query id="firebaseQueryMessages"

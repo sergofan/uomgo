@@ -6,12 +6,13 @@
 			:host {
 				display: block;
 				word-wrap: break-word;
+				margin: 32px 0;
 			}
 			.yellow-button {
 				text-transform: none;
 				color: #eeff41;
 			}
-			#toastMessageContainer {
+			#collapsePanel {
 				background-color: #00E676;
 				position: fixed;
 				top: calc(50vh - 68px);
@@ -27,7 +28,7 @@
 				cursor: pointer;
 				z-index: 1001;
 			}
-			#toastMessageContainer:hover {
+			#collapsePanel:hover {
 				right: 0px;
 			}
 			#verticalText {
@@ -41,17 +42,22 @@
 			}
 		</style>
 
-		<div id="toastMessageContainer" class="layout horizontal">
+		<div id="collapsePanel" class="layout horizontal">
 			<div id="verticalText">
 				План работы УОМГО
 			</div>
-
+<!--
 			<div class="content layout vertical center-center">
 				<paper-button raised style="margin-left: 32px; text-align: center;">
 					<a href="#/about/docs" style="text-decoration: none; color: black;">Перейти в раздел документы</a><iron-icon icon="arrow-forward">
 				</iron-icon></paper-button>
 			</div>
-
+ -->
+			<div class="content layout vertical center-center">
+				<paper-button on-tap="goToDocs" raised style="margin-left: 32px; text-align: center;">
+					Перейти в раздел документы
+					<iron-icon icon="arrow-forward"></iron-icon></paper-button>
+			</div>
 		</div>
 
 		<firebase-document id="firebaseDocument"
@@ -163,6 +169,9 @@
 			},
 			_computePath: function(key) {
 				return "/posts/" + key;
+			},
+			goToDocs: function() {
+				window.location.hash = '#about/docs';
 			}
 			// openToast: function(event) {
 				// toastMessage.open();
