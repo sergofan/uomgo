@@ -196,14 +196,13 @@
 											entry-animation="fade-in-animation"
 											exit-animation="fade-out-animation">
 
-						<!-- <template is="dom-if"	data-route="main"> -->
-							<t-main-template data-route="main"
-															 limit-to-first="[[limitToFirst]]"
+						<template is="dom-if"	data-route="main">
+							<t-main-template limit-to-first="[[limitToFirst]]"
 															 limit-to-last="[[limitToLast]]"
 															 start-at="[[startAt]]"
 															 end-at="[[endAt]]"
 															 user="[[user]]"></t-main-template>
-						<!-- </template> -->
+						</template>
 
 						<template is="dom-if"	data-route="about">
 							<t-about-template></t-about-template>

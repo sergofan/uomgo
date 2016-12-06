@@ -60,9 +60,7 @@
 		var condensedHeader = document.querySelector('#condensedHeaderBg');
 		header.style.backgroundImage='url'+'('+app.baseUrl+'images/header.jpg'+')';
 		condensedHeader.style.backgroundImage='url'+'('+app.baseUrl+'images/header2.jpg'+')';
-
 		scrollThreshold.scrollTarget = scrollHeaderPanel.scroller;
-
 		arrowUp.hidden = true;
 		scrollHeaderPanel.addEventListener('content-scroll', function() {
 			if (scrollThreshold._scrollTop > 192) {

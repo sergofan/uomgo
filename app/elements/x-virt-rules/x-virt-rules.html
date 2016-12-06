@@ -29,6 +29,8 @@
 			}
 		</style>
 
+		<x-route route="{{route}}"></x-route>
+
 		<firebase-document id="firebaseDocument"
 											 app-name="uomgo"
 											 path="/virt/rules"
@@ -45,11 +47,9 @@
 			</div>
 
 			<div class="card-actions">
-				<a href="#/virt/messages" tabindex="-1">
-					<paper-button raised on-tap="scrollPageToTop">
-						Я согласен с правилами электронного обращения
-					</paper-button>
-				</a>
+				<paper-button raised on-tap="changePage">
+					Я согласен с правилами электронного обращения
+				</paper-button>
 			</div>
 		</paper-card>
 
@@ -60,7 +60,8 @@
 
 		Polymer({
 			is: 'x-virt-rules',
-			scrollPageToTop: function() {
+			changePage: function() {
+				this.set('route.path', '/virt/messages');
 				app.scrollPageToTop();
 			}
 		});

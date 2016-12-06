@@ -45179,6 +45179,7 @@ v.RUNNING="running";v.PAUSED="paused";v.SUCCESS="success";v.CANCELED="canceled";
 			},
 			ready: function() {
 				var firebaseDocument = this.$.firebaseDocument;
+				console.log(this.user);
 				// var toastMessage = this.$.toastMessage;
 				// toastMessage.fitInto = this.$.toastMessageContainer;
 				// setTimeout(function() {
@@ -45227,7 +45228,7 @@ v.RUNNING="running";v.PAUSED="paused";v.SUCCESS="success";v.CANCELED="canceled";
 				return "/posts/" + key;
 			},
 			goToDocs: function() {
-				window.location.hash = '#about/docs';
+
 			}
 			// openToast: function(event) {
 				// toastMessage.open();
