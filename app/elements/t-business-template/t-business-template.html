@@ -5,7 +5,7 @@
 		<style is="custom-style" include="shared-styles">
 			:host {
 				display: block;
-				/*word-wrap: break-word;*/
+				word-wrap: break-word;
 				/*word-break: break-all;*/
 			}
 			paper-card {
@@ -70,39 +70,39 @@
 				height: auto;
 			}
 		</style>
-		
-   
+
+
 		<firebase-document id="firebaseDocument"
 											 app-name="uomgo"
 											 path="/business"
 											 data="{{docData}}"></firebase-document>
 
-		<paper-card heading="Реестр индивидуальных предпринимателей оказывающих образовательные услуги для детей дошкольного возраста на территории Мысковского городского округа" 
-								image="" 
-								elevation="4" 
+		<paper-card heading="Реестр индивидуальных предпринимателей оказывающих образовательные услуги для детей дошкольного возраста на территории Мысковского городского округа"
+								image=""
+								elevation="4"
 								animated-shadow="false">
 
 			<div class="card-content">
 
 				<div class="content">
-<!-- 
+<!--
 					<template is="juicy-html"
 										content$="[[docData.text]]"></template>
- -->        
+ -->
 
-				<iron-data-table id="table" 
-												 items="[[docData.table]]" 
-												 selection-enabled 
+				<iron-data-table id="table"
+												 items="[[docData.table]]"
+												 selection-enabled
 												 multi-selection>
 
-					<data-table-column name="№" 
+					<data-table-column name="№"
 														 width="20px"
 														 flex="0">
 
 						<template>[[index]]</template>
 
 					</data-table-column>
-					
+
 					<data-table-column name="Ф.И.О."
 														 width="150px"
 														 sort-by="name">
@@ -140,14 +140,14 @@
 						<template>[[item.services]]</template>
 
 					</data-table-column>
-				
+
 				</iron-data-table>
 
 
 				</div>
 			</div>
 		</paper-card>
-	
+
 	</template>
 	<script>
 	(function() {

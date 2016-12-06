@@ -6,7 +6,7 @@
 			:host {
 				display: block;
 				word-wrap: break-word;
-				word-break: break-all;
+				/*word-break: break-all;*/
 			}
 			paper-card {
 				width: 100%;
@@ -34,7 +34,7 @@
 											 app-name="uomgo"
 											 path="/sections/counting"
 											 data="{{docData}}"></firebase-document>
- 
+
 		<paper-card heading="МБУ Централизованная бухгалтерия УО МГО"
 								image=""
 								elevation="4"
@@ -46,7 +46,7 @@
 
 					<template is="juicy-html"
 										content$="[[docData.text]]"></template>
- 
+
 					<iron-accordions>
 						<iron-accordion>
 							<div header class="paper-font-headline">
