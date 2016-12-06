@@ -45107,17 +45107,12 @@ v.RUNNING="running";v.PAUSED="paused";v.SUCCESS="success";v.CANCELED="canceled";
 			}
 		</style>
 
+		<x-route route="{{route}}"></x-route>
+
 		<div id="collapsePanel" class="layout horizontal">
 			<div id="verticalText">
 				План работы УОМГО
 			</div>
-<!--
-			<div class="content layout vertical center-center">
-				<paper-button raised style="margin-left: 32px; text-align: center;">
-					<a href="#/about/docs" style="text-decoration: none; color: black;">Перейти в раздел документы</a><iron-icon icon="arrow-forward">
-				</iron-icon></paper-button>
-			</div>
- -->
 			<div class="content layout vertical center-center">
 				<paper-button on-tap="goToDocs" raised="" style="margin-left: 32px; text-align: center;">
 					Перейти в раздел документы
@@ -45179,7 +45174,6 @@ v.RUNNING="running";v.PAUSED="paused";v.SUCCESS="success";v.CANCELED="canceled";
 			},
 			ready: function() {
 				var firebaseDocument = this.$.firebaseDocument;
-				console.log(this.user);
 				// var toastMessage = this.$.toastMessage;
 				// toastMessage.fitInto = this.$.toastMessageContainer;
 				// setTimeout(function() {
@@ -45228,7 +45222,9 @@ v.RUNNING="running";v.PAUSED="paused";v.SUCCESS="success";v.CANCELED="canceled";
 				return "/posts/" + key;
 			},
 			goToDocs: function() {
-
+				this.async(function() {
+					this.set('route.path', '/about/docs');
+				});
 			}
 			// openToast: function(event) {
 				// toastMessage.open();
@@ -45631,7 +45627,7 @@ v.RUNNING="running";v.PAUSED="paused";v.SUCCESS="success";v.CANCELED="canceled";
 		<style is="custom-style" include="shared-styles">
 			:host {
 				display: block;
-				/*word-wrap: break-word;*/
+				word-wrap: break-word;
 				/*word-break: break-all;*/
 			}
 
@@ -46333,6 +46329,8 @@ v.RUNNING="running";v.PAUSED="paused";v.SUCCESS="success";v.CANCELED="canceled";
 					notify: true
 				}
 			},
+			ready: function() {
+			},
 			pathChanged: function(route) {
 				this.async(function() {
 					switch(route.path) {
@@ -46344,6 +46342,9 @@ v.RUNNING="running";v.PAUSED="paused";v.SUCCESS="success";v.CANCELED="canceled";
 							break;
 						case '/about':
 							this.set('route.path', '/about/boss');
+							break;
+						case '/about/docs':
+							// this.set('route.path', '/about/docs');
 							break;
 						case '/virt':
 							if (app.user) {
@@ -47146,7 +47147,7 @@ v.RUNNING="running";v.PAUSED="paused";v.SUCCESS="success";v.CANCELED="canceled";
 			:host {
 				display: block;
 				word-wrap: break-word;
-				word-break: break-all;
+				/*word-break: break-all;*/
 			}
 			paper-card {
 				width: 100%;
@@ -47544,7 +47545,7 @@ v.RUNNING="running";v.PAUSED="paused";v.SUCCESS="success";v.CANCELED="canceled";
 			:host {
 				display: block;
 				word-wrap: break-word;
-				word-break: break-all;
+				/*word-break: break-all;*/
 			}
 			paper-card {
 				width: 100%;
@@ -47969,7 +47970,7 @@ v.RUNNING="running";v.PAUSED="paused";v.SUCCESS="success";v.CANCELED="canceled";
 			:host {
 				display: block;
 				word-wrap: break-word;
-				word-break: break-all;
+				/*word-break: break-all;*/
 			}
 			paper-card {
 				width: 100%;
@@ -48002,7 +48003,7 @@ v.RUNNING="running";v.PAUSED="paused";v.SUCCESS="success";v.CANCELED="canceled";
 				<div class="content">
 
 					<template is="juicy-html" content$="[[docData.text]]"></template>
- 
+
 					<iron-accordions>
 						<iron-accordion>
 							<div header="" class="paper-font-headline">
@@ -48059,7 +48060,7 @@ v.RUNNING="running";v.PAUSED="paused";v.SUCCESS="success";v.CANCELED="canceled";
 			:host {
 				display: block;
 				word-wrap: break-word;
-				word-break: break-all;
+				/*word-break: break-all;*/
 			}
 			paper-card {
 				width: 100%;
@@ -48084,7 +48085,7 @@ v.RUNNING="running";v.PAUSED="paused";v.SUCCESS="success";v.CANCELED="canceled";
 
 
 		<firebase-document id="firebaseDocument" app-name="uomgo" path="/sections/counting" data="{{docData}}"></firebase-document>
- 
+
 		<paper-card heading="МБУ Централизованная бухгалтерия УО МГО" image="" elevation="4" animated-shadow="false">
 
 			<div class="card-content">
@@ -48092,7 +48093,7 @@ v.RUNNING="running";v.PAUSED="paused";v.SUCCESS="success";v.CANCELED="canceled";
 				<div class="content">
 
 					<template is="juicy-html" content$="[[docData.text]]"></template>
- 
+
 					<iron-accordions>
 						<iron-accordion>
 							<div header="" class="paper-font-headline">
@@ -48133,7 +48134,7 @@ v.RUNNING="running";v.PAUSED="paused";v.SUCCESS="success";v.CANCELED="canceled";
 			:host {
 				display: block;
 				word-wrap: break-word;
-				word-break: break-all;
+				/*word-break: break-all;*/
 			}
 			paper-card {
 				width: 100%;
@@ -48207,7 +48208,7 @@ v.RUNNING="running";v.PAUSED="paused";v.SUCCESS="success";v.CANCELED="canceled";
 			:host {
 				display: block;
 				word-wrap: break-word;
-				word-break: break-all;
+				/*word-break: break-all;*/
 			}
 			paper-card {
 				width: 100%;
@@ -48280,7 +48281,7 @@ v.RUNNING="running";v.PAUSED="paused";v.SUCCESS="success";v.CANCELED="canceled";
 		<style is="custom-style" include="shared-styles">
 			:host {
 				display: block;
-				/*word-wrap: break-word;*/
+				word-wrap: break-word;
 				/*word-break: break-all;*/
 			}
 			paper-card {
@@ -48345,8 +48346,8 @@ v.RUNNING="running";v.PAUSED="paused";v.SUCCESS="success";v.CANCELED="canceled";
 				height: auto;
 			}
 		</style>
-		
-   
+
+
 		<firebase-document id="firebaseDocument" app-name="uomgo" path="/business" data="{{docData}}"></firebase-document>
 
 		<paper-card heading="Реестр индивидуальных предпринимателей оказывающих образовательные услуги для детей дошкольного возраста на территории Мысковского городского округа" image="" elevation="4" animated-shadow="false">
@@ -48354,10 +48355,10 @@ v.RUNNING="running";v.PAUSED="paused";v.SUCCESS="success";v.CANCELED="canceled";
 			<div class="card-content">
 
 				<div class="content">
-<!-- 
+<!--
 					<template is="juicy-html"
 										content$="[[docData.text]]"></template>
- -->        
+ -->
 
 				<iron-data-table id="table" items="[[docData.table]]" selection-enabled="" multi-selection="">
 
@@ -48366,7 +48367,7 @@ v.RUNNING="running";v.PAUSED="paused";v.SUCCESS="success";v.CANCELED="canceled";
 						<template>[[index]]</template>
 
 					</data-table-column>
-					
+
 					<data-table-column name="Ф.И.О." width="150px" sort-by="name">
 
 						<template>[[item.name]]</template>
@@ -48396,14 +48397,14 @@ v.RUNNING="running";v.PAUSED="paused";v.SUCCESS="success";v.CANCELED="canceled";
 						<template>[[item.services]]</template>
 
 					</data-table-column>
-				
+
 				</iron-data-table>
 
 
 				</div>
 			</div>
 		</paper-card>
-	
+
 	</template>
 	<script>
 	(function() {
@@ -48421,7 +48422,7 @@ v.RUNNING="running";v.PAUSED="paused";v.SUCCESS="success";v.CANCELED="canceled";
 			:host {
 				display: block;
 				word-wrap: break-word;
-				word-break: break-all;
+				/*word-break: break-all;*/
 			}
 			paper-card {
 				width: 100%;
@@ -48513,7 +48514,7 @@ v.RUNNING="running";v.PAUSED="paused";v.SUCCESS="success";v.CANCELED="canceled";
 			:host {
 				display: block;
 				word-wrap: break-word;
-				word-break: break-all;
+				/*word-break: break-all;*/
 			}
 			paper-card {
 				width: 100%;
@@ -48639,12 +48640,6 @@ v.RUNNING="running";v.PAUSED="paused";v.SUCCESS="success";v.CANCELED="canceled";
 			#table data-table-checkbox {
 				height: auto;
 			}
-/*
-			#table data-table-cell > .position {
-				width: 100%;
-				text-align: center;
-			}
-*/
 		</style>
 
 
@@ -49173,6 +49168,8 @@ v.RUNNING="running";v.PAUSED="paused";v.SUCCESS="success";v.CANCELED="canceled";
 			}
 		</style>
 
+		<x-route route="{{route}}"></x-route>
+
 		<firebase-document id="firebaseDocument" app-name="uomgo" path="/virt/rules" data="{{docData}}"></firebase-document>
 
 		<paper-card image="" elevation="4" animated-shadow="false" heading="Правила рассмотрения электронных обращений граждан">
@@ -49182,11 +49179,9 @@ v.RUNNING="running";v.PAUSED="paused";v.SUCCESS="success";v.CANCELED="canceled";
 			</div>
 
 			<div class="card-actions">
-				<a href="#/virt/messages" tabindex="-1">
-					<paper-button raised="" on-tap="scrollPageToTop">
-						Я согласен с правилами электронного обращения
-					</paper-button>
-				</a>
+				<paper-button raised="" on-tap="changePage">
+					Я согласен с правилами электронного обращения
+				</paper-button>
 			</div>
 		</paper-card>
 
@@ -49197,7 +49192,8 @@ v.RUNNING="running";v.PAUSED="paused";v.SUCCESS="success";v.CANCELED="canceled";
 
 		Polymer({
 			is: 'x-virt-rules',
-			scrollPageToTop: function() {
+			changePage: function() {
+				this.set('route.path', '/virt/messages');
 				app.scrollPageToTop();
 			}
 		});
