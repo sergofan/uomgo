@@ -53,7 +53,6 @@
 		var arrowUp = document.querySelector('#arrowUp');
 		var firebaseLogin = document.querySelector("#firebaseLogin");
 		var container = document.querySelector('.container');
-		var collapsePanel = document.querySelector('#collapsePanel');
 
 		/* background for toolbar when it is at its full size */
 		var header = document.querySelector('#headerBg');
@@ -65,10 +64,8 @@
 		scrollHeaderPanel.addEventListener('content-scroll', function() {
 			if (scrollThreshold._scrollTop > 192) {
 				arrowUp.hidden = false;
-				collapsePanel.hidden = true;
 			} else {
 				arrowUp.hidden = true;
-				collapsePanel.hidden = false;
 			}
 		});
 	});
