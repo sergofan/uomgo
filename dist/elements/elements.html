@@ -45174,14 +45174,6 @@ v.RUNNING="running";v.PAUSED="paused";v.SUCCESS="success";v.CANCELED="canceled";
 				var firebaseDocument = this.$.firebaseDocument;
 				var scrollHeaderPanel = document.querySelector('paper-scroll-header-panel');
 				var collapsePanel = this.querySelector('#collapsePanel');
-				// var toastMessage = this.$.toastMessage;
-				// toastMessage.fitInto = this.$.toastMessageContainer;
-				// setTimeout(function() {
-					// this.openToast();
-				// }.bind(this), 2500);
-
-				// console.log(scrollHeaderPanel);
-
 				scrollHeaderPanel.addEventListener('content-scroll', function() {
 					if (scrollThreshold._scrollTop > 192) {
 						collapsePanel.hidden = true;
@@ -45349,15 +45341,15 @@ v.RUNNING="running";v.PAUSED="paused";v.SUCCESS="success";v.CANCELED="canceled";
 				<template is="juicy-html" content$="[[docData.text]]"></template>
 
 				<iron-accordions>
-					<iron-accordion>
+					<iron-accordion id="FGOS">
 						<div header="" class="paper-font-headline">ФГОС</div>
 						<div class="accordionContent shadow">ФГОС</div>
 					</iron-accordion>
-					<iron-accordion>
+					<iron-accordion id="quality">
 						<div header="" class="paper-font-headline">Оценка качества образования в ОО</div>
 						<div class="accordionContent shadow">Оценка качества образования в ОО</div>
 					</iron-accordion>
-					<iron-accordion>
+					<iron-accordion id="GIA">
 						<div header="" class="paper-font-headline">Государственная итоговая аттестация</div>
 							<div class="accordionContent shadow">
 								<x-inspect-gia doc-data="[[docData]]"></x-inspect-gia>
@@ -45390,6 +45382,10 @@ v.RUNNING="running";v.PAUSED="paused";v.SUCCESS="success";v.CANCELED="canceled";
 						<div class="accordionContent shadow">Муниципальный обменный фонд</div>
 					</iron-accordion>
 				<iron-accordions>
+
+				<a href="javascript:document.querySelector('#quality').scrollIntoView({block: 'end', behavior: 'smooth'});">
+					GIA
+				</a>
 
 			</iron-accordions></iron-accordions></div>
 
