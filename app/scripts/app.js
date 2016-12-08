@@ -116,8 +116,6 @@
 	app.showArrow = function() {
 		this.async(function () {
 			scrollThreshold.clearTriggers();
-			// console.log('Triggered upper');
-			// arrowUp.style.display = "none";
 		});
 	}
 

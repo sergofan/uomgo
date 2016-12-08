@@ -119,14 +119,6 @@
 				var firebaseDocument = this.$.firebaseDocument;
 				var scrollHeaderPanel = document.querySelector('paper-scroll-header-panel');
 				var collapsePanel = this.querySelector('#collapsePanel');
-				// var toastMessage = this.$.toastMessage;
-				// toastMessage.fitInto = this.$.toastMessageContainer;
-				// setTimeout(function() {
-					// this.openToast();
-				// }.bind(this), 2500);
-
-				// console.log(scrollHeaderPanel);
-
 				scrollHeaderPanel.addEventListener('content-scroll', function() {
 					if (scrollThreshold._scrollTop > 192) {
 						collapsePanel.hidden = true;

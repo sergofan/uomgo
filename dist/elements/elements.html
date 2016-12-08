@@ -45073,10 +45073,6 @@ v.RUNNING="running";v.PAUSED="paused";v.SUCCESS="success";v.CANCELED="canceled";
 				word-wrap: break-word;
 				margin: 32px 0;
 			}
-			.yellow-button {
-				text-transform: none;
-				color: #eeff41;
-			}
 			#collapsePanel {
 				background-color: #00E676;
 				position: fixed;
@@ -45176,11 +45172,23 @@ v.RUNNING="running";v.PAUSED="paused";v.SUCCESS="success";v.CANCELED="canceled";
 			},
 			ready: function() {
 				var firebaseDocument = this.$.firebaseDocument;
+				var scrollHeaderPanel = document.querySelector('paper-scroll-header-panel');
+				var collapsePanel = this.querySelector('#collapsePanel');
 				// var toastMessage = this.$.toastMessage;
 				// toastMessage.fitInto = this.$.toastMessageContainer;
 				// setTimeout(function() {
 					// this.openToast();
 				// }.bind(this), 2500);
+
+				// console.log(scrollHeaderPanel);
+
+				scrollHeaderPanel.addEventListener('content-scroll', function() {
+					if (scrollThreshold._scrollTop > 192) {
+						collapsePanel.hidden = true;
+					} else {
+						collapsePanel.hidden = false;
+					}
+				});
 
 			},
 			editPostDialogOpen: function(e) {
@@ -45228,14 +45236,7 @@ v.RUNNING="running";v.PAUSED="paused";v.SUCCESS="success";v.CANCELED="canceled";
 					this.set('route.path', '/about/docs');
 				});
 			}
-			// openToast: function(event) {
-				// toastMessage.open();
-			// },
-			// closeToast: function(event) {
-				// toastMessage.close();
-			// }
 		});
-
 	})();
 	</script>
 </dom-module>

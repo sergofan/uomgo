@@ -41,15 +41,15 @@
 									content$="[[docData.text]]"></template>
 
 				<iron-accordions>
-					<iron-accordion>
+					<iron-accordion id="FGOS">
 						<div header class="paper-font-headline">ФГОС</div>
 						<div class="accordionContent shadow">ФГОС</div>
 					</iron-accordion>
-					<iron-accordion>
+					<iron-accordion id="quality">
 						<div header class="paper-font-headline">Оценка качества образования в ОО</div>
 						<div class="accordionContent shadow">Оценка качества образования в ОО</div>
 					</iron-accordion>
-					<iron-accordion>
+					<iron-accordion id="GIA">
 						<div header class="paper-font-headline">Государственная итоговая аттестация</div>
 							<div class="accordionContent shadow">
 								<x-inspect-GIA doc-data="[[docData]]"></x-inspect-GIA>
@@ -83,6 +83,10 @@
 						<div class="accordionContent shadow">Муниципальный обменный фонд</div>
 					</iron-accordion>
 				<iron-accordions>
+
+				<a href="javascript:document.querySelector('#quality').scrollIntoView({block: 'end', behavior: 'smooth'});">
+					GIA
+				</a>
 
 			</div>
 
