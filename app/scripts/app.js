@@ -28,11 +28,6 @@
 	// Sets app default base URL
 	app.baseUrl = '/';
 
-	app.limitToFirst = 0;
-	app.limitToLast = 0;
-	app.startAt = '';
-	app.endAt = '';
-
 	// app.displayInstalledToast = function() {
 	// 	// Check to make sure caching is actually enabled—it won't be in the dev environment.
 	// 	if (!Polymer.dom(document).querySelector('platinum-sw-cache').disabled) {

@@ -76,7 +76,22 @@
 		'use strict';
 
 		Polymer({
-			is: 't-counting-template'
+			is: 't-counting-template',
+			ready: function() {
+				var ironAccordions = this.querySelector('iron-accordions');
+				ironAccordions.addEventListener('transitionend', function() {
+					var headerPanelMain = app.$.headerPanelMain;
+					var scrollTop = headerPanelMain.scroller.scrollTop;
+					var top = this._selection.selection[0].getBoundingClientRect().top;
+					if ( this._selection.selection[0].opened ) {
+						if ( top > 0 ) {
+							headerPanelMain.scroll(top + scrollTop, true);
+						} else if ( top < 0 ) {
+							headerPanelMain.scroll( top + scrollTop - 64, true);
+						};
+					};
+				});
+			}
 		});
 	})();
 	</script>

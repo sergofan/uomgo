@@ -41,53 +41,52 @@
 									content$="[[docData.text]]"></template>
 
 				<iron-accordions>
-					<iron-accordion id="FGOS" on-tap="_scrollTo">
+					<iron-accordion id="FGOS">
 						<div header class="paper-font-headline">ФГОС</div>
 						<div class="accordionContent shadow">ФГОС</div>
 					</iron-accordion>
-					<iron-accordion id="quality" on-tap="_scrollTo">
+					<iron-accordion id="quality">
 						<div header class="paper-font-headline">Оценка качества образования в ОО</div>
 						<div class="accordionContent shadow">Оценка качества образования в ОО</div>
 					</iron-accordion>
-					<iron-accordion id="GIA" on-tap="_scrollTo">
+					<iron-accordion id="GIA">
 						<div header class="paper-font-headline">Государственная итоговая аттестация</div>
 							<div class="accordionContent shadow">
 								<x-inspect-GIA doc-data="[[docData]]"></x-inspect-GIA>
 							</div>
 					</iron-accordion>
-					<iron-accordion id="inclusive" on-tap="_scrollTo">
+					<iron-accordion id="inclusive">
 						<div header class="paper-font-headline">Инклюзивное образование</div>
 						<div class="accordionContent shadow">Инклюзивное образование</div>
 					</iron-accordion>
-					<iron-accordion id="remote" on-tap="_scrollTo">
+					<iron-accordion id="remote">
 						<div header class="paper-font-headline">Дистанционное образование</div>
 						<div class="accordionContent shadow">Дистанционное образование</div>
 					</iron-accordion>
-					<iron-accordion id="ORKSE" on-tap="_scrollTo">
+					<iron-accordion id="ORKSE">
 						<div header class="paper-font-headline">ОРКСЭ</div>
 						<div class="accordionContent shadow">ОРКСЭ</div>
 					</iron-accordion>
-					<iron-accordion id="videoconferencing" on-tap="_scrollTo">
+					<iron-accordion id="videoconferencing">
 						<div header class="paper-font-headline">Видеоконференцсвязь</div>
 						<div class="accordionContent shadow">Видеоконференцсвязь</div>
 					</iron-accordion>
-					<iron-accordion id="olympiad" on-tap="_scrollTo">
+					<iron-accordion id="olympiad">
 						<div header class="paper-font-headline">Олимпиады</div>
 						<div class="accordionContent shadow">
 							<template is="juicy-html"
 												content$="[[docData.olympiad.text]]"></template>
 						</div>
 					</iron-accordion>
-					<iron-accordion id="exchange" on-tap="_scrollTo">
+					<iron-accordion id="exchange">
 						<div header class="paper-font-headline">Муниципальный обменный фонд</div>
 						<div class="accordionContent shadow">Муниципальный обменный фонд</div>
 					</iron-accordion>
 				<iron-accordions>
 
-				<!-- <a href="javascript:document.querySelector('#quality').scrollIntoView({block: 'end', behavior: 'smooth'});"> -->
-				<a href="javascript:app.$.headerPanelMain.scroll( document.querySelector('#GIA').getBoundingClientRect().top + app.$.headerPanelMain.scroller.scrollTop - 56 - 8, true );">
-					GIA
-				</a>
+				<!-- <a href="javascript:app.$.headerPanelMain.scroll( document.querySelector('#GIA').getBoundingClientRect().top + app.$.headerPanelMain.scroller.scrollTop - 56 - 8, true );"> -->
+					<!-- GIA -->
+				<!-- </a> -->
 
 			</div>
 
@@ -100,18 +99,22 @@
 
 		Polymer({
 			is: 't-inspect-template',
-			_scrollTo: function(e) {
-				var top = e.target.getBoundingClientRect().top;
-				var scrollTop = app.$.headerPanelMain.scroller.scrollTop;
-				console.log(e.detail.queryElement('iron-accordion'));
-				if ( top > 0 ) {
-					// app.$.headerPanelMain.scroll( top + scrollTop );
-				} else if ( top < 0 ) {
-					// app.$.headerPanelMain.scroll( top + scrollTop - 56 - 8, true );
-				}
+			ready: function() {
+				var ironAccordions = this.querySelector('iron-accordions');
+				ironAccordions.addEventListener('transitionend', function() {
+					var headerPanelMain = app.$.headerPanelMain;
+					var scrollTop = headerPanelMain.scroller.scrollTop;
+					var top = this._selection.selection[0].getBoundingClientRect().top;
+					if ( this._selection.selection[0].opened ) {
+						if ( top > 0 ) {
+							headerPanelMain.scroll(top + scrollTop, true);
+						} else if ( top < 0 ) {
+							headerPanelMain.scroll( top + scrollTop - 64, true);
+						};
+					};
+				});
 			}
 		});
-
 	})();
 	</script>
 </dom-module>
