@@ -9,6 +9,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 'use strict';
 
+// Include promise polyfill for node 0.10 compatibility
+require('es6-promise').polyfill();
+
 // Include Gulp & tools we'll use
 var gulp = require('gulp');
 var $ = require('gulp-load-plugins')();
@@ -101,10 +104,6 @@ gulp.task('styles', function() {
   return styleTask('styles', ['**/*.css']);
 });
 
-gulp.task('elements', function() {
-  return styleTask('elements', ['**/*.css']);
-});
-
 // Ensure that we are not missing required files for the project
 // "dot" files are specifically tricky due to them being hidden on
 // some systems.
@@ -140,11 +139,7 @@ gulp.task('copy', function() {
     'app/bower_components/{webcomponentsjs,platinum-sw,sw-toolbox,promise-polyfill}/**/*'
   ]).pipe(gulp.dest(dist('bower_components')));
 
-  var scripts = gulp.src([
-    'app/scripts/*'
-  ]).pipe(gulp.dest(dist('scripts')));
-
-  return merge(app, bower, scripts)
+  return merge(app, bower)
     .pipe($.size({
       title: 'copy'
     }));
@@ -170,30 +165,12 @@ gulp.task('html', function() {
 gulp.task('vulcanize', function() {
   return gulp.src('app/elements/elements.html')
     .pipe($.vulcanize({
-      stripComments: false,
+      stripComments: true,
       inlineCss: true,
       inlineScripts: true
     }))
     .pipe(gulp.dest(dist('elements')))
     .pipe($.size({title: 'vulcanize'}));
-
-  // return gulp.src('app/components/*.html')
-  //   .pipe($.vulcanize({
-  //     stripComments: true,
-  //     inlineCss: true,
-  //     inlineScripts: true
-  //   }))
-  //   .pipe(gulp.dest(dist('components')))
-  //   .pipe($.size({title: 'vulcanize'}));
-
-  // return gulp.src('app/templates/*.html')
-  //   .pipe($.vulcanize({
-  //     stripComments: true,
-  //     inlineCss: true,
-  //     inlineScripts: true
-  //   }))
-  //   .pipe(gulp.dest(dist('templates')))
-  //   .pipe($.size({title: 'vulcanize'}));
 });
 
 // Generate config data for the <sw-precache-cache> element.
@@ -237,7 +214,7 @@ gulp.task('clean', function() {
 });
 
 // Watch files for changes & reload
-gulp.task('serve', ['styles', 'elements'], function() {
+gulp.task('serve', ['styles'], function() {
   browserSync({
     port: 5000,
     notify: false,
@@ -260,9 +237,9 @@ gulp.task('serve', ['styles', 'elements'], function() {
     }
   });
 
-  gulp.watch(['app/**/*.html'], reload);
+  gulp.watch(['app/**/*.html', '!app/bower_components/**/*.html'], reload);
   gulp.watch(['app/styles/**/*.css'], ['styles', reload]);
-  gulp.watch(['app/elements/**/*.css'], ['elements', reload]);
+  gulp.watch(['app/scripts/**/*.js'], reload);
   gulp.watch(['app/images/**/*'], reload);
 });
 
@@ -294,7 +271,6 @@ gulp.task('default', ['clean'], function(cb) {
   // Uncomment 'cache-config' if you are going to use service workers.
   runSequence(
     ['ensureFiles', 'copy', 'styles'],
-    'elements',
     ['images', 'fonts', 'html'],
     'vulcanize', // 'cache-config',
     cb);
@@ -322,9 +298,11 @@ gulp.task('deploy-gh-pages', function() {
 
 // Load tasks for web-component-tester
 // Adds tasks for `gulp test:local` and `gulp test:remote`
-require('web-component-tester').gulp.init(gulp);
+// require('web-component-tester').gulp.init(gulp);
 
 // Load custom tasks from the `tasks` directory
 try {
   require('require-dir')('tasks');
-} catch (err) {}
+} catch (err) {
+  // Do nothing
+}
