@@ -43428,14 +43428,24 @@ v.RUNNING="running";v.PAUSED="paused";v.SUCCESS="success";v.CANCELED="canceled";
 				/*padding: 8px 0;*/
 				background-color: var(--paper-blue-grey-50);
 			}
+			iron-collapse {
+				transition-duration: 400ms;
+				/*--iron-collapse-transition-duration: 500ms;*/
+			}
 			.paper-font-headline {
 				padding: 8px;
 			}
-			.accordionContent {
+			.collapse-content {
 				background-color: white;
 			}
+			.accordeonHeader {
+				cursor: pointer;
+			}
+			.accordeonBox {
+				padding: 8px 0;
+				background-color: var(--paper-blue-grey-50);
+			}
 		</style>
-
 
 		<firebase-document id="firebaseDocument" app-name="uomgo" path="/sections/metod" data="{{docData}}"></firebase-document>
 
@@ -43443,102 +43453,91 @@ v.RUNNING="running";v.PAUSED="paused";v.SUCCESS="success";v.CANCELED="canceled";
 
 			<div class="card-content">
 
-				<div class="content">
-
 					<template is="juicy-html" content$="[[docData.text]]"></template>
 
-					<iron-accordions>
-						<iron-accordion>
-							<div header="" class="paper-font-headline">
-								Новости
-							</div>
-							<div class="accordionContent shadow">
-								<template is="juicy-html" content$="[[docData.news.text]]"></template>
-							</div>
-						</iron-accordion>
-						<iron-accordion>
-							<div header="" class="paper-font-headline">
-								Аттестация
-							</div>
-							<div class="accordionContent shadow">
-								<template is="juicy-html" content$="[[docData.validation.text]]"></template>
-							</div>
-						</iron-accordion>
-						<iron-accordion>
-							<div header="" class="paper-font-headline">
-								Профессиональные стандарты
-							</div>
-							<div class="accordionContent shadow">
-								<template is="juicy-html" content$="[[docData.standards.text]]"></template>
-							</div>
-						</iron-accordion>
-						<iron-accordion>
-							<div header="" class="paper-font-headline">
-								ФГОС
-							</div>
-							<div class="accordionContent shadow">
-								<p>ФГОС</p>
-							</div>
-						</iron-accordion>
-						<iron-accordion>
-							<div header="" class="paper-font-headline">
-								План работы
-							</div>
-							<div class="accordionContent shadow">
-								<template is="juicy-html" content$="[[docData.plan.text]]"></template>
-							</div>
-						</iron-accordion>
-						<iron-accordion>
-							<div header="" class="paper-font-headline">
-								Муниципальные методические объединения
-							</div>
-							<div class="accordionContent shadow">
-								<template is="juicy-html" content$="[[docData.unions.text]]"></template>
-							</div>
-						</iron-accordion>
-						<iron-accordion>
-							<div header="" class="paper-font-headline">
-								Муниципальные базовые методические площадки
-							</div>
-							<div class="accordionContent shadow">
-								<template is="juicy-html" content$="[[docData.basePlaces.text]]"></template>
-							</div>
-						</iron-accordion>
-						<iron-accordion>
-							<div header="" class="paper-font-headline">
-								Повышение квалификации
-							</div>
-							<div class="accordionContent shadow">
-								<p>Повышение квалификации</p>
-							</div>
-						</iron-accordion>
-						<iron-accordion>
-							<div header="" class="paper-font-headline">
-								Школа Молодого педагога
-							</div>
-							<div class="accordionContent shadow">
-								<p>Школа Молодого педагога</p>
-							</div>
-						</iron-accordion>
-						<iron-accordion>
-							<div header="" class="paper-font-headline">
-								Конкурсное движение
-							</div>
-							<div class="accordionContent shadow">
-								<template is="juicy-html" content$="[[docData.movement.text]]"></template>
-							</div>
-						</iron-accordion>
-						<iron-accordion>
-							<div header="" class="paper-font-headline">
-								Контакты
-							</div>
-							<div class="accordionContent shadow">
-								<p>Контакты</p>
-							</div>
-						</iron-accordion>
-					</iron-accordions>
+					<div class="accordeonBox">
+						<div class="accordeonHeader paper-font-headline" aria-expanded$="[[isExpanded(openedNews)]]" aria-controls="news" on-tap="toggle" data-args="#news">
+							Новости
+						</div>
+						<iron-collapse id="news" class="collapse-content shadow" tabindex="0" opened="{{openedNews}}">
+							<div><template is="juicy-html" content$="[[docData.news.text]]"></template></div>
+						</iron-collapse>
+					</div>
 
-				</div>
+					<div class="accordeonBox">
+						<div class="accordeonHeader paper-font-headline" aria-expanded$="[[isExpanded(openedValidation)]]" aria-controls="validation" on-tap="toggle" data-args="#validation">
+							Аттестация
+						</div>
+						<iron-collapse id="validation" class="collapse-content shadow" tabindex="0" opened="{{openedValidation}}">
+							<div><template is="juicy-html" content$="[[docData.validation.text]]"></template></div>
+						</iron-collapse>
+					</div>
+
+					<div class="accordeonBox">
+						<div class="accordeonHeader paper-font-headline" aria-expanded$="[[isExpanded(openedStandards)]]" aria-controls="standards" on-tap="toggle" data-args="#standards">
+							Профессиональные стандарты
+						</div>
+						<iron-collapse id="standards" class="collapse-content shadow" tabindex="0" opened="{{openedStandards}}">
+							<div><template is="juicy-html" content$="[[docData.standards.text]]"></template></div>
+						</iron-collapse>
+					</div>
+
+					<div class="accordeonBox">
+						<div class="accordeonHeader paper-font-headline" aria-expanded$="[[isExpanded(openedPlan)]]" aria-controls="plan" on-tap="toggle" data-args="#plan">
+							План работы
+						</div>
+						<iron-collapse id="plan" class="collapse-content shadow" tabindex="0" opened="{{openedPlan}}">
+							<div><template is="juicy-html" content$="[[docData.plan.text]]"></template></div>
+						</iron-collapse>
+					</div>
+
+					<div class="accordeonBox">
+						<div class="accordeonHeader paper-font-headline" aria-expanded$="[[isExpanded(openedUnions)]]" aria-controls="unions" on-tap="toggle" data-args="#unions">
+							Муниципальные методические объединения
+						</div>
+						<iron-collapse id="unions" class="collapse-content shadow" tabindex="0" opened="{{openedUnions}}">
+							<div><template is="juicy-html" content$="[[docData.unions.text]]"></template></div>
+						</iron-collapse>
+					</div>
+
+					<div class="accordeonBox">
+						<div class="accordeonHeader paper-font-headline" aria-expanded$="[[isExpanded(openedBasePlaces)]]" aria-controls="basePlaces" on-tap="toggle" data-args="#basePlaces">
+							Муниципальные базовые методические площадки
+						</div>
+						<iron-collapse id="basePlaces" class="collapse-content shadow" tabindex="0" opened="{{openedBasePlaces}}">
+							<div><template is="juicy-html" content$="[[docData.basePlaces.text]]"></template></div>
+						</iron-collapse>
+					</div>
+
+					<div class="accordeonBox">
+						<div class="accordeonHeader paper-font-headline" aria-expanded$="[[isExpanded(openedTraining)]]" aria-controls="training" on-tap="toggle" data-args="#training">
+							Повышение квалификации
+						</div>
+						<iron-collapse id="training" class="collapse-content shadow" tabindex="0" opened="{{openedTraining}}">
+							<div><template is="juicy-html" content$="[[docData.training.text]]"></template></div>
+						</iron-collapse>
+					</div>
+
+					<div class="accordeonBox">
+						<div class="accordeonHeader paper-font-headline" aria-expanded$="[[isExpanded(openedYoungTeachers)]]" aria-controls="youngTeachers" on-tap="toggle" data-args="#youngTeachers">
+							Школа Молодого педагога
+						</div>
+						<iron-collapse id="youngTeachers" class="collapse-content shadow" tabindex="0" opened="{{openedYoungTeachers}}">
+							<div><template is="juicy-html" content$="[[docData.youngTeachers.text]]"></template></div>
+						</iron-collapse>
+					</div>
+
+					<div class="accordeonBox">
+						<div class="accordeonHeader paper-font-headline" aria-expanded$="[[isExpanded(openedMovement)]]" aria-controls="movement" on-tap="toggle" data-args="#movement">
+							Конкурсное движение
+						</div>
+						<iron-collapse id="movement" class="collapse-content shadow" tabindex="0" opened="{{openedMovement}}">
+							<div><template is="juicy-html" content$="[[docData.movement.text]]"></template></div>
+						</iron-collapse>
+					</div>
+
+					
+
 			</div>
 		</paper-card>
 
@@ -43550,19 +43549,25 @@ v.RUNNING="running";v.PAUSED="paused";v.SUCCESS="success";v.CANCELED="canceled";
 		Polymer({
 			is: 't-metod-template',
 			ready: function() {
-				var ironAccordions = this.querySelector('iron-accordions');
-				ironAccordions.addEventListener('transitionend', function() {
-					var headerPanelMain = app.$.headerPanelMain;
-					var scrollTop = headerPanelMain.scroller.scrollTop;
-					var top = this._selection.selection[0].getBoundingClientRect().top;
-					if ( this._selection.selection[0].opened ) {
-						if ( top > 0 ) {
-							headerPanelMain.scroll(top + scrollTop, true);
-						} else if ( top < 0 ) {
-							headerPanelMain.scroll( top + scrollTop - 64, true);
-						};
-					};
-				});
+				// var ironAccordions = this.querySelector('iron-accordions');
+				// ironAccordions.addEventListener('transitionend', function() {
+				// 	var headerPanelMain = app.$.headerPanelMain;
+				// 	var scrollTop = headerPanelMain.scroller.scrollTop;
+				// 	var top = this._selection.selection[0].getBoundingClientRect().top;
+				// 	if ( this._selection.selection[0].opened ) {
+				// 		if ( top > 0 ) {
+				// 			headerPanelMain.scroll(top + scrollTop, true);
+				// 		} else if ( top < 0 ) {
+				// 			headerPanelMain.scroll( top + scrollTop - 64, true);
+				// 		};
+				// 	};
+				// });
+			},
+			toggle: function(e) {
+		    document.querySelector( e.target.getAttribute('data-args') ).toggle();
+		  },
+			isExpanded: function(opened) {
+				return String(opened);
 			}
 		});
 	})();
