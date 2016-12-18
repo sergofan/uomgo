@@ -17,8 +17,7 @@
 				--paper-card-content: {
 				};
 			}
-			iron-accordion {
-				/*padding: 8px 0;*/
+			/*iron-accordion {
 				background-color: var(--paper-blue-grey-50);
 			}
 			.paper-font-headline {
@@ -26,6 +25,21 @@
 			}
 			.accordionContent {
 				background-color: white;
+			}*/
+			iron-collapse:focus {
+				outline: none;
+			}
+			.collapse-content {
+				padding: 15px;
+				background-color: white;
+			}
+			.accordeonHeader {
+				padding: 8px;
+				cursor: pointer;
+			}
+			.accordeonBox {
+				padding: 8px 0;
+				background-color: var(--paper-blue-grey-50);
 			}
 		</style>
 
@@ -47,7 +61,41 @@
 					<template is="juicy-html"
 										content$="[[docData.text]]"></template>
 
-					<iron-accordions>
+					<div class="accordeonBox">
+						<div class="accordeonHeader paper-font-headline"
+								 aria-expanded$="[[isExpanded(openedNSOT)]]"
+								 aria-controls="NSOT"
+								 on-tap="toggle" data-args="#NSOT">
+							НСОТ
+						</div>
+						<iron-collapse id="NSOT"
+													 tabindex="0"
+													 opened="{{openedNSOT}}">
+							<div class="collapse-content shadow">
+								<template is="juicy-html"
+													content$="[[docData.NSOT.text]]"></template>
+							</div>
+						</iron-collapse>
+					</div>
+
+					<div class="accordeonBox">
+						<div class="accordeonHeader paper-font-headline"
+								 aria-expanded$="[[isExpanded(openedPayroll)]]"
+								 aria-controls="payroll"
+								 on-tap="toggle" data-args="#payroll">
+							Начисление заработной платы
+						</div>
+						<iron-collapse id="payroll"
+													 tabindex="0"
+													 opened="{{openedPayroll}}">
+							<div class="collapse-content shadow">
+								<template is="juicy-html"
+													content$="[[docData.payroll.text]]"></template>
+							</div>
+						</iron-collapse>
+					</div>
+
+					<!-- <iron-accordions>
 						<iron-accordion>
 							<div header class="paper-font-headline">
 								НСОТ
@@ -64,7 +112,7 @@
 								<p>Начисление заработной платы</p>
 							</div>
 						</iron-accordion>
-					<iron-accordions>
+					<iron-accordions> -->
 
 				</div>
 			</div>
@@ -77,20 +125,26 @@
 
 		Polymer({
 			is: 't-counting-template',
-			ready: function() {
-				var ironAccordions = this.querySelector('iron-accordions');
-				ironAccordions.addEventListener('transitionend', function() {
-					var headerPanelMain = app.$.headerPanelMain;
-					var scrollTop = headerPanelMain.scroller.scrollTop;
-					var top = this._selection.selection[0].getBoundingClientRect().top;
-					if ( this._selection.selection[0].opened ) {
-						if ( top > 0 ) {
-							headerPanelMain.scroll(top + scrollTop, true);
-						} else if ( top < 0 ) {
-							headerPanelMain.scroll( top + scrollTop - 64, true);
-						};
-					};
-				});
+			// ready: function() {
+			// 	var ironAccordions = this.querySelector('iron-accordions');
+			// 	ironAccordions.addEventListener('transitionend', function() {
+			// 		var headerPanelMain = app.$.headerPanelMain;
+			// 		var scrollTop = headerPanelMain.scroller.scrollTop;
+			// 		var top = this._selection.selection[0].getBoundingClientRect().top;
+			// 		if ( this._selection.selection[0].opened ) {
+			// 			if ( top > 0 ) {
+			// 				headerPanelMain.scroll(top + scrollTop, true);
+			// 			} else if ( top < 0 ) {
+			// 				headerPanelMain.scroll( top + scrollTop - 64, true);
+			// 			};
+			// 		};
+			// 	});
+			// }
+			toggle: function(e) {
+		    document.querySelector( e.target.getAttribute('data-args') ).toggle();
+		  },
+			isExpanded: function(opened) {
+				return String(opened);
 			}
 		});
 	})();

@@ -17,8 +17,7 @@
 				--paper-card-content: {
 				};
 			}
-			iron-accordion {
-				/*padding: 8px 0;*/
+			/*iron-accordion {
 				background-color: var(--paper-blue-grey-50);
 			}
 			.paper-font-headline {
@@ -26,6 +25,21 @@
 			}
 			.accordionContent {
 				background-color: white;
+			}*/
+			iron-collapse:focus {
+				outline: none;
+			}
+			.collapse-content {
+				padding: 15px;
+				background-color: white;
+			}
+			.accordeonHeader {
+				padding: 8px;
+				cursor: pointer;
+			}
+			.accordeonBox {
+				padding: 8px 0;
+				background-color: var(--paper-blue-grey-50);
 			}
 		</style>
 
@@ -47,7 +61,75 @@
 					<template is="juicy-html"
 										content$="[[docData.text]]"></template>
 
-					<iron-accordions>
+					<div class="accordeonBox">
+						<div class="accordeonHeader paper-font-headline"
+								 aria-expanded$="[[isExpanded(openedRegulatory)]]"
+								 aria-controls="regulatory"
+								 on-tap="toggle" data-args="#regulatory">
+							Положение о питании
+						</div>
+						<iron-collapse id="regulatory"
+													 tabindex="0"
+													 opened="{{openedRegulatory}}">
+							<div class="collapse-content shadow">
+								<template is="juicy-html"
+													content$="[[docData.regulatory.text]]"></template>
+							</div>
+						</iron-collapse>
+					</div>
+
+					<div class="accordeonBox">
+						<div class="accordeonHeader paper-font-headline"
+								 aria-expanded$="[[isExpanded(openedMenu)]]"
+								 aria-controls="menu"
+								 on-tap="toggle" data-args="#menu">
+							Школьное меню
+						</div>
+						<iron-collapse id="menu"
+													 tabindex="0"
+													 opened="{{openedMenu}}">
+							<div class="collapse-content shadow">
+								<template is="juicy-html"
+													content$="[[docData.menu.text]]"></template>
+							</div>
+						</iron-collapse>
+					</div>
+
+					<div class="accordeonBox">
+						<div class="accordeonHeader paper-font-headline"
+								 aria-expanded$="[[isExpanded(openedTechnology)]]"
+								 aria-controls="technology"
+								 on-tap="toggle" data-args="#technology">
+							Технология приготовления
+						</div>
+						<iron-collapse id="technology"
+													 tabindex="0"
+													 opened="{{openedTechnology}}">
+							<div class="collapse-content shadow">
+								<template is="juicy-html"
+													content$="[[docData.technology.text]]"></template>
+							</div>
+						</iron-collapse>
+					</div>
+
+					<div class="accordeonBox">
+						<div class="accordeonHeader paper-font-headline"
+								 aria-expanded$="[[isExpanded(openedHealthyEating)]]"
+								 aria-controls="healthyEating"
+								 on-tap="toggle" data-args="#healthyEating">
+							Здоровое питание
+						</div>
+						<iron-collapse id="healthyEating"
+													 tabindex="0"
+													 opened="{{openedHealthyEating}}">
+							<div class="collapse-content shadow">
+								<template is="juicy-html"
+													content$="[[docData.healthyEating.text]]"></template>
+							</div>
+						</iron-collapse>
+					</div>
+
+					<!-- <iron-accordions>
 						<iron-accordion>
 							<div header class="paper-font-headline">
 								Положение о питании
@@ -81,7 +163,7 @@
 													content$="[[docData.healthyEating.text]]"></template>
 							</div>
 						</iron-accordion>
-					<iron-accordions>
+					<iron-accordions> -->
 
 				</div>
 			</div>
@@ -94,20 +176,26 @@
 
 		Polymer({
 			is: 't-diet-template',
-			ready: function() {
-				var ironAccordions = this.querySelector('iron-accordions');
-				ironAccordions.addEventListener('transitionend', function() {
-					var headerPanelMain = app.$.headerPanelMain;
-					var scrollTop = headerPanelMain.scroller.scrollTop;
-					var top = this._selection.selection[0].getBoundingClientRect().top;
-					if ( this._selection.selection[0].opened ) {
-						if ( top > 0 ) {
-							headerPanelMain.scroll(top + scrollTop, true);
-						} else if ( top < 0 ) {
-							headerPanelMain.scroll( top + scrollTop - 64, true);
-						};
-					};
-				});
+			// ready: function() {
+			// 	var ironAccordions = this.querySelector('iron-accordions');
+			// 	ironAccordions.addEventListener('transitionend', function() {
+			// 		var headerPanelMain = app.$.headerPanelMain;
+			// 		var scrollTop = headerPanelMain.scroller.scrollTop;
+			// 		var top = this._selection.selection[0].getBoundingClientRect().top;
+			// 		if ( this._selection.selection[0].opened ) {
+			// 			if ( top > 0 ) {
+			// 				headerPanelMain.scroll(top + scrollTop, true);
+			// 			} else if ( top < 0 ) {
+			// 				headerPanelMain.scroll( top + scrollTop - 64, true);
+			// 			};
+			// 		};
+			// 	});
+			// }
+			toggle: function(e) {
+		    document.querySelector( e.target.getAttribute('data-args') ).toggle();
+		  },
+			isExpanded: function(opened) {
+				return String(opened);
 			}
 		});
 	})();

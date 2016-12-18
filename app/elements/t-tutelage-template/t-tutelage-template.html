@@ -17,8 +17,7 @@
 				--paper-card-content: {
 				};
 			}
-			iron-accordion {
-				/*padding: 8px 0;*/
+			/*iron-accordion {
 				background-color: var(--paper-blue-grey-50);
 			}
 			.paper-font-headline {
@@ -26,6 +25,21 @@
 			}
 			.accordionContent {
 				background-color: white;
+			}*/
+			iron-collapse:focus {
+				outline: none;
+			}
+			.collapse-content {
+				padding: 15px;
+				background-color: white;
+			}
+			.accordeonHeader {
+				padding: 8px;
+				cursor: pointer;
+			}
+			.accordeonBox {
+				padding: 8px 0;
+				background-color: var(--paper-blue-grey-50);
 			}
 		</style>
 
@@ -45,10 +59,127 @@
 
 					<template is="juicy-html"
 										content$="[[docData.text]]"></template>
-					<template is="juicy-html"
-										content$="[[docData.main.text]]"></template>
 
-					<iron-accordions>
+					<div class="accordeonBox">
+						<div class="accordeonHeader paper-font-headline"
+								 aria-expanded$="[[isExpanded(openedLaws)]]"
+								 aria-controls="laws"
+								 on-tap="toggle" data-args="#laws">
+							Законодательная база
+						</div>
+						<iron-collapse id="laws"
+													 tabindex="0"
+													 opened="{{openedLaws}}">
+							<div class="collapse-content shadow">
+								<template is="juicy-html"
+													content$="[[docData.laws.text]]"></template>
+							</div>
+						</iron-collapse>
+					</div>
+
+					<div class="accordeonBox">
+						<div class="accordeonHeader paper-font-headline"
+								 aria-expanded$="[[isExpanded(openedFormsOfFamily)]]"
+								 aria-controls="formsOfFamily"
+								 on-tap="toggle" data-args="#formsOfFamily">
+							Формы семейного устройства:
+						</div>
+						<iron-collapse id="formsOfFamily"
+													 tabindex="0"
+													 opened="{{openedFormsOfFamily}}">
+							<div class="collapse-content shadow">
+								<template is="juicy-html"
+													content$="[[docData.formsOfFamily.text]]"></template>
+							</div>
+						</iron-collapse>
+					</div>
+
+					<div class="accordeonBox">
+						<div class="accordeonHeader paper-font-headline"
+								 aria-expanded$="[[isExpanded(openedLegitimation)]]"
+								 aria-controls="legitimation"
+								 on-tap="toggle" data-args="#legitimation">
+							Усыновление
+						</div>
+						<iron-collapse id="legitimation"
+													 tabindex="0"
+													 opened="{{openedLegitimation}}">
+							<div class="collapse-content shadow">
+								<template is="juicy-html"
+													content$="[[docData.legitimation.text]]"></template>
+							</div>
+						</iron-collapse>
+					</div>
+
+					<div class="accordeonBox">
+						<div class="accordeonHeader paper-font-headline"
+								 aria-expanded$="[[isExpanded(openedDealings)]]"
+								 aria-controls="dealings"
+								 on-tap="toggle" data-args="#dealings">
+							Сделки
+						</div>
+						<iron-collapse id="dealings"
+													 tabindex="0"
+													 opened="{{openedDealings}}">
+							<div class="collapse-content shadow">
+								<template is="juicy-html"
+													content$="[[docData.dealings.text]]"></template>
+							</div>
+						</iron-collapse>
+					</div>
+
+					<div class="accordeonBox">
+						<div class="accordeonHeader paper-font-headline"
+								 aria-expanded$="[[isExpanded(openedInformation)]]"
+								 aria-controls="information"
+								 on-tap="toggle" data-args="#information">
+							Информация для граждан
+						</div>
+						<iron-collapse id="information"
+													 tabindex="0"
+													 opened="{{openedInformation}}">
+							<div class="collapse-content shadow">
+								<template is="juicy-html"
+													content$="[[docData.information.text]]"></template>
+							</div>
+						</iron-collapse>
+					</div>
+
+					<div class="accordeonBox">
+						<div class="accordeonHeader paper-font-headline"
+								 aria-expanded$="[[isExpanded(openedMama)]]"
+								 aria-controls="mama"
+								 on-tap="toggle" data-args="#mama">
+							Мама, найди меня!
+						</div>
+						<iron-collapse id="mama"
+													 tabindex="0"
+													 opened="{{openedMama}}">
+							<div class="collapse-content shadow">
+								<template is="juicy-html"
+													content$="[[docData.mama.text]]"></template>
+							</div>
+						</iron-collapse>
+					</div>
+
+					<div class="accordeonBox">
+						<div class="accordeonHeader paper-font-headline"
+								 aria-expanded$="[[isExpanded(openedSeptember)]]"
+								 aria-controls="september"
+								 on-tap="toggle" data-args="#september">
+							Акция «Первое сентября – каждому школьнику
+						</div>
+						<iron-collapse id="september"
+													 tabindex="0"
+													 opened="{{openedSeptember}}">
+							<div class="collapse-content shadow">
+								<template is="juicy-html"
+													content$="[[docData.september.text]]"></template>
+							</div>
+						</iron-collapse>
+					</div>
+
+					<!-- <iron-accordions>
 						<iron-accordion>
 							<div header class="paper-font-headline">
 								Законодательная база
@@ -110,7 +241,7 @@
 													content$="[[docData.september.text]]"></template>
 							</p>
 						</iron-accordion>
-					<iron-accordions>
+					<iron-accordions> -->
 
 				</div>
 			</div>
@@ -123,20 +254,26 @@
 
 		Polymer({
 			is: 't-tutelage-template',
-			ready: function() {
-				var ironAccordions = this.querySelector('iron-accordions');
-				ironAccordions.addEventListener('transitionend', function() {
-					var headerPanelMain = app.$.headerPanelMain;
-					var scrollTop = headerPanelMain.scroller.scrollTop;
-					var top = this._selection.selection[0].getBoundingClientRect().top;
-					if ( this._selection.selection[0].opened ) {
-						if ( top > 0 ) {
-							headerPanelMain.scroll(top + scrollTop, true);
-						} else if ( top < 0 ) {
-							headerPanelMain.scroll( top + scrollTop - 64, true);
-						};
-					};
-				});
+			// ready: function() {
+			// 	var ironAccordions = this.querySelector('iron-accordions');
+			// 	ironAccordions.addEventListener('transitionend', function() {
+			// 		var headerPanelMain = app.$.headerPanelMain;
+			// 		var scrollTop = headerPanelMain.scroller.scrollTop;
+			// 		var top = this._selection.selection[0].getBoundingClientRect().top;
+			// 		if ( this._selection.selection[0].opened ) {
+			// 			if ( top > 0 ) {
+			// 				headerPanelMain.scroll(top + scrollTop, true);
+			// 			} else if ( top < 0 ) {
+			// 				headerPanelMain.scroll( top + scrollTop - 64, true);
+			// 			};
+			// 		};
+			// 	});
+			// }
+			toggle: function(e) {
+		    document.querySelector( e.target.getAttribute('data-args') ).toggle();
+		  },
+			isExpanded: function(opened) {
+				return String(opened);
 			}
 		});
 	})();

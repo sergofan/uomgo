@@ -20,14 +20,14 @@
 			/*iron-accordion {
 				background-color: var(--paper-blue-grey-50);
 			}*/
-			iron-collapse {
-				transition-duration: 400ms;
-				/*--iron-collapse-transition-duration: 500ms;*/
-			}
 			/*.paper-font-headline {
-				padding: 8px;
+			padding: 8px;
 			}*/
+			iron-collapse:focus {
+				outline: none;
+			}
 			.collapse-content {
+				padding: 15px;
 				background-color: white;
 			}
 			.accordeonHeader {
@@ -63,11 +63,12 @@
 							Новости
 						</div>
 						<iron-collapse id="news"
-													 class="collapse-content shadow"
 													 tabindex="0"
 													 opened="{{openedNews}}">
-							<div><template is="juicy-html"
-													content$="[[docData.news.text]]"></template></div>
+							<div class="collapse-content shadow">
+								<template is="juicy-html"
+													content$="[[docData.news.text]]"></template>
+							</div>
 						</iron-collapse>
 					</div>
 
@@ -79,11 +80,12 @@
 							Аттестация
 						</div>
 						<iron-collapse id="validation"
-													 class="collapse-content shadow"
 													 tabindex="0"
 													 opened="{{openedValidation}}">
-							<div><template is="juicy-html"
-													content$="[[docData.validation.text]]"></template></div>
+							<div class="collapse-content shadow">
+								<template is="juicy-html"
+													content$="[[docData.validation.text]]"></template>
+							</div>
 						</iron-collapse>
 					</div>
 
@@ -95,11 +97,12 @@
 							Профессиональные стандарты
 						</div>
 						<iron-collapse id="standards"
-													 class="collapse-content shadow"
 													 tabindex="0"
 													 opened="{{openedStandards}}">
-							<div><template is="juicy-html"
-													content$="[[docData.standards.text]]"></template></div>
+							<div class="collapse-content shadow">
+								<template is="juicy-html"
+													content$="[[docData.standards.text]]"></template>
+							</div>
 						</iron-collapse>
 					</div>
 
@@ -111,11 +114,12 @@
 							План работы
 						</div>
 						<iron-collapse id="plan"
-													 class="collapse-content shadow"
 													 tabindex="0"
 													 opened="{{openedPlan}}">
-							<div><template is="juicy-html"
-													content$="[[docData.plan.text]]"></template></div>
+							<div class="collapse-content shadow">
+								<template is="juicy-html"
+													content$="[[docData.plan.text]]"></template>
+							</div>
 						</iron-collapse>
 					</div>
 
@@ -127,11 +131,12 @@
 							Муниципальные методические объединения
 						</div>
 						<iron-collapse id="unions"
-													 class="collapse-content shadow"
 													 tabindex="0"
 													 opened="{{openedUnions}}">
-							<div><template is="juicy-html"
-													content$="[[docData.unions.text]]"></template></div>
+							<div class="collapse-content shadow">
+								<template is="juicy-html"
+													content$="[[docData.unions.text]]"></template>
+							</div>
 						</iron-collapse>
 					</div>
 
@@ -143,11 +148,12 @@
 							Муниципальные базовые методические площадки
 						</div>
 						<iron-collapse id="basePlaces"
-													 class="collapse-content shadow"
 													 tabindex="0"
 													 opened="{{openedBasePlaces}}">
-							<div><template is="juicy-html"
-													content$="[[docData.basePlaces.text]]"></template></div>
+							<div class="collapse-content shadow">
+								<template is="juicy-html"
+													content$="[[docData.basePlaces.text]]"></template>
+							</div>
 						</iron-collapse>
 					</div>
 
@@ -159,11 +165,12 @@
 							Повышение квалификации
 						</div>
 						<iron-collapse id="training"
-													 class="collapse-content shadow"
 													 tabindex="0"
 													 opened="{{openedTraining}}">
-							<div><template is="juicy-html"
-													content$="[[docData.training.text]]"></template></div>
+							<div class="collapse-content shadow">
+								<template is="juicy-html"
+													content$="[[docData.training.text]]"></template>
+							</div>
 						</iron-collapse>
 					</div>
 
@@ -175,11 +182,12 @@
 							Школа Молодого педагога
 						</div>
 						<iron-collapse id="youngTeachers"
-													 class="collapse-content shadow"
 													 tabindex="0"
 													 opened="{{openedYoungTeachers}}">
-							<div><template is="juicy-html"
-													content$="[[docData.youngTeachers.text]]"></template></div>
+							<div class="collapse-content shadow">
+								<template is="juicy-html"
+													content$="[[docData.youngTeachers.text]]"></template>
+							</div>
 						</iron-collapse>
 					</div>
 
@@ -191,11 +199,12 @@
 							Конкурсное движение
 						</div>
 						<iron-collapse id="movement"
-													 class="collapse-content shadow"
 													 tabindex="0"
 													 opened="{{openedMovement}}">
-							<div><template is="juicy-html"
-													content$="[[docData.movement.text]]"></template></div>
+							<div class="collapse-content shadow">
+								<template is="juicy-html"
+													content$="[[docData.movement.text]]"></template>
+							</div>
 						</iron-collapse>
 					</div>
 

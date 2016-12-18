@@ -6,7 +6,6 @@
 			:host {
 				display: block;
 				word-wrap: break-word;
-				/*word-break: break-all;*/
 			}
 			paper-card {
 				width: 100%;
@@ -17,8 +16,7 @@
 				--paper-card-content: {
 				};
 			}
-			iron-accordion {
-				/*padding: 8px 0;*/
+			/*iron-accordion {
 				background-color: var(--paper-blue-grey-50);
 			}
 			.paper-font-headline {
@@ -26,6 +24,21 @@
 			}
 			.accordionContent {
 				background-color: white;
+			}*/
+			iron-collapse:focus {
+				outline: none;
+			}
+			.collapse-content {
+				padding: 15px;
+				background-color: white;
+			}
+			.accordeonHeader {
+				padding: 8px;
+				cursor: pointer;
+			}
+			.accordeonBox {
+				padding: 8px 0;
+				background-color: var(--paper-blue-grey-50);
 			}
 		</style>
 
@@ -47,7 +60,41 @@
 					<template is="juicy-html"
 										content$="[[docData.text]]"></template>
 
-					<iron-accordions>
+					<div class="accordeonBox">
+						<div class="accordeonHeader paper-font-headline"
+								 aria-expanded$="[[isExpanded(openedRules)]]"
+								 aria-controls="rules"
+								 on-tap="toggle" data-args="#rules">
+							Правила перевозки детей
+						</div>
+						<iron-collapse id="rules"
+													 tabindex="0"
+													 opened="{{openedRules}}">
+							<div class="collapse-content shadow">
+								<template is="juicy-html"
+													content$="[[docData.rules.text]]"></template>
+							</div>
+						</iron-collapse>
+					</div>
+
+					<div class="accordeonBox">
+						<div class="accordeonHeader paper-font-headline"
+								 aria-expanded$="[[isExpanded(openedSchedule)]]"
+								 aria-controls="schedule"
+								 on-tap="toggle" data-args="#schedule">
+							Расписание школьных автобусов
+						</div>
+						<iron-collapse id="schedule"
+													 tabindex="0"
+													 opened="{{openedSchedule}}">
+							<div class="collapse-content shadow">
+								<template is="juicy-html"
+													content$="[[docData.schedule.text]]"></template>
+							</div>
+						</iron-collapse>
+					</div>
+
+					<!-- <iron-accordions>
 						<iron-accordion>
 							<div header class="paper-font-headline">
 								Правила перевозки детей
@@ -65,7 +112,7 @@
 								<p>Расписание школьных автобусов</p>
 							</div>
 						</iron-accordion>
-					<iron-accordions>
+					<iron-accordions> -->
 
 				</div>
 			</div>
@@ -78,20 +125,26 @@
 
 		Polymer({
 			is: 't-transport-template',
-			ready: function() {
-				var ironAccordions = this.querySelector('iron-accordions');
-				ironAccordions.addEventListener('transitionend', function() {
-					var headerPanelMain = app.$.headerPanelMain;
-					var scrollTop = headerPanelMain.scroller.scrollTop;
-					var top = this._selection.selection[0].getBoundingClientRect().top;
-					if ( this._selection.selection[0].opened ) {
-						if ( top > 0 ) {
-							headerPanelMain.scroll(top + scrollTop, true);
-						} else if ( top < 0 ) {
-							headerPanelMain.scroll( top + scrollTop - 64, true);
-						};
-					};
-				});
+			// ready: function() {
+			// 	var ironAccordions = this.querySelector('iron-accordions');
+			// 	ironAccordions.addEventListener('transitionend', function() {
+			// 		var headerPanelMain = app.$.headerPanelMain;
+			// 		var scrollTop = headerPanelMain.scroller.scrollTop;
+			// 		var top = this._selection.selection[0].getBoundingClientRect().top;
+			// 		if ( this._selection.selection[0].opened ) {
+			// 			if ( top > 0 ) {
+			// 				headerPanelMain.scroll(top + scrollTop, true);
+			// 			} else if ( top < 0 ) {
+			// 				headerPanelMain.scroll( top + scrollTop - 64, true);
+			// 			};
+			// 		};
+			// 	});
+			// }
+			toggle: function(e) {
+		    document.querySelector( e.target.getAttribute('data-args') ).toggle();
+		  },
+			isExpanded: function(opened) {
+				return String(opened);
 			}
 		});
 	})();

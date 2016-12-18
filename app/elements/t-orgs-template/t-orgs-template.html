@@ -6,7 +6,6 @@
 			:host {
 				display: block;
 				word-wrap: break-word;
-				/*word-break: break-all;*/
 			}
 			paper-card {
 				width: 100%;
@@ -17,8 +16,7 @@
 				--paper-card-content: {
 				};
 			}
-			iron-accordion {
-				/*padding: 8px 0;*/
+			/*iron-accordion {
 				background-color: var(--paper-blue-grey-50);
 			}
 			.paper-font-headline {
@@ -26,12 +24,23 @@
 			}
 			.accordionContent {
 				background-color: white;
+			}*/
+			iron-collapse:focus {
+				outline: none;
 			}
-			grid-element {
-				/*margin: 16px;*/
+			.collapse-content {
+				padding: 15px;
+				background-color: white;
+			}
+			.accordeonHeader {
+				padding: 8px;
+				cursor: pointer;
+			}
+			.accordeonBox {
+				padding: 8px 0;
+				background-color: var(--paper-blue-grey-50);
 			}
 			grid-col {
-				/*@apply(--layout-justified);*/
 				text-align: center;
 			}
 			.red {
@@ -51,9 +60,202 @@
 
 			<div class="card-content">
 
-				<div class="content">
+					<div class="accordeonBox">
+						<div class="accordeonHeader paper-font-headline"
+								 aria-expanded$="[[isExpanded(openedPreschool)]]"
+								 aria-controls="preschool"
+								 on-tap="toggle" data-args="#preschool">
+							Дошкольные образовательные организации
+						</div>
+						<iron-collapse id="preschool"
+													 tabindex="0"
+													 opened="{{openedPreschool}}">
+							<div class="collapse-content shadow">
+								<firebase-query id="firebaseQuery"
+																path="/orgs/preschool/table"
+																app-name="uomgo"
+																data="{{dataPreschool}}"></firebase-query>
 
-					<iron-accordions>
+								<template is="dom-repeat"
+													items="[[dataPreschool]]"
+													as="val"
+													target-framerate="60">
+
+									<grid-element ga="16" class="content green-gradient">
+										<grid-col>
+											<p class="red">
+												<b>Наименование по Уставу:</b>
+											</p>
+											<template is="juicy-html"
+																content$="[[val.name]]"></template>
+										</grid-col>
+										<grid-col>
+											<p class="red">
+												<b>Юридический и фактический адрес, телефон, e-mail:</b>
+											</p>
+											<template is="juicy-html"
+																content$="[[val.address]]"></template>
+										</grid-col>
+										<grid-col>
+											<p class="red">
+												<b>ФИО руководителя:</b>
+											</p>
+											<template is="juicy-html"
+																content$="[[val.chief]]"></template>
+										</grid-col>
+									</grid-element>
+								</template>
+							</div>
+						</iron-collapse>
+					</div>
+
+					<div class="accordeonBox">
+						<div class="accordeonHeader paper-font-headline"
+								 aria-expanded$="[[isExpanded(openedOveral)]]"
+								 aria-controls="overal"
+								 on-tap="toggle" data-args="#overal">
+							Общеобразовательные организации
+						</div>
+						<iron-collapse id="overal"
+													 tabindex="0"
+													 opened="{{openedOveral}}">
+							<div class="collapse-content shadow">
+								<firebase-query id="firebaseQuery"
+																path="/orgs/overal/table"
+																app-name="uomgo"
+																data="{{dataOveral}}"></firebase-query>
+
+								<template is="dom-repeat"
+													items="[[dataOveral]]"
+													as="val"
+													target-framerate="60">
+
+									<grid-element ga="16" class="content green-gradient">
+										<grid-col>
+											<p class="red"><b>Наименование по Уставу:</b></p>
+											<template is="juicy-html"
+																content$="[[val.name]]"></template>
+										</grid-col>
+										<grid-col>
+											<p class="red"><b>Юридический и фактический адрес, телефон, e-mail:</b></p>
+											<template is="juicy-html"
+																content$="[[val.address]]"></template>
+										</grid-col>
+										<grid-col>
+											<p class="red"><b>ФИО руководителя:</b></p>
+											<template is="juicy-html"
+																content$="[[val.chief]]"></template>
+										</grid-col>
+									</grid-element>
+								</template>
+							</div>
+						</iron-collapse>
+					</div>
+
+					<div class="accordeonBox">
+						<div class="accordeonHeader paper-font-headline"
+								 aria-expanded$="[[isExpanded(openedSpecial)]]"
+								 aria-controls="special"
+								 on-tap="toggle" data-args="#special">
+							Специальные (коррекционные) школы
+						</div>
+						<iron-collapse id="special"
+													 tabindex="0"
+													 opened="{{openedSpecial}}">
+							<div class="collapse-content shadow">
+								<firebase-query id="firebaseQuery"
+																path="/orgs/special/table"
+																app-name="uomgo"
+																data="{{dataSpecial}}"></firebase-query>
+
+								<template is="dom-repeat"
+													items="[[dataSpecial]]"
+													as="val"
+													target-framerate="60">
+
+									<grid-element ga="16" class="content green-gradient">
+										<grid-col>
+											<p class="red"><b>Наименование по Уставу:</b></p>
+											<template is="juicy-html"
+																content$="[[val.name]]"></template>
+										</grid-col>
+										<grid-col>
+											<p class="red"><b>Юридический и фактический адрес, телефон, e-mail:</b></p>
+											<template is="juicy-html"
+																content$="[[val.address]]"></template>
+										</grid-col>
+										<grid-col>
+											<p class="red"><b>ФИО руководителя:</b></p>
+											<template is="juicy-html"
+																content$="[[val.chief]]"></template>
+										</grid-col>
+									</grid-element>
+								</template>
+							</div>
+						</iron-collapse>
+					</div>
+
+					<div class="accordeonBox">
+						<div class="accordeonHeader paper-font-headline"
+								 aria-expanded$="[[isExpanded(openedAdditional)]]"
+								 aria-controls="additional"
+								 on-tap="toggle" data-args="#additional">
+							Организации дополнительного образования
+						</div>
+						<iron-collapse id="additional"
+													 tabindex="0"
+													 opened="{{openedAdditional}}">
+							<div class="collapse-content shadow">
+								<firebase-query id="firebaseQuery"
+																path="/orgs/additional/table"
+																app-name="uomgo"
+																data="{{dataAdditional}}"></firebase-query>
+
+								<template is="dom-repeat"
+													items="[[dataAdditional]]"
+													as="val"
+													target-framerate="60">
+
+									<grid-element ga="16" class="content green-gradient">
+										<grid-col>
+											<p class="red"><b>Наименование по Уставу:</b></p>
+											<template is="juicy-html"
+																content$="[[val.name]]"></template>
+										</grid-col>
+										<grid-col>
+											<p class="red"><b>Юридический и фактический адрес, телефон, e-mail:</b></p>
+											<template is="juicy-html"
+																content$="[[val.address]]"></template>
+										</grid-col>
+										<grid-col>
+											<p class="red"><b>ФИО руководителя:</b></p>
+											<template is="juicy-html"
+																content$="[[val.chief]]"></template>
+										</grid-col>
+									</grid-element>
+								</template>
+							</div>
+						</iron-collapse>
+					</div>
+
+					<div class="accordeonBox">
+						<div class="accordeonHeader paper-font-headline"
+								 aria-expanded$="[[isExpanded(openedIncome)]]"
+								 aria-controls="income"
+								 on-tap="toggle" data-args="#income">
+							Сведения о доходах руководителей ОО
+						</div>
+						<iron-collapse id="income"
+													 tabindex="0"
+													 opened="{{openedIncome}}">
+							<div class="collapse-content shadow">
+								<template is="juicy-html"
+													content$="[[docData.income.text]]"></template>
+							</div>
+						</iron-collapse>
+					</div>
+
+					<!-- <iron-accordions>
 						<iron-accordion>
 							<div header class="paper-font-headline">
 								Дошкольные образовательные организации
@@ -213,9 +415,8 @@
 													content$="[[docData.income.text]]"></template>
 							</div>
 						</iron-accordion>
-					<iron-accordions>
+					<iron-accordions> -->
 
-				</div>
 			</div>
 		</paper-card>
 
@@ -228,27 +429,26 @@
 			is: 't-orgs-template',
 			properties: {
 			},
-			ready: function() {
-				var ironAccordions = this.querySelector('iron-accordions');
-				ironAccordions.addEventListener('transitionend', function() {
-					var headerPanelMain = app.$.headerPanelMain;
-					var scrollTop = headerPanelMain.scroller.scrollTop;
-					var top = this._selection.selection[0].getBoundingClientRect().top;
-					if ( this._selection.selection[0].opened ) {
-						if ( top > 0 ) {
-							headerPanelMain.scroll(top + scrollTop, true);
-						} else if ( top < 0 ) {
-							headerPanelMain.scroll( top + scrollTop - 64, true);
-						};
-					};
-				});
-			},
-			_returnData: function(path) {
-				// console.log(path);
-				// this.set(this.$.firebaseQuery.path, this.zeroValue);
-				// this.set(this.$.firebaseQuery.path, path);
-				// console.log(this.path);
-				// return this.$.firebaseQuery.data;
+			// ready: function() {
+			// 	var ironAccordions = this.querySelector('iron-accordions');
+			// 	ironAccordions.addEventListener('transitionend', function() {
+			// 		var headerPanelMain = app.$.headerPanelMain;
+			// 		var scrollTop = headerPanelMain.scroller.scrollTop;
+			// 		var top = this._selection.selection[0].getBoundingClientRect().top;
+			// 		if ( this._selection.selection[0].opened ) {
+			// 			if ( top > 0 ) {
+			// 				headerPanelMain.scroll(top + scrollTop, true);
+			// 			} else if ( top < 0 ) {
+			// 				headerPanelMain.scroll( top + scrollTop - 64, true);
+			// 			};
+			// 		};
+			// 	});
+			// }
+			toggle: function(e) {
+		    document.querySelector( e.target.getAttribute('data-args') ).toggle();
+		  },
+			isExpanded: function(opened) {
+				return String(opened);
 			}
 		});
 	})();
