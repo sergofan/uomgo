@@ -42487,16 +42487,15 @@ v.RUNNING="running";v.PAUSED="paused";v.SUCCESS="success";v.CANCELED="canceled";
 
 		<array-filter items="[[dataDB]]" filtered="{{filtered}}" sort="_computeSort" filter="_filter"></array-filter>
 
-		<div id="grid">
-			<template id="domRepeat" is="dom-repeat" items="[[filtered]]" as="post" target-framerate="60" on-dom-change="_renderRepeat">
+		<iron-scroll-threshold on-lower-threshold="loadMoreData" id="threshold">
+		  <iron-list scroll-target="threshold" items="[[filtered]]" as="post">
+		    <template>
+		      <x-post-item post="[[post]]" user="[[user]]"></x-post-item>
+		    </template>
+		  </iron-list>
+		</iron-scroll-threshold>
 
-				<div class="postItem">
-					<x-post-item post="[[post]]" user="[[user]]"></x-post-item>
-				</div>
-			</template>
-
-		</div>
-
+		
 
 	</template>
 	<script>
@@ -42573,6 +42572,13 @@ v.RUNNING="running";v.PAUSED="paused";v.SUCCESS="success";v.CANCELED="canceled";
 					var xPostItems = Polymer.dom(this.root).querySelectorAll('x-post-item');
 					this.animationConfig['entry'][0].nodes = Array.prototype.slice.call(xPostItems);
 					this.playAnimation('entry');
+				},
+
+				_loadMoreData: function () {
+					// load async stuff. e.g. XHR
+			    asyncStuff(function done() {
+			      ironScrollTheshold.clearTriggers();
+			    });
 				},
 
 			});
