@@ -6,48 +6,18 @@
 			:host {
 				display: block;
 			}
-			iron-list {
-				/*flex: 1 1 auto;*/
-				/*padding-top: 148px;*/
-				/*margin-top: 64px;*/
-				padding-bottom: 16px;
-				--iron-list: {
-				};
-			}
-			.post {
+			#grid {
+				@apply(--layout-wrap);
 				@apply(--layout-horizontal);
-				padding: 20px;
-				border-radius: 8px;
-				background-color: white;
-				border: 1px solid #ddd;
-				max-width: 800px;
-				margin: 16px auto 0 auto;
+				@apply(--layout-center-justified);
 			}
-			.post:focus {
-				outline: 0;
-				border-color: #333;
+			x-post-item {
+				margin: 0 4px 16px;
 			}
-			.avatar {
-				height: 40px;
-				width: 40px;
-				border-radius: 20px;
-				box-sizing: border-box;
-				background-color: #DDD;
-			}
-			.pad {
-				padding: 0 16px;
-				@apply(--layout-flex);
-				@apply(--layout-vertical);
-			}
-			.primary {
-				font-size: 16px;
-				font-weight: bold;
-			}
-			.secondary {
-				font-size: 14px;
-			}
-			.dim {
-				color: gray;
+			.postItem {
+				@apply(--layout-wrap);
+				@apply(--layout-horizontal);
+				@apply(--layout-center-justified);
 			}
 		</style>
 
@@ -68,23 +38,21 @@
 				sort="_computeSort"
 				filter="_filter"></array-filter>
 
-<!--
-		<array-filter
-				items="[[dataDB]]"
-				filtered="{{filtered}}"></array-filter>
- -->
-		<iron-list class="red-gradient" id="list" items="[[filtered]]" as="post" scroll-target="document">
-			<template>
-				<div>
-					<div class="post" tabindex$="[[tabIndex]]">
-						<div class="pad">
-							<div class="primary">[[post.name]] [[index]]</div>
-							<div class="secondary dim">[[post.text]]</div>
-						</div>
-					</div>
+		<div id="grid">
+			<template id="domRepeat"
+								is="dom-repeat"
+								items="[[filtered]]"
+								as="post"
+								target-framerate="60"
+								on-dom-change="_renderRepeat">
+
+				<div class="postItem">
+					<x-post-item post="[[post]]" user="[[user]]"></x-post-item>
 				</div>
 			</template>
-		</iron-list>
+
+		</div>
+
 
 	</template>
 	<script>
@@ -135,7 +103,6 @@
 				},
 
 				ready: function() {
-					// this.$.list.scrollTarget = this.ownerDocument.documentElement;
 				},
 
 				_computeSort: function(a, b) {
@@ -163,23 +130,6 @@
 					this.animationConfig['entry'][0].nodes = Array.prototype.slice.call(xPostItems);
 					this.playAnimation('entry');
 				},
-
-				play: function() {
-					this.playAnimation('entry');
-				},
-
-				attached: function() {
-					// Use the document element
-					// this.$.list.scrollTarget = this.ownerDocument.documentElement;
-				},
-
-				iconForItem: function(item) {
-					return item ? (item.integer < 50 ? 'star-border' : 'star') : '';
-				},
-
-				getClassForItem: function(item, selected) {
-					return selected ? 'item expanded' : 'item';
-				}
 
 			});
 	})();

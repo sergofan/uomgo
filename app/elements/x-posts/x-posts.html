@@ -38,7 +38,15 @@
 				sort="_computeSort"
 				filter="_filter"></array-filter>
 
-		<div id="grid">
+		<iron-scroll-threshold on-lower-threshold="loadMoreData" id="threshold">
+		  <iron-list scroll-target="threshold" items="[[filtered]]" as="post">
+		    <template>
+		      <x-post-item post="[[post]]" user="[[user]]"></x-post-item>
+		    </template>
+		  </iron-list>
+		</iron-scroll-threshold>
+
+		<!-- <div id="grid">
 			<template id="domRepeat"
 								is="dom-repeat"
 								items="[[filtered]]"
@@ -51,8 +59,7 @@
 				</div>
 			</template>
 
-		</div>
-
+		</div> -->
 
 	</template>
 	<script>
@@ -129,6 +136,13 @@
 					var xPostItems = Polymer.dom(this.root).querySelectorAll('x-post-item');
 					this.animationConfig['entry'][0].nodes = Array.prototype.slice.call(xPostItems);
 					this.playAnimation('entry');
+				},
+
+				_loadMoreData: function () {
+					// load async stuff. e.g. XHR
+			    asyncStuff(function done() {
+			      ironScrollTheshold.clearTriggers();
+			    });
 				},
 
 			});

@@ -99,7 +99,7 @@
 			}
 			@media all and (max-width: 601px) {
 				.data-item {
-					width: calc(100vw - 32px);
+					width: calc(100vw - 79px);
 				}
 				.imageFrame {
 					width: calc(100% - 32px);
@@ -121,6 +121,7 @@
 			}
 
 		</style>
+
 
 		<paper-card class="data-item"
 								heading="[[post.name]]"
@@ -160,7 +161,8 @@
 				<template  is="dom-if" if="[[post.text]]">
 					<div class="yellow-gradient" style="margin-top:16px;width:100%;">
 						<div class="post-text">
-							[[post.text]]
+							<template is="juicy-html"
+												content$="[[post.text]]"></template>
 						</div>
 					</div>
 				</template>
