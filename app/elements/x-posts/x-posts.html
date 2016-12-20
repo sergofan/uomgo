@@ -5,22 +5,28 @@
 		<style is="custom-style" include="shared-styles">
 			:host {
 				display: block;
+				word-wrap: break-word;
 			}
 			paper-card {
 				--paper-card: {
+					padding: 0 16px !important;
+		      @apply(--layout-flex);
+		      @apply(--layout-vertical);
 					text-align: center;
+					/*margin: 16px auto 0 auto !important;*/
 				};
 				--paper-card-header-text: {
-					/*max-width: 480px;*/
 					text-align: center;
+					/*max-width: 480px;*/
 				};
 				--paper-card-content: {
+					text-align: center;
 					/*@apply(--layout-wrap);
 					@apply(--layout-vertical);
 					@apply(--layout-center-center);*/
-					text-align: center;
 				};
 				--paper-card-actions: {
+					text-align: center;
 					/*@apply(--layout-wrap);
 					@apply(--layout-horizontal);
 					@apply(--layout-center-justified);
@@ -30,7 +36,6 @@
 					right: 0;
 					padding: 16px;
 					height: 24px;*/
-					text-align: center;
 				};
 			}
 			.loadingIndicator {
@@ -43,14 +48,35 @@
 	      margin-right: 10px;
 	    }
 			iron-list {
-	      /*padding-top: 64px;*/
-	      padding-bottom: 16px;
-	      --iron-list-items-container: {
-	        /*max-width: 800px;
-	        margin: auto;
-	        margin-top: 60px;
-	        margin-bottom: 10px;*/
-	      };
+				/*@apply(--layout-flex-auto);*/
+	      /*--iron-list-items-container: {
+	      };*/
+				/*padding-top: 16px;*/
+	      /*margin-top: 16px;*/
+	      /*padding-bottom: 16px;*/
+			}
+			.item {
+	      @apply(--layout-horizontal);
+	      padding: 16px;
+	      border-radius: 8px;
+	      background-color: white;
+	      border: 1px solid #ddd;
+	      /*margin: 16px auto 0 auto !important;*/
+	    }
+			.pad {
+	      padding: 0 16px;
+	      @apply(--layout-flex);
+	      @apply(--layout-vertical);
+	    }
+	    .primary {
+	      font-size: 16px;
+	      font-weight: bold;
+	    }
+	    .secondary {
+	      font-size: 14px;
+	    }
+	    .dim {
+	      color: gray;
 	    }
 		</style>
 
@@ -72,13 +98,21 @@
 				filter="_filter"></array-filter>
 
 		<!-- <iron-scroll-threshold on-lower-threshold="loadMoreData" id="threshold"> -->
-			<iron-list class="red-gradient" id="list" items="[[filtered]]" as="post" scroll-target="document">
+			<iron-list id="list" items="[[filtered]]" as="post" scroll-target="this">
 				<template>
-					<div>
-						<div class="post" tabindex$="[[tabIndex]]">
-							<div class="pad">
-								<div class="primary">[[post.name]] [[index]]</div>
-								<div class="secondary dim">[[post.text]]</div>
+					<!-- <paper-card heading="[[post.name]]">
+					  <div class="card-content">
+							<template is="juicy-html"
+												content$="[[post.text]]"></template>
+						</div>
+					</paper-card> -->
+					<div class="item" tabindex$="[[tabIndex]]">
+						<div class="pad">
+							<div class="primary">[[index]]</div>
+							<div class="secondary">[[post.name]]</div>
+							<div class="secondary dim">
+								<template is="juicy-html"
+													content$="[[post.text]]"></template>
 							</div>
 						</div>
 					</div>

@@ -42468,33 +42468,71 @@ v.RUNNING="running";v.PAUSED="paused";v.SUCCESS="success";v.CANCELED="canceled";
 			:host {
 				display: block;
 			}
-			#grid {
-				@apply(--layout-wrap);
-				@apply(--layout-horizontal);
-				@apply(--layout-center-justified);
+			paper-card {
+				--paper-card: {
+					text-align: center;
+				};
+				--paper-card-header-text: {
+					/*max-width: 480px;*/
+					text-align: center;
+				};
+				--paper-card-content: {
+					/*@apply(--layout-wrap);
+					@apply(--layout-vertical);
+					@apply(--layout-center-center);*/
+					text-align: center;
+				};
+				--paper-card-actions: {
+					/*@apply(--layout-wrap);
+					@apply(--layout-horizontal);
+					@apply(--layout-center-justified);
+					position: absolute;
+					bottom: 0;
+					left: 0;
+					right: 0;
+					padding: 16px;
+					height: 24px;*/
+					text-align: center;
+				};
 			}
-			x-post-item {
-				margin: 0 4px 16px;
-			}
-			.postItem {
-				@apply(--layout-wrap);
-				@apply(--layout-horizontal);
-				@apply(--layout-center-justified);
-			}
+			.loadingIndicator {
+	      text-align: center;
+	      height: 40px;
+	    }
+			.loadingIndicator paper-spinner {
+	      width: 20px;
+	      height: 20px;
+	      margin-right: 10px;
+	    }
+			iron-list {
+	      /*padding-top: 64px;*/
+	      padding-bottom: 16px;
+	      --iron-list-items-container: {
+	        /*max-width: 800px;
+	        margin: auto;
+	        margin-top: 60px;
+	        margin-bottom: 10px;*/
+	      };
+	    }
 		</style>
 
 		<firebase-query id="firebaseQueryPosts" path="/posts" app-name="uomgo" order-by-child="date" start-at="{{startAt}}" end-at="{{endAt}}" limit-to-first="[[limitToFirst]]" limit-to-last="[[limitToLast]]" data="{{dataDB}}"></firebase-query>
 
 		<array-filter items="[[dataDB]]" filtered="{{filtered}}" sort="_computeSort" filter="_filter"></array-filter>
 
-		<iron-scroll-threshold on-lower-threshold="loadMoreData" id="threshold">
-		  <iron-list scroll-target="threshold" items="[[filtered]]" as="post">
-		    <template>
-		      <x-post-item post="[[post]]" user="[[user]]"></x-post-item>
-		    </template>
-		  </iron-list>
-		</iron-scroll-threshold>
-
+		
+			<iron-list class="red-gradient" id="list" items="[[filtered]]" as="post" scroll-target="document">
+				<template>
+					<div>
+						<div class="post" tabindex$="[[tabIndex]]">
+							<div class="pad">
+								<div class="primary">[[post.name]] [[index]]</div>
+								<div class="secondary dim">[[post.text]]</div>
+							</div>
+						</div>
+					</div>
+				</template>
+			</iron-list>
 		
 
 	</template>
@@ -42580,6 +42618,10 @@ v.RUNNING="running";v.PAUSED="paused";v.SUCCESS="success";v.CANCELED="canceled";
 			      ironScrollTheshold.clearTriggers();
 			    });
 				},
+
+				asyncStuff: function () {
+					console.log("trew");
+				}
 
 			});
 	})();
