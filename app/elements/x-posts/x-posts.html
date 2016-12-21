@@ -42,19 +42,19 @@
 	    }
 
 			iron-list {
-		    background-color: var(--paper-grey-200, #eee);
+				background-color: var(--paper-grey-200, #eee);
 		    padding-bottom: 16px;
 		  }
 
 			iron-image {
-				max-width: 100%;
-				height: auto;
+				/*max-width: 100%;*/
+				/*height: auto;*/
 				/*--iron-image-width: 100%;*/
 				/*--iron-image-height: auto;*/
 			}
 			iron-image::shadow img {
 					max-width: 100%;
-					height: auto;
+					/*height: auto;*/
 			}
 		</style>
 
@@ -75,34 +75,40 @@
 				sort="_computeSort"
 				filter="_filter"></array-filter>
 
-		<!-- <iron-scroll-threshold on-lower-threshold="loadMoreData" id="threshold"> -->
+		<!-- <iron-scroll-threshold id="threshold"
+													 on-lower-threshold="loadMoreData"
+													 style="height: 100vh;"> -->
 			<iron-list id="list"
 								 items="[[filtered]]"
 								 as="post"
-								 scroll-target="this"
+								 scroll-target="html"
 								 selection-enabled
 								 multi-selection>
-				<template><div>
-
-					<paper-card tabindex$="[[tabIndex]]" elevation="4">
-						<div class="heading paper-font-headline">
-							[[post.name]]
-						</div>
-					  <div class="card-content secondary dim">
-							<template  is="dom-if" if="[[post.image]]">
-								<iron-image class="postImage"
-														src="[[post.image]]"
-														contain
-														preload
-														align="center"></iron-image>
-							</template>
-							<template is="juicy-html"
-												content$="[[post.text]]"></template>
-						</div>
-					</paper-card>
-
-				</div></template>
+				<template>
+					<div>
+						<paper-card tabindex$="[[tabIndex]]" elevation="4">
+							<div class="heading paper-font-headline">
+								[[post.name]]
+							</div>
+						  <div class="card-content layout vertical center-center">
+								<div>
+									<template  is="dom-if" if="[[post.image]]">
+										<iron-image class="postImage"
+																src="[[post.image]]"
+																contain	preload
+																align="center"></iron-image>
+									</template>
+								</div>
+								<div>
+									<template is="juicy-html"
+														content$="[[post.text]]"></template>
+								</div>
+							</div>
+						</paper-card>
+					</div>
+				</template>
 			</iron-list>
+
 		<!-- </iron-scroll-threshold> -->
 
 	</template>
@@ -188,10 +194,6 @@
 			      ironScrollTheshold.clearTriggers();
 			    });
 				},
-
-				asyncStuff: function () {
-					console.log("trew");
-				}
 
 			});
 	})();

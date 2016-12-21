@@ -40664,7 +40664,7 @@ v.RUNNING="running";v.PAUSED="paused";v.SUCCESS="success";v.CANCELED="canceled";
 
 		<firebase-document id="firebaseDocument" app-name="uomgo"></firebase-document>
 
-		<x-messages></x-messages>
+		
 		<x-posts limit-to-first="[[limitToFirst]]" limit-to-last="[[limitToLast]]" start-at="[[startAt]]" end-at="[[endAt]]" user="[[user]]"></x-posts>
 
 		<template is="dom-if" if="[[user]]">
@@ -42469,77 +42469,55 @@ v.RUNNING="running";v.PAUSED="paused";v.SUCCESS="success";v.CANCELED="canceled";
 				display: block;
 				word-wrap: break-word;
 			}
+
 			paper-card {
 				--paper-card: {
-					padding: 0 16px !important;
-		      @apply(--layout-flex);
-		      @apply(--layout-vertical);
 					text-align: center;
-					/*margin: 16px auto 0 auto !important;*/
+					@apply(--layout-vertical);
+			    margin: 16px 16px 0 16px;
+			    padding: 20px;
+			    border-radius: 8px;
+			    background-color: white;
+			    border: 1px solid #ddd;
+
 				};
 				--paper-card-header-text: {
 					text-align: center;
-					/*max-width: 480px;*/
 				};
 				--paper-card-content: {
 					text-align: center;
-					/*@apply(--layout-wrap);
-					@apply(--layout-vertical);
-					@apply(--layout-center-center);*/
 				};
 				--paper-card-actions: {
 					text-align: center;
-					/*@apply(--layout-wrap);
-					@apply(--layout-horizontal);
-					@apply(--layout-center-justified);
-					position: absolute;
-					bottom: 0;
-					left: 0;
-					right: 0;
-					padding: 16px;
-					height: 24px;*/
 				};
 			}
+
 			.loadingIndicator {
 	      text-align: center;
 	      height: 40px;
 	    }
+
 			.loadingIndicator paper-spinner {
 	      width: 20px;
 	      height: 20px;
 	      margin-right: 10px;
 	    }
+
 			iron-list {
-				/*@apply(--layout-flex-auto);*/
-	      /*--iron-list-items-container: {
-	      };*/
-				/*padding-top: 16px;*/
-	      /*margin-top: 16px;*/
-	      /*padding-bottom: 16px;*/
+		    background-color: var(--paper-grey-200, #eee);
+		    padding-bottom: 16px;
+		  }
+
+			iron-image {
+				max-width: 100%;
+				height: auto;
+				/*--iron-image-width: 100%;*/
+				/*--iron-image-height: auto;*/
 			}
-			.item {
-	      @apply(--layout-horizontal);
-	      padding: 16px;
-	      border-radius: 8px;
-	      background-color: white;
-	      border: 1px solid #ddd;
-	      /*margin: 16px auto 0 auto !important;*/
-	    }
-			.pad {
-	      padding: 0 16px;
-	      @apply(--layout-flex);
-	      @apply(--layout-vertical);
-	    }
-	    .primary {
-	      font-size: 16px;
-	      font-weight: bold;
-	    }
-	    .secondary {
-	      font-size: 14px;
-	    }
-	    .dim {
-	      color: gray;
-	    }
+			iron-image::shadow img {
+					max-width: 100%;
+					height: auto;
+			}
 		</style>
 
 		<firebase-query id="firebaseQueryPosts" path="/posts" app-name="uomgo" order-by-child="date" start-at="{{startAt}}" end-at="{{endAt}}" limit-to-first="[[limitToFirst]]" limit-to-last="[[limitToLast]]" data="{{dataDB}}"></firebase-query>
@@ -42547,19 +42525,22 @@ v.RUNNING="running";v.PAUSED="paused";v.SUCCESS="success";v.CANCELED="canceled";
 		<array-filter items="[[dataDB]]" filtered="{{filtered}}" sort="_computeSort" filter="_filter"></array-filter>
 
 		
-			<iron-list id="list" items="[[filtered]]" as="post" scroll-target="this">
-				<template>
-					
-					<div class="item" tabindex$="[[tabIndex]]">
-						<div class="pad">
-							<div class="primary">[[index]]</div>
-							<div class="secondary">[[post.name]]</div>
-							<div class="secondary dim">
-								<template is="juicy-html" content$="[[post.text]]"></template>
-							</div>
+			<iron-list id="list" items="[[filtered]]" as="post" scroll-target="this" selection-enabled="" multi-selection="">
+				<template><div>
+
+					<paper-card tabindex$="[[tabIndex]]" elevation="4">
+						<div class="heading paper-font-headline">
+							[[post.name]]
 						</div>
-					</div>
-				</template>
+					  <div class="card-content secondary dim">
+							<template is="dom-if" if="[[post.image]]">
+								<iron-image class="postImage" src="[[post.image]]" contain="" preload="" align="center"></iron-image>
+							</template>
+							<template is="juicy-html" content$="[[post.text]]"></template>
+						</div>
+					</paper-card>
+
+				</div></template>
 			</iron-list>
 		
 
