@@ -84,7 +84,7 @@
 								 scroll-target="html"
 								 selection-enabled
 								 multi-selection>
-				<template>
+				<template id="templateList">
 					<div>
 						<paper-card tabindex$="[[tabIndex]]" elevation="4">
 							<div class="heading paper-font-headline">
@@ -160,6 +160,11 @@
 				},
 
 				ready: function() {
+					var templateList = this.querySelector('#templateList');
+					console.log(templateList);
+					templateList.addEventListener('dom-change', function(e) {
+						console.log(e);
+					});
 				},
 
 				_computeSort: function(a, b) {
