@@ -198,13 +198,16 @@
 					// var item = this.$.list.modelForElement(e.currentTarget.parentElement).post;
 	        // this.$.list.updateSizeForItem(item);
 					// console.log( item );
+					// this.$.list.fire('iron-resize');
 		    },
 
 				_onLoadedChanged: function(e) {
 					if (e.currentTarget.offsetParent) {
 						var item = this.$.list.modelForElement(e.currentTarget.offsetParent).post;
-						this.$.list.updateSizeForItem(item);
-					}
+						// this.$.list.updateSizeForItem(item);
+						// this.$.list.fire('iron-resize');
+						this.$.list.notifyResize();
+					};
 				}
 
 			});
