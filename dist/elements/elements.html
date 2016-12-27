@@ -42524,18 +42524,17 @@ v.RUNNING="running";v.PAUSED="paused";v.SUCCESS="success";v.CANCELED="canceled";
 
 		<array-filter items="[[dataDB]]" filtered="{{filtered}}" sort="_computeSort" filter="_filter"></array-filter>
 
-		
 			<iron-list id="list" items="[[filtered]]" as="post" scroll-target="html" selection-enabled="" multi-selection="">
-				<template>
+				<template id="templateList">
 					<div>
 						<paper-card tabindex$="[[tabIndex]]" elevation="4">
 							<div class="heading paper-font-headline">
 								[[post.name]]
 							</div>
 						  <div class="card-content layout vertical center-center">
-								<div>
+								<div id="imageBox">
 									<template is="dom-if" if="[[post.image]]">
-										<iron-image class="postImage" src="[[post.image]]" contain="" preload="" align="center"></iron-image>
+										<iron-image class="postImage" src="[[post.image]]" contain="" preload="" on-loaded-changed="_onDomIfChange" align="center"></iron-image>
 									</template>
 								</div>
 								<div>
@@ -42546,8 +42545,6 @@ v.RUNNING="running";v.PAUSED="paused";v.SUCCESS="success";v.CANCELED="canceled";
 					</div>
 				</template>
 			</iron-list>
-
-		
 
 	</template>
 	<script>
@@ -42632,6 +42629,12 @@ v.RUNNING="running";v.PAUSED="paused";v.SUCCESS="success";v.CANCELED="canceled";
 			      ironScrollTheshold.clearTriggers();
 			    });
 				},
+
+				_onDomIfChange: function(e) {
+					var item = this.$.list.modelForElement(e.currentTarget.parentElement).post;
+	        this.$.list.updateSizeForItem(item);
+					console.log( item );
+		    }
 
 			});
 	})();

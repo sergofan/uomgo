@@ -91,11 +91,12 @@
 						  <div class="card-content layout vertical center-center">
 								<div id="imageBox">
 									<template  is="dom-if"
-														 if="[[post.image]]">
+														 if="[[post.image]]"
+														 on-dom-change="_onDomIfChange">
 										<iron-image class="postImage"
 																src="[[post.image]]"
 																contain	preload
-																on-loaded-changed="_onDomIfChange"
+																on-loaded-changed="_onLoadedChanged"
 																align="center"></iron-image>
 									</template>
 								</div>
@@ -194,10 +195,17 @@
 				},
 
 				_onDomIfChange: function(e) {
-					var item = this.$.list.modelForElement(e.currentTarget.parentElement).post;
-	        this.$.list.updateSizeForItem(item);
-					console.log( item );
-		    }
+					// var item = this.$.list.modelForElement(e.currentTarget.parentElement).post;
+	        // this.$.list.updateSizeForItem(item);
+					// console.log( item );
+		    },
+
+				_onLoadedChanged: function(e) {
+					if (e.currentTarget.offsetParent) {
+						var item = this.$.list.modelForElement(e.currentTarget.offsetParent).post;
+						this.$.list.updateSizeForItem(item);
+					}
+				}
 
 			});
 	})();
