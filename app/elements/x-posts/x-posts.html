@@ -11,17 +11,17 @@
 			paper-card {
 				transition: all 250ms ease-out;
 				--paper-card: {
-					text-align: center;
 					@apply(--layout-vertical);
-			    margin: 16px 16px 0 16px;
-			    padding: 20px;
-			    border-radius: 8px;
-			    background-color: white;
-			    border: 1px solid #ddd;
+					background-color: white;
+					border: 1px solid #ddd;
+					border-radius: 8px;
+					margin: 16px 16px 0 16px;
+					padding: 20px;
+					/*text-align: center;*/
 
 				};
 				--paper-card-header-text: {
-					text-align: center;
+					/*text-align: center;*/
 				};
 				--paper-card-content: {
 					text-align: center;
@@ -37,14 +37,14 @@
 			}
 
 			.loadingIndicator {
+				height: 40px;
 	      text-align: center;
-	      height: 40px;
 	    }
 
 			.loadingIndicator paper-spinner {
+				height: 20px;
+				margin-right: 10px;
 	      width: 20px;
-	      height: 20px;
-	      margin-right: 10px;
 	    }
 
 			iron-list {
@@ -53,24 +53,44 @@
 		  }
 
 			iron-image {
-				/*max-width: 100%;*/
-				/*height: auto;*/
 				/*--iron-image-width: 100%;*/
-				/*--iron-image-height: auto;*/
-			}
-			iron-image::shadow img {
-					max-width: 100%;
-					/*height: auto;*/
+				/*--iron-image-height: 100%;*/
+				/*width: auto;*/
+				/*height: 360px;*/
+				/*height: 360px;*/
 			}
 
-			/*.video-id {
-				--iron-image-placeholder: {
-					display: block !important;
-					background: #939ed5;
-					background: url(/images/youtube.png) 50% 50% no-repeat transparent;
-					background-size: cover;
-				};*/
+			/*iron-image::content img {
+				height: 100% !important;
+				max-height: 360px;
+				max-width: 480px;
+				width: 100% !important;
+			}*/
+
+			img, iron-image {
+				width: 100%;
+	      --iron-image-width: 100%;
+				max-height: 360x;
+				max-width: 480px;
+	    }
+
+			img {
 			}
+
+			.juicy-box {
+				align-content: center;
+				max-height: 360px;
+				min-width: 207px;
+				overflow: auto;
+				padding: 0 16px;
+			}
+
+			.imageBox {
+				/*width: auto;*/
+				/*max-height: 360px;*/
+				/*max-width: 480px;*/
+			}
+
 		</style>
 
 		<firebase-query id="firebaseQueryPosts"
@@ -104,31 +124,32 @@
 							<div class="heading paper-font-headline">
 								[[post.name]]
 							</div>
-						  <div class="card-content layout vertical center-center">
-								<div id="imageBox">
+						  <div class="card-content layout horizontal center-center wrap">
+								<div class="imageBox">
 									<template  is="dom-if"
 														 if="[[post.image]]">
 										<iron-image class="postImage"
 																src="[[post.image]]"
 																contain	preload
+																position="center"
 																on-loaded-changed="_onLoadedChanged"
 																align="center"></iron-image>
 									</template>
 									<template  is="dom-if"
 														 if="[[post.video-id]]">
-												<iron-image class="video-id"
-																		src="https://i3.ytimg.com/vi/[[post.video-id]]/hqdefault.jpg"
-																		contain	preload
-																		on-loaded-changed="_onLoadedChanged"
-																		align="center">
-												</iron-image>
+										<iron-image class="video-id"
+																src="https://i3.ytimg.com/vi/[[post.video-id]]/hqdefault.jpg"
+																contain	preload
+																position="center"
+																on-loaded-changed="_onLoadedChanged"
+																align="center"></iron-image>
 									</template>
 								</div>
-								<div>
+								<div class="juicy-box flex shadow">
 									<template is="juicy-html"
 														content$="[[post.text]]"></template>
 								</div>
-							</div>
+						</div>
 						</paper-card>
 					</div>
 				</template>
