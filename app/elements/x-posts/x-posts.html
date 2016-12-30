@@ -17,11 +17,11 @@
 					border-radius: 8px;
 					margin: 16px 16px 0 16px;
 					padding: 20px;
-					/*text-align: center;*/
+					text-align: center;
 
 				};
 				--paper-card-header-text: {
-					/*text-align: center;*/
+					text-align: center;
 				};
 				--paper-card-content: {
 					text-align: center;
@@ -74,15 +74,12 @@
 				max-width: 480px;
 	    }
 
-			img {
-			}
-
 			.juicy-box {
 				align-content: center;
-				max-height: 360px;
+				/*max-height: calc(360px - 32px);*/
+				height: calc(360px - 32px);
 				min-width: 207px;
 				overflow: auto;
-				padding: 0 16px;
 			}
 
 			.imageBox {
@@ -145,10 +142,15 @@
 																align="center"></iron-image>
 									</template>
 								</div>
-								<div class="juicy-box flex shadow">
-									<template is="juicy-html"
-														content$="[[post.text]]"></template>
-								</div>
+								<template  is="dom-if"
+													 if="[[post.text]]">
+									<div class="juicy-box content flex layout vertical center-center shadow">
+										<div class="yellow-gradient" style="height: auto;">
+											<template is="juicy-html"
+											content$="[[post.text]]"></template>
+										</div>
+									</div>
+								</template>
 						</div>
 						</paper-card>
 					</div>
