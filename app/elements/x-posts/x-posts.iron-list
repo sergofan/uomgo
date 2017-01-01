@@ -1,0 +1,325 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<dom-module id="x-posts">
+	<template>
+		<style is="custom-style" include="shared-styles">
+			:host {
+				display: block;
+				word-wrap: break-word;
+			}
+
+			paper-card {
+				transition: all 250ms ease-out;
+				--paper-card: {
+					@apply(--layout-vertical);
+					background-color: white;
+					border: 1px solid #ddd;
+					border-radius: 8px;
+					margin: 16px 16px 0 16px;
+					padding: 20px;
+					text-align: center;
+
+				};
+				--paper-card-header-text: {
+					text-align: center;
+				};
+				--paper-card-content: {
+					text-align: center;
+				};
+				--paper-card-actions: {
+					text-align: center;
+				};
+			}
+
+			paper-card:hover {
+				cursor: pointer;
+				transform: scale(1.02);
+			}
+
+			.loadingIndicator {
+				height: 40px;
+	      text-align: center;
+	    }
+
+			.loadingIndicator paper-spinner {
+				height: 20px;
+				margin-right: 10px;
+	      width: 20px;
+	    }
+
+			iron-list {
+				background-color: var(--paper-grey-200, #eee);
+		    padding-bottom: 16px;
+		  }
+
+			iron-image {
+				/*--iron-image-width: 100%;*/
+				/*--iron-image-height: 100%;*/
+				/*width: auto;*/
+				/*height: 360px;*/
+				/*height: 360px;*/
+			}
+
+			/*iron-image::content img {
+				height: 100% !important;
+				max-height: 360px;
+				max-width: 480px;
+				width: 100% !important;
+			}*/
+
+			img, iron-image {
+	      --iron-image-height: 100%;
+				--iron-image-width: 100%;
+				/*max-height: 360px;*/
+				/*max-width: 480px;*/
+	    }
+
+			.juicy-box {
+				align-content: center;
+				/*max-height: calc(360px - 32px);*/
+				height: calc(360px - 32px);
+				min-width: 207px;
+				overflow: auto;
+			}
+
+			.imageBox {
+				max-height: 360px;
+				max-width: 480px;
+			}
+
+		</style>
+
+		<firebase-query id="firebaseQueryPosts"
+										path="/posts"
+										app-name="uomgo"
+										order-by-child="date"
+										start-at="{{startAt}}"
+										end-at="{{endAt}}"
+										limit-to-first="[[limitToFirst]]"
+										limit-to-last="[[limitToLast]]"
+										order-by-child="date"
+										data="{{dataDB}}"></firebase-query>
+
+		<array-filter
+				items="[[dataDB]]"
+				filtered="{{filtered}}"
+				sort="_computeSort"
+				filter="_filter"></array-filter>
+
+			<iron-list id="list"
+								 items="[[filtered]]"
+								 as="post"
+								 scroll-target="html"
+								 selection-enabled
+								 multi-selection>
+				<template id="templateList">
+					<div>
+						<paper-card tabindex$="[[tabIndex]]"
+												elevation="4"
+												on-tap="_showDialog">
+							<div class="heading paper-font-headline">
+								[[post.name]]
+							</div>
+						  <div class="card-content layout horizontal center-center wrap">
+								<div class="imageBox">
+									<template  is="dom-if"
+														 if="[[post.image]]" on-dom-change=_onDomIfChange>
+										<iron-image class="postImage"
+																src="[[post.image]]"
+																contain	preload
+																position="center"
+																on-loaded-changed="_onLoadedChanged"
+																align="center"></iron-image>
+									</template>
+									<template  is="dom-if"
+														 if="[[post.video-id]]" on-dom-change=_onDomIfChange>
+										<iron-image class="video-id"
+																src="https://i3.ytimg.com/vi/[[post.video-id]]/hqdefault.jpg"
+																contain	preload
+																position="center"
+																on-loaded-changed="_onLoadedChanged"
+																align="center"></iron-image>
+									</template>
+								</div>
+								<template  is="dom-if"
+													 if="[[post.text]]">
+									<div class="juicy-box content flex layout vertical center-center shadow">
+										<div class="yellow-gradient" style="height: auto;">
+											<template is="juicy-html"
+											content$="[[post.text]]"></template>
+										</div>
+									</div>
+								</template>
+						</div>
+						</paper-card>
+					</div>
+				</template>
+			</iron-list>
+
+			<paper-dialog id="animatedDialog"
+										entry-animation="scale-up-animation"
+										exit-animation="fade-out-animation"
+										with-backdrop>
+			  <h2>Заголовок поста</h2>
+				<paper-dialog-scrollable>
+          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute
+            irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute
+            irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute
+            irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute
+            irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute
+            irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute
+            irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute
+            irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute
+            irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+        </paper-dialog-scrollable>
+					<div class="buttons">
+	          <paper-button dialog-dismiss>Отмена</paper-button>
+	          <paper-button dialog-confirm autofocus>ОК</paper-button>
+	        </div>
+			</paper-dialog>
+
+	</template>
+	<script>
+	(function() {
+		'use strict';
+
+			Polymer({
+				is: 'x-posts',
+				behaviors: [
+					Polymer.NeonAnimationRunnerBehavior
+				],
+				properties: {
+					animationConfig: {
+						value: function() {
+							return {
+								'entry': [{
+									name: 'cascaded-animation',
+									animation: 'scale-up-animation',
+									node: this,
+									nodeDelay: 50,
+									timing: {
+										duration: 150,
+										delay: 0
+									}
+								}]
+							};
+						}
+					},
+					youtubeStyle: {
+						type: String
+					},
+					user: {
+						type: Object
+					},
+					limitToLast: {
+						type: Number,
+						notify: true
+					},
+					limitToFirst: {
+						type: Number,
+						notify: true,
+					},
+					startAt: {
+						type: String,
+						notify: true
+					},
+					endAt: {
+						type: String,
+						notify: true,
+					}
+				},
+
+				ready: function() {
+					this.youtubeStyle = "display: inherit !important;";
+					this.youtubeStyle += " background: url(";
+					this.youtubeStyle += app.baseUrl;
+					this.youtubeStyle += "images/youtube.png)";
+					this.youtubeStyle += " 50% 50% / cover no-repeat transparent;";
+					this.youtubeStyle += " background-size: cover;";
+				},
+
+				_computeSort: function(a, b) {
+					if (a.date == b.date) {
+						return 0;
+					}
+					return a.date > b.date ? -1 : 1;
+				},
+
+				_filter: function(item) {
+
+					var todayDate = new Date();
+					var todayMM = todayDate.getMonth()+1; //January is 0!
+					var todayYYYY = todayDate.getFullYear();
+					var itemDate = new Date(item.date);
+					var itemMM = itemDate.getMonth()+1;
+					var itemYYYY = itemDate.getFullYear();
+
+					if ( (todayYYYY - itemYYYY < 2) && (itemMM > 8)  ) {
+						return true;
+					};
+				},
+
+				_renderRepeat: function () {
+					var xPostItems = Polymer.dom(this.root).querySelectorAll('x-post-item');
+					this.animationConfig['entry'][0].nodes = Array.prototype.slice.call(xPostItems);
+					this.playAnimation('entry');
+				},
+
+				_loadMoreData: function () {
+					// load async stuff. e.g. XHR
+			    asyncStuff(function done() {
+			      ironScrollTheshold.clearTriggers();
+			    });
+				},
+
+				_onDomIfChange: function(e) {
+					// var item = this.$.list.modelForElement(e.currentTarget.parentElement).post;
+	        // this.$.list.updateSizeForItem(item);
+					// this.$.list.fire('iron-resize');
+					// console.log(e.currentTarget.parentElement.querySelector("iron-image"));
+					// this._imageResize(e.currentTarget.parentElement.querySelector("iron-image"),360,480);
+		    },
+
+				_onLoadedChanged: function(e) {
+					if (e.currentTarget.offsetParent) {
+						if ( e.currentTarget.classList.contains("video-id") ) {
+							e.currentTarget.$$("#placeholder").style.cssText = this.youtubeStyle;
+						}
+						this._imageResize(e.currentTarget,360,480);
+						this.$.list.notifyResize();
+					};
+				},
+
+				_showDialog: function() {
+					this.$.animatedDialog.open();
+				},
+
+				_imageResize: function(img, maxh, maxw) {
+				  var ratio = maxh/maxw;
+				  if (img.$$('img').height/img.$$('img').width > ratio){
+				     // height is the problem
+				    if (img.$$('img').height > maxh){
+				      img.width = Math.round(img.$$('img').width*(maxh/img.$$('img').height));
+				      img.height = maxh;
+				    }
+				  } else {
+				    // width is the problem
+				    if (img.$$('img').width > maxh){
+				      img.height = Math.round(img.$$('img').height*(maxw/img.$$('img').width));
+				      img.width = maxw;
+				    }
+				  }
+					console.log(img.width,' -> ',img.height);
+				}
+
+			});
+	})();
+	</script>
+</dom-module>

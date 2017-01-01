@@ -5,89 +5,20 @@
 		<style is="custom-style" include="shared-styles">
 			:host {
 				display: block;
-				word-wrap: break-word;
 			}
-
-			paper-card {
-				transition: all 250ms ease-out;
-				--paper-card: {
-					@apply(--layout-vertical);
-					background-color: white;
-					border: 1px solid #ddd;
-					border-radius: 8px;
-					margin: 16px 16px 0 16px;
-					padding: 20px;
-					text-align: center;
-
-				};
-				--paper-card-header-text: {
-					text-align: center;
-				};
-				--paper-card-content: {
-					text-align: center;
-				};
-				--paper-card-actions: {
-					text-align: center;
-				};
+			#grid {
+				@apply(--layout-wrap);
+				@apply(--layout-horizontal);
+				@apply(--layout-center-justified);
 			}
-
-			paper-card:hover {
-				cursor: pointer;
-				transform: scale(1.02);
+			x-post-item {
+				margin: 0 4px 16px;
 			}
-
-			.loadingIndicator {
-				height: 40px;
-	      text-align: center;
-	    }
-
-			.loadingIndicator paper-spinner {
-				height: 20px;
-				margin-right: 10px;
-	      width: 20px;
-	    }
-
-			iron-list {
-				background-color: var(--paper-grey-200, #eee);
-		    padding-bottom: 16px;
-		  }
-
-			iron-image {
-				/*--iron-image-width: 100%;*/
-				/*--iron-image-height: 100%;*/
-				/*width: auto;*/
-				/*height: 360px;*/
-				/*height: 360px;*/
+			.postItem {
+				@apply(--layout-wrap);
+				@apply(--layout-horizontal);
+				@apply(--layout-center-justified);
 			}
-
-			/*iron-image::content img {
-				height: 100% !important;
-				max-height: 360px;
-				max-width: 480px;
-				width: 100% !important;
-			}*/
-
-			img, iron-image {
-				width: 100%;
-	      --iron-image-width: 100%;
-				max-height: 360x;
-				max-width: 480px;
-	    }
-
-			.juicy-box {
-				align-content: center;
-				/*max-height: calc(360px - 32px);*/
-				height: calc(360px - 32px);
-				min-width: 207px;
-				overflow: auto;
-			}
-
-			.imageBox {
-				/*width: auto;*/
-				/*max-height: 360px;*/
-				/*max-width: 480px;*/
-			}
-
 		</style>
 
 		<firebase-query id="firebaseQueryPosts"
@@ -107,84 +38,21 @@
 				sort="_computeSort"
 				filter="_filter"></array-filter>
 
-			<iron-list id="list"
-								 items="[[filtered]]"
-								 as="post"
-								 scroll-target="html"
-								 selection-enabled
-								 multi-selection>
-				<template id="templateList">
-					<div>
-						<paper-card tabindex$="[[tabIndex]]"
-												elevation="4"
-												on-tap="_showDialog">
-							<div class="heading paper-font-headline">
-								[[post.name]]
-							</div>
-						  <div class="card-content layout horizontal center-center wrap">
-								<div class="imageBox">
-									<template  is="dom-if"
-														 if="[[post.image]]">
-										<iron-image class="postImage"
-																src="[[post.image]]"
-																contain	preload
-																position="center"
-																on-loaded-changed="_onLoadedChanged"
-																align="center"></iron-image>
-									</template>
-									<template  is="dom-if"
-														 if="[[post.video-id]]">
-										<iron-image class="video-id"
-																src="https://i3.ytimg.com/vi/[[post.video-id]]/hqdefault.jpg"
-																contain	preload
-																position="center"
-																on-loaded-changed="_onLoadedChanged"
-																align="center"></iron-image>
-									</template>
-								</div>
-								<template  is="dom-if"
-													 if="[[post.text]]">
-									<div class="juicy-box content flex layout vertical center-center shadow">
-										<div class="yellow-gradient" style="height: auto;">
-											<template is="juicy-html"
-											content$="[[post.text]]"></template>
-										</div>
-									</div>
-								</template>
-						</div>
-						</paper-card>
-					</div>
-				</template>
-			</iron-list>
+		<div id="grid">
+			<template id="domRepeat"
+								is="dom-repeat"
+								items="[[filtered]]"
+								as="post"
+								target-framerate="60"
+								on-dom-change="_renderRepeat">
 
-			<paper-dialog id="animatedDialog"
-										entry-animation="scale-up-animation"
-										exit-animation="fade-out-animation"
-										with-backdrop>
-			  <h2>Заголовок поста</h2>
-				<paper-dialog-scrollable>
-          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute
-            irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute
-            irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute
-            irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute
-            irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute
-            irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute
-            irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute
-            irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute
-            irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-        </paper-dialog-scrollable>
-					<div class="buttons">
-	          <paper-button dialog-dismiss>Отмена</paper-button>
-	          <paper-button dialog-confirm autofocus>ОК</paper-button>
-	        </div>
-			</paper-dialog>
+				<div class="postItem">
+					<x-post-item post="[[post]]" user="[[user]]"></x-post-item>
+				</div>
+			</template>
+
+		</div>
+
 
 	</template>
 	<script>
@@ -213,9 +81,6 @@
 							};
 						}
 					},
-					youtubeStyle: {
-						type: String
-					},
 					user: {
 						type: Object
 					},
@@ -238,12 +103,6 @@
 				},
 
 				ready: function() {
-					this.youtubeStyle = "display: inherit !important;";
-					this.youtubeStyle += " background: url(";
-					this.youtubeStyle += app.baseUrl;
-					this.youtubeStyle += "images/youtube.png)";
-					this.youtubeStyle += " 50% 50% / cover no-repeat transparent;";
-					this.youtubeStyle += " background-size: cover;";
 				},
 
 				_computeSort: function(a, b) {
@@ -261,7 +120,7 @@
 					var itemMM = itemDate.getMonth()+1;
 					var itemYYYY = itemDate.getFullYear();
 
-					if ( itemYYYY === todayYYYY && itemMM > 8  ) {
+					if ( (todayYYYY - itemYYYY < 2) && (itemMM > 8)  ) {
 						return true;
 					};
 				},
@@ -271,32 +130,6 @@
 					this.animationConfig['entry'][0].nodes = Array.prototype.slice.call(xPostItems);
 					this.playAnimation('entry');
 				},
-
-				_loadMoreData: function () {
-					// load async stuff. e.g. XHR
-			    asyncStuff(function done() {
-			      ironScrollTheshold.clearTriggers();
-			    });
-				},
-
-				_onDomIfChange: function(e) {
-					// var item = this.$.list.modelForElement(e.currentTarget.parentElement).post;
-	        // this.$.list.updateSizeForItem(item);
-					// this.$.list.fire('iron-resize');
-		    },
-
-				_onLoadedChanged: function(e) {
-					if (e.currentTarget.offsetParent) {
-						if ( e.currentTarget.classList.contains("video-id") ) {
-							e.currentTarget.$$("#placeholder").style.cssText = this.youtubeStyle;
-						}
-						this.$.list.notifyResize();
-					};
-				},
-
-				_showDialog: function() {
-					this.$.animatedDialog.open();
-				}
 
 			});
 	})();

@@ -40664,7 +40664,7 @@ v.RUNNING="running";v.PAUSED="paused";v.SUCCESS="success";v.CANCELED="canceled";
 
 		<firebase-document id="firebaseDocument" app-name="uomgo"></firebase-document>
 
-		
+		<x-messages></x-messages>
 		<x-posts limit-to-first="[[limitToFirst]]" limit-to-last="[[limitToLast]]" start-at="[[startAt]]" end-at="[[endAt]]" user="[[user]]"></x-posts>
 
 		<template is="dom-if" if="[[user]]">
@@ -42467,56 +42467,19 @@ v.RUNNING="running";v.PAUSED="paused";v.SUCCESS="success";v.CANCELED="canceled";
 		<style is="custom-style" include="shared-styles">
 			:host {
 				display: block;
-				word-wrap: break-word;
 			}
-
-			paper-card {
-				--paper-card: {
-					text-align: center;
-					@apply(--layout-vertical);
-			    margin: 16px 16px 0 16px;
-			    padding: 20px;
-			    border-radius: 8px;
-			    background-color: white;
-			    border: 1px solid #ddd;
-
-				};
-				--paper-card-header-text: {
-					text-align: center;
-				};
-				--paper-card-content: {
-					text-align: center;
-				};
-				--paper-card-actions: {
-					text-align: center;
-				};
+			#grid {
+				@apply(--layout-wrap);
+				@apply(--layout-horizontal);
+				@apply(--layout-center-justified);
 			}
-
-			.loadingIndicator {
-	      text-align: center;
-	      height: 40px;
-	    }
-
-			.loadingIndicator paper-spinner {
-	      width: 20px;
-	      height: 20px;
-	      margin-right: 10px;
-	    }
-
-			iron-list {
-				background-color: var(--paper-grey-200, #eee);
-		    padding-bottom: 16px;
-		  }
-
-			iron-image {
-				/*max-width: 100%;*/
-				/*height: auto;*/
-				/*--iron-image-width: 100%;*/
-				/*--iron-image-height: auto;*/
+			x-post-item {
+				margin: 0 4px 16px;
 			}
-			iron-image::shadow img {
-					max-width: 100%;
-					/*height: auto;*/
+			.postItem {
+				@apply(--layout-wrap);
+				@apply(--layout-horizontal);
+				@apply(--layout-center-justified);
 			}
 		</style>
 
@@ -42524,27 +42487,16 @@ v.RUNNING="running";v.PAUSED="paused";v.SUCCESS="success";v.CANCELED="canceled";
 
 		<array-filter items="[[dataDB]]" filtered="{{filtered}}" sort="_computeSort" filter="_filter"></array-filter>
 
-			<iron-list id="list" items="[[filtered]]" as="post" scroll-target="html" selection-enabled="" multi-selection="">
-				<template id="templateList">
-					<div>
-						<paper-card tabindex$="[[tabIndex]]" elevation="4">
-							<div class="heading paper-font-headline">
-								[[post.name]]
-							</div>
-						  <div class="card-content layout vertical center-center">
-								<div id="imageBox">
-									<template is="dom-if" if="[[post.image]]">
-										<iron-image class="postImage" src="[[post.image]]" contain="" preload="" on-loaded-changed="_onDomIfChange" align="center"></iron-image>
-									</template>
-								</div>
-								<div>
-									<template is="juicy-html" content$="[[post.text]]"></template>
-								</div>
-							</div>
-						</paper-card>
-					</div>
-				</template>
-			</iron-list>
+		<div id="grid">
+			<template id="domRepeat" is="dom-repeat" items="[[filtered]]" as="post" target-framerate="60" on-dom-change="_renderRepeat">
+
+				<div class="postItem">
+					<x-post-item post="[[post]]" user="[[user]]"></x-post-item>
+				</div>
+			</template>
+
+		</div>
+
 
 	</template>
 	<script>
@@ -42612,7 +42564,7 @@ v.RUNNING="running";v.PAUSED="paused";v.SUCCESS="success";v.CANCELED="canceled";
 					var itemMM = itemDate.getMonth()+1;
 					var itemYYYY = itemDate.getFullYear();
 
-					if ( itemYYYY === todayYYYY && itemMM > 8  ) {
+					if ( (todayYYYY - itemYYYY < 2) && (itemMM > 8)  ) {
 						return true;
 					};
 				},
@@ -42622,19 +42574,6 @@ v.RUNNING="running";v.PAUSED="paused";v.SUCCESS="success";v.CANCELED="canceled";
 					this.animationConfig['entry'][0].nodes = Array.prototype.slice.call(xPostItems);
 					this.playAnimation('entry');
 				},
-
-				_loadMoreData: function () {
-					// load async stuff. e.g. XHR
-			    asyncStuff(function done() {
-			      ironScrollTheshold.clearTriggers();
-			    });
-				},
-
-				_onDomIfChange: function(e) {
-					var item = this.$.list.modelForElement(e.currentTarget.parentElement).post;
-	        this.$.list.updateSizeForItem(item);
-					console.log( item );
-		    }
 
 			});
 	})();
