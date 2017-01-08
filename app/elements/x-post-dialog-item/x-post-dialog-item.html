@@ -1,0 +1,110 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<dom-module id="x-post-dialog-item">
+  <template>
+    <style is="custom-style" include="shared-styles">
+      :host {
+        display: block;
+        word-wrap: break-word;
+      }
+      iron-image {
+				/*--iron-image-width: 100%;*/
+				--iron-image-height: 100%;
+        max-width: 100%;
+        /*height: calc(100vh - 184px);*/
+        height: calc(100vh - 192px);
+			}
+      .scrollable-box {
+        /*height: calc(100vh - 176px);*/
+        /*width: calc(100vw - 120px);*/
+      }
+      .header {
+        /*text-align: center;*/
+      }
+      .post-text {
+        /*display: flex;*/
+        text-align: center;
+        width: 100%;
+        padding: 16px 0;
+      }
+    </style>
+
+    <paper-dialog id="animatedDialog"
+  								entry-animation="scale-up-animation"
+  								exit-animation="fade-out-animation"
+  								with-backdrop
+                  restore-focus-on-close
+                  opened="{{opened}}">
+      <div class="header layout vertical center-center">
+        <h2>[[dataItem.name]]</h2>
+      </div>
+      <paper-dialog-scrollable>
+
+        <div class="scrollable-box layout vertical center-center">
+
+          <template is="dom-if"
+      							if="[[dataItem.image]]">
+      			<iron-image class="postImage"
+      									src="[[dataItem.image]]"
+      									contain	preload
+      									position="center"
+      									align="center"></iron-image>
+      		</template>
+
+          <template  is="dom-if" if="[[dataItem.video-id]]">
+            <google-youtube
+  						video-id="[[dataItem.video-id]]"
+              width="100%"
+              height="100%"
+  						rel="0"
+  						start="0"
+  						fluid
+  						autoplay="0"
+              style="max-width: 480px; max-height: 360px;">
+  					</google-youtube>
+  				</template>
+
+          <template is="dom-if"
+      							if="[[dataItem.text]]">
+            <div class="post-text">
+							<template is="juicy-html"
+												content$="[[dataItem.text]]"></template>
+						</div>
+      		</template>
+
+        </div>
+
+      </paper-dialog-scrollable>
+      <div class="buttons">
+    		<paper-button dialog-dismiss>Отмена</paper-button>
+    		<paper-button dialog-confirm autofocus>ОК</paper-button>
+    	</div>
+    </paper-dialog>
+
+  </template>
+  <script>
+  (function() {
+    'use strict';
+
+    Polymer({
+      is: 'x-post-dialog-item',
+      properties: {
+        dataItem: {
+          type: Object,
+          value: {},
+          notify: true
+        },
+        opened: {
+          type: Boolean,
+          value: false,
+          notify: true
+        }
+      },
+      ready: function() {
+      },
+      attached: function() {
+      }
+    });
+  })();
+  </script>
+</dom-module>

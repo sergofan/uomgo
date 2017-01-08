@@ -5,20 +5,68 @@
 		<style is="custom-style" include="shared-styles">
 			:host {
 				display: block;
+				word-wrap: break-word;
 			}
-			#grid {
-				@apply(--layout-wrap);
-				@apply(--layout-horizontal);
-				@apply(--layout-center-justified);
+
+			paper-card {
+				transition: all 250ms ease-out;
+				--paper-card: {
+					@apply(--layout-vertical);
+					background-color: white;
+					border: 1px solid #ddd;
+					border-radius: 8px;
+					margin: 16px 16px 0 16px;
+					padding: 16px;
+					text-align: center;
+
+				};
+				--paper-card-header-text: {
+					text-align: center;
+				};
+				--paper-card-content: {
+					text-align: center;
+				};
+				--paper-card-actions: {
+					text-align: center;
+				};
 			}
-			x-post-item {
-				margin: 0 4px 16px;
+
+			paper-card:hover {
+				cursor: pointer;
+				transform: scale(1.02);
 			}
-			.postItem {
-				@apply(--layout-wrap);
-				@apply(--layout-horizontal);
-				@apply(--layout-center-justified);
+
+			.loadingIndicator {
+				height: 40px;
+	      text-align: center;
+	    }
+
+			.loadingIndicator paper-spinner {
+				height: 20px;
+				margin-right: 10px;
+	      width: 20px;
+	    }
+
+			iron-list {
+				background-color: var(--paper-grey-200, #eee);
+		    padding-bottom: 16px;
+		  }
+
+			iron-image {
+				--iron-image-width: 100%;
+				--iron-image-height: 100%;
+				max-width: 320px;
+				display: block;
 			}
+
+			.juicy-box {
+				align-content: center;
+				/*max-height: calc(360px - 32px);*/
+				min-width: 207px;
+				padding: 0;
+				overflow: auto;
+			}
+
 		</style>
 
 		<firebase-query id="firebaseQueryPosts"
@@ -38,21 +86,79 @@
 				sort="_computeSort"
 				filter="_filter"></array-filter>
 
-		<div id="grid">
-			<template id="domRepeat"
-								is="dom-repeat"
-								items="[[filtered]]"
-								as="post"
-								target-framerate="60"
-								on-dom-change="_renderRepeat">
+		<iron-list id="list"
+							 items="[[filtered]]"
+							 as="post"
+							 scroll-target="html"
+							 selection-enabled
+							 multi-selection>
 
-				<div class="postItem">
-					<x-post-item post="[[post]]" user="[[user]]"></x-post-item>
+			<template id="templateList">
+				<div>
+					<paper-card tabindex$="[[tabIndex]]"
+											elevation="4"
+											on-tap="_showDialog">
+						<div class="heading paper-font-headline">
+							[[post.name]]
+						</div>
+					  <div class="card-content layout horizontal center-center wrap">
+							<div class="imageBox">
+
+								<template is="dom-if"
+													if="[[post.image]]">
+									<iron-image class="postImage"
+															src="[[post.image]]"
+															contain	preload
+															position="center"
+															on-loaded-changed="_onLoadedImage"
+															align="center"></iron-image>
+								</template>
+
+								<template is="dom-if"
+													if="[[post.video-id]]">
+									<iron-image class="video-id"
+															src="https://i3.ytimg.com/vi/[[post.video-id]]/hqdefault.jpg"
+															contain	preload
+															position="center"
+															on-loaded-changed="_onLoadedImage"
+															align="center"></iron-image>
+								</template>
+
+							</div>
+
+							<template is="dom-if"
+												if="[[post.text]]">
+								<div class="juicy-box flex layout vertical shadow">
+									<div class="content" style="margin: auto 0;">
+										<template is="juicy-html"
+										content$="[[post.text]]"></template>
+									</div>
+								</div>
+							</template>
+
+						</div>
+					</paper-card>
 				</div>
+
 			</template>
+		</iron-list>
 
-		</div>
+		<x-post-dialog-item on-tap="_showDialog"
+												data-item=[[dataItem]]
+												opened="{{opened}}"></x-post-dialog-item>
 
+	  <div class="loadingIndicator">
+	    <!-- <paper-spinner active="{{loadingPeople}}"
+										 alt="Загрузка ..."></paper-spinner> -->
+			<paper-spinner-lite active
+										 alt="Загрузка ..."></paper-spinner-lite>
+	  </div>
+
+	  <iron-scroll-threshold id="scrollTheshold"
+	    lower-threshold="500"
+	    on-lower-threshold="_loadMoreData"
+	    scroll-target="html">
+	  </iron-scroll-threshold>
 
 	</template>
 	<script>
@@ -81,6 +187,9 @@
 							};
 						}
 					},
+					youtubeStyle: {
+						type: String
+					},
 					user: {
 						type: Object
 					},
@@ -99,10 +208,24 @@
 					endAt: {
 						type: String,
 						notify: true,
+					},
+					dataItem: {
+						type: Object,
+						value: {}
+					},
+					opened: {
+						type: Boolean,
+						value: false
 					}
 				},
 
 				ready: function() {
+					this.youtubeStyle = "display: inherit !important;";
+					this.youtubeStyle += " background: url(";
+					this.youtubeStyle += app.baseUrl;
+					this.youtubeStyle += "images/youtube.png)";
+					this.youtubeStyle += " 50% 50% / cover no-repeat transparent;";
+					this.youtubeStyle += " background-size: cover;";
 				},
 
 				_computeSort: function(a, b) {
@@ -113,6 +236,7 @@
 				},
 
 				_filter: function(item) {
+
 					var todayDate = new Date();
 					var todayMM = todayDate.getMonth()+1; //January is 0!
 					var todayYYYY = todayDate.getFullYear();
@@ -129,6 +253,33 @@
 					var xPostItems = Polymer.dom(this.root).querySelectorAll('x-post-item');
 					this.animationConfig['entry'][0].nodes = Array.prototype.slice.call(xPostItems);
 					this.playAnimation('entry');
+				},
+
+				_loadMoreData: function () {
+					console.log('trew');
+					// load async stuff. e.g. XHR
+			    asyncStuff(function done() {
+			      ironScrollTheshold.clearTriggers();
+			    });
+				},
+
+				_onLoadedImage: function(e) {
+					if ( e.target.offsetParent ) {
+						if ( e.target.classList.contains("video-id") ) {
+							e.target.$$("#placeholder").style.cssText = this.youtubeStyle;
+						};
+						if ( e.target.offsetParent.querySelector('.juicy-box') ) {
+							e.target.offsetParent.querySelector('.juicy-box').style.height = e.target.offsetHeight+'px';
+						};
+						this.$.list.notifyResize();
+					};
+				},
+
+				_showDialog: function(e) {
+					if (e.model) {
+						this.dataItem = e.model.post;
+						this.opened = true;
+					};
 				},
 
 			});
