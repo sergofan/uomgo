@@ -11,12 +11,6 @@
 				width: calc(100vw - 80px);
 				min-height: calc(100vh - 74px);
 			}
-			paper-dialog-scrollable {
-				/*height: 100%;*/
-				--paper-dialog-scrollable: {
-						/*height: 100%;*/
-				}
-			}
 			iron-image {
 				width: 100%;
 		    height: 100%;
@@ -24,11 +18,7 @@
 			iron-image::shadow img {
 				max-width: 100%;
 		    max-height: 100%;
-				/*height: 100% !important;*/
 			}
-      .scrollable-box {
-				/*height: 100%;*/
-      }
       .header {
         text-align: center;
       }
@@ -38,15 +28,12 @@
         padding: 16px 0;
       }
 			.image-box {
-        /*height: calc(100vh - 192px);*/
-        /*height: calc(100vh - 136px);*/
-        height: 36vw;
+        height: 40vw;
         width: 100%;
 			}
 			.video-box {
-				/*height: 100%;*/
-				/*max-height: 360px;*/
-				/*max-width: 480px;*/
+        height: 40vw;
+        width: 100%;
 			}
     </style>
 
@@ -80,12 +67,14 @@
 					<template  is="dom-if" if="[[dataItem.video-id]]">
 						<div class="video-box layout vertical center-center">
 							<google-youtube
+                id="youtube"
 								video-id="[[dataItem.video-id]]"
-								fluid
+                width="704px"
+                height="396px"
 								rel="0"
 								start="0"
 								autoplay="0"
-								style="max-width: 673px">
+								style="max-width: 704px; max-height: 396px; width: 100%; height: 100%;">
 							</google-youtube>
 						</div>
 					</template>
@@ -101,9 +90,6 @@
         </div>
 
       </paper-dialog-scrollable>
-      <!-- <div class="buttons">
-    		<paper-button dialog-dismiss autofocus>ОК</paper-button>
-    	</div> -->
     </paper-dialog>
 
   </template>
@@ -130,7 +116,10 @@
       attached: function() {
       },
 			_dialogClosed: function(e, detail) {
-				// console.log(detail);
+        var youtube = e.target.querySelector('#youtube');
+        if ( youtube ) {
+          youtube.pause();
+        }
 			},
       _close: function() {
         this.$.animatedDialog.close();
