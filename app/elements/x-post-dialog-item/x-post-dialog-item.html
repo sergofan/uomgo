@@ -8,8 +8,14 @@
         word-wrap: break-word;
       }
 			paper-dialog {
-				/*width: calc(100vw - 80px);*/
-				/*min-height: calc(100vh - 74px);*/
+				width: calc(100vw - 80px);
+				min-height: calc(100vh - 74px);
+			}
+			paper-dialog-scrollable {
+				/*height: 100%;*/
+				--paper-dialog-scrollable: {
+						/*height: 100%;*/
+				}
 			}
 			iron-image {
 				width: 100%;
@@ -21,6 +27,7 @@
 				/*height: 100% !important;*/
 			}
       .scrollable-box {
+				/*height: 100%;*/
       }
       .header {
         text-align: center;
@@ -37,6 +44,7 @@
         width: 100%;
 			}
 			.video-box {
+				/*height: 100%;*/
 				/*max-height: 360px;*/
 				/*max-width: 480px;*/
 			}
@@ -70,16 +78,16 @@
       		</template>
 
 					<template  is="dom-if" if="[[dataItem.video-id]]">
-						<!-- <div class="video-box"> -->
+						<div class="video-box layout vertical center-center">
 							<google-youtube
 								video-id="[[dataItem.video-id]]"
 								fluid
 								rel="0"
 								start="0"
 								autoplay="0"
-								style="max-width: 480px">
+								style="max-width: 673px">
 							</google-youtube>
-						<!-- </div> -->
+						</div>
 					</template>
 
           <template is="dom-if"
