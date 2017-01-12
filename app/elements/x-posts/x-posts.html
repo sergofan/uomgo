@@ -15,10 +15,11 @@
 					background-color: white;
 					border: 1px solid #ddd;
 					border-radius: 8px;
-					margin: 16px 16px 0 16px;
+					/*margin: 16px 16px 0 16px;*/
+					/*margin: 0 16px 16px;*/
+					margin-bottom: 16px;
 					padding: 16px;
 					text-align: center;
-
 				};
 				--paper-card-header-text: {
 					text-align: center;
@@ -28,7 +29,40 @@
 				};
 				--paper-card-actions: {
 					text-align: center;
+					padding: 16px 16px 0;
 				};
+			}
+
+			paper-icon-button.edit {
+				/*--paper-icon-button-ink-color: white;*/
+				--paper-icon-button: {
+					width: 24px;
+					height: 24px;
+					background-color: white;
+					color: var(--paper-green-a700);
+					border-radius: 3px;
+					padding: 0px;
+				}
+				--paper-icon-button-hover: {
+					background-color: var(--paper-green-a400);
+					color: black;
+				}
+			}
+
+			paper-icon-button.delete {
+				/*--paper-icon-button-ink-color: black;*/
+				--paper-icon-button: {
+					width: 24px;
+					height: 24px;
+					background-color: white;
+					color: var(--paper-red-500);
+					border-radius: 3px;
+					padding: 0px;
+				}
+				--paper-icon-button-hover: {
+					background-color: var(--paper-red-500);
+					color: white;
+				}
 			}
 
 			paper-card:hover {
@@ -50,7 +84,15 @@
 			iron-list {
 				background-color: var(--paper-grey-200, #eee);
 		    padding-bottom: 16px;
+				margin: 0 16px;
 		  }
+
+			@media (max-width: 600px) {
+				iron-list {
+					margin-left: 0;
+					margin-right: 0;
+				}
+			}
 
 			iron-image {
 				--iron-image-width: 100%;
@@ -69,7 +111,7 @@
 
 		</style>
 
-		<firebase-query id="firebaseQueryPosts"
+		<!-- <firebase-query id="firebaseQueryPosts"
 										path="/posts"
 										app-name="uomgo"
 										order-by-child="date"
@@ -77,6 +119,11 @@
 										end-at="{{endAt}}"
 										limit-to-first="[[limitToFirst]]"
 										limit-to-last="[[limitToLast]]"
+										order-by-child="date"
+										data="{{dataDB}}"></firebase-query> -->
+		<firebase-query id="firebaseQueryPosts"
+										path="/posts"
+										app-name="uomgo"
 										order-by-child="date"
 										data="{{dataDB}}"></firebase-query>
 
@@ -90,8 +137,7 @@
 							 items="[[filtered]]"
 							 as="post"
 							 scroll-target="html"
-							 selection-enabled
-							 multi-selection>
+							 selection-enabled>
 
 			<template id="templateList">
 				<div>
@@ -137,6 +183,17 @@
 							</template>
 
 						</div>
+						<div class="card-actions layout horizontal center-justified wrap">
+							<div class="layout vertical center-center flex">
+								<moment-js date="[[post.date]]" format="DD.MM.YYYYг."></moment-js>
+							</div>
+							<div hidden$="[[!user]]">
+								<paper-icon-button class="edit"
+																	 icon="image:edit"></paper-icon-button>
+								<paper-icon-button class="delete"
+																	 icon="delete"></paper-icon-button>
+							</div>
+						</div>
 					</paper-card>
 				</div>
 
@@ -147,12 +204,10 @@
 												data-item=[[dataItem]]
 												opened="{{opened}}"></x-post-dialog-item>
 
-	  <div class="loadingIndicator">
-	    <!-- <paper-spinner active="{{loadingPeople}}"
-										 alt="Загрузка ..."></paper-spinner> -->
+	  <!-- <div class="loadingIndicator">
 			<paper-spinner-lite active
 										 alt="Загрузка ..."></paper-spinner-lite>
-	  </div>
+	  </div> -->
 
 	  <iron-scroll-threshold id="scrollTheshold"
 	    lower-threshold="500"
@@ -236,17 +291,17 @@
 				},
 
 				_filter: function(item) {
-
 					var todayDate = new Date();
 					var todayMM = todayDate.getMonth()+1; //January is 0!
 					var todayYYYY = todayDate.getFullYear();
 					var itemDate = new Date(item.date);
 					var itemMM = itemDate.getMonth()+1;
 					var itemYYYY = itemDate.getFullYear();
-
-					if ( (todayYYYY - itemYYYY < 2) && (itemMM > 8)  ) {
+					if ( todayYYYY - itemYYYY === 1 && itemMM > 8 ) {
 						return true;
-					};
+					} else if ( todayYYYY - itemYYYY === 0 && itemMM < 6 ) {
+						return true;
+					} else return false;
 				},
 
 				_renderRepeat: function () {
