@@ -40664,8 +40664,9 @@ v.RUNNING="running";v.PAUSED="paused";v.SUCCESS="success";v.CANCELED="canceled";
 
 		<firebase-document id="firebaseDocument" app-name="uomgo"></firebase-document>
 
+		<x-messages></x-messages>
 		
-		<x-posts limit-to-first="[[limitToFirst]]" limit-to-last="[[limitToLast]]" start-at="[[startAt]]" end-at="[[endAt]]" user="[[user]]"></x-posts>
+	 <x-posts user="[[user]]"></x-posts>
 
 		<template is="dom-if" if="[[user]]">
 			<paper-fab id="add" icon="add" mini="true" class="green" style="position:fixed;bottom:48px;right:16px;"></paper-fab>
@@ -42424,8 +42425,8 @@ v.RUNNING="running";v.PAUSED="paused";v.SUCCESS="success";v.CANCELED="canceled";
 			}
 			@media (max-width: 600px) {
 				x-message-item {
-					/*margin-left: 16px;*/
-					/*margin-right: 16px;*/
+					margin-left: 0;
+					margin-right: 0;
 				}
 			}
 		</style>
@@ -42467,128 +42468,37 @@ v.RUNNING="running";v.PAUSED="paused";v.SUCCESS="success";v.CANCELED="canceled";
 		<style is="custom-style" include="shared-styles">
 			:host {
 				display: block;
-				word-wrap: break-word;
 			}
-
-			paper-card {
-				transition: all 250ms ease-out;
-				--paper-card: {
-					@apply(--layout-vertical);
-					background-color: white;
-					border: 1px solid #ddd;
-					border-radius: 8px;
-					margin: 16px 16px 0 16px;
-					padding: 16px;
-					text-align: center;
-
-				};
-				--paper-card-header-text: {
-					text-align: center;
-				};
-				--paper-card-content: {
-					text-align: center;
-				};
-				--paper-card-actions: {
-					text-align: center;
-				};
+			#grid {
+				@apply(--layout-wrap);
+				@apply(--layout-horizontal);
+				@apply(--layout-center-justified);
 			}
-
-			paper-card:hover {
-				cursor: pointer;
-				transform: scale(1.02);
+			x-post-item {
+				margin: 0 4px 16px;
 			}
-
-			.loadingIndicator {
-				height: 40px;
-	      text-align: center;
-	    }
-
-			.loadingIndicator paper-spinner {
-				height: 20px;
-				margin-right: 10px;
-	      width: 20px;
-	    }
-
-			iron-list {
-				background-color: var(--paper-grey-200, #eee);
-		    padding-bottom: 16px;
-		  }
-
-			iron-image {
-				--iron-image-width: 100%;
-				--iron-image-height: 100%;
-				max-width: 320px;
-				display: block;
+			.postItem {
+				@apply(--layout-wrap);
+				@apply(--layout-horizontal);
+				@apply(--layout-center-justified);
 			}
-
-			.juicy-box {
-				align-content: center;
-				/*max-height: calc(360px - 32px);*/
-				min-width: 207px;
-				padding: 0;
-				overflow: auto;
-			}
-
 		</style>
 
+		
 		<firebase-query id="firebaseQueryPosts" path="/posts" app-name="uomgo" order-by-child="date" start-at="{{startAt}}" end-at="{{endAt}}" limit-to-first="[[limitToFirst]]" limit-to-last="[[limitToLast]]" data="{{dataDB}}"></firebase-query>
 
 		<array-filter items="[[dataDB]]" filtered="{{filtered}}" sort="_computeSort" filter="_filter"></array-filter>
 
-		<iron-list id="list" items="[[filtered]]" as="post" scroll-target="html" selection-enabled="" multi-selection="">
+		<div id="grid">
+			<template id="domRepeat" is="dom-repeat" items="[[filtered]]" as="post" target-framerate="60" on-dom-change="_renderRepeat">
 
-			<template id="templateList">
-				<div>
-					<paper-card tabindex$="[[tabIndex]]" elevation="4" on-tap="_showDialog">
-						<div class="heading paper-font-headline">
-							[[post.name]]
-						</div>
-					  <div class="card-content layout horizontal center-center wrap">
-							<div class="imageBox">
-
-								<template is="dom-if" if="[[post.image]]">
-									<iron-image class="postImage" src="[[post.image]]" contain="" preload="" position="center" on-loaded-changed="_onLoadedImage" align="center"></iron-image>
-								</template>
-
-								<template is="dom-if" if="[[post.video-id]]">
-									<iron-image class="video-id" src="https://i3.ytimg.com/vi/[[post.video-id]]/hqdefault.jpg" contain="" preload="" position="center" on-loaded-changed="_onLoadedImage" align="center"></iron-image>
-								</template>
-
-							</div>
-
-							<template is="dom-if" if="[[post.text]]">
-								<div class="juicy-box flex layout vertical shadow">
-									<div class="content" style="margin: auto 0;">
-										<template is="juicy-html" content$="[[post.text]]"></template>
-									</div>
-								</div>
-							</template>
-
-						</div>
-					</paper-card>
+				<div class="postItem">
+					<x-post-item post="[[post]]" user="[[user]]"></x-post-item>
 				</div>
-
 			</template>
-		</iron-list>
 
-		<paper-dialog id="animatedDialog" entry-animation="scale-up-animation" exit-animation="fade-out-animation" modal="" with-backdrop="" no-cancel-on-esc-key="">
-		  <h2>[[dataItem.name]]</h2>
-			<paper-dialog-scrollable>
-				<x-post-dialog-content data-item="[[dataItem]]"></x-post-dialog-content>
-			</paper-dialog-scrollable>
-			<div class="buttons">
-				<paper-button dialog-dismiss="">Отмена</paper-button>
-				<paper-button dialog-confirm="" autofocus="">ОК</paper-button>
-			</div>
-		</paper-dialog>
+		</div>
 
-	  <div class="loadingIndicator">
-	    <paper-spinner active="{{loadingPeople}}"></paper-spinner> Загрузка ...
-	  </div>
-
-	  
-	  <iron-scroll-threshold id="scrollTheshold" lower-threshold="500" on-lower-threshold="_loadMoreData" scroll-target="html">
-	  </iron-scroll-threshold>
 
 	</template>
 	<script>
@@ -42617,37 +42527,28 @@ v.RUNNING="running";v.PAUSED="paused";v.SUCCESS="success";v.CANCELED="canceled";
 							};
 						}
 					},
-					youtubeStyle: {
-						type: String
-					},
 					user: {
 						type: Object
 					},
-					limitToLast: {
-						type: Number,
-						notify: true
-					},
-					limitToFirst: {
-						type: Number,
-						notify: true,
-					},
-					startAt: {
-						type: String,
-						notify: true
-					},
-					endAt: {
-						type: String,
-						notify: true,
-					}
+					// limitToLast: {
+					// 	type: Number,
+					// 	notify: true
+					// },
+					// limitToFirst: {
+					// 	type: Number,
+					// 	notify: true,
+					// },
+					// startAt: {
+					// 	type: String,
+					// 	notify: true
+					// },
+					// endAt: {
+					// 	type: String,
+					// 	notify: true,
+					// }
 				},
 
 				ready: function() {
-					this.youtubeStyle = "display: inherit !important;";
-					this.youtubeStyle += " background: url(";
-					this.youtubeStyle += app.baseUrl;
-					this.youtubeStyle += "images/youtube.png)";
-					this.youtubeStyle += " 50% 50% / cover no-repeat transparent;";
-					this.youtubeStyle += " background-size: cover;";
 				},
 
 				_computeSort: function(a, b) {
@@ -42658,7 +42559,6 @@ v.RUNNING="running";v.PAUSED="paused";v.SUCCESS="success";v.CANCELED="canceled";
 				},
 
 				_filter: function(item) {
-
 					var todayDate = new Date();
 					var todayMM = todayDate.getMonth()+1; //January is 0!
 					var todayYYYY = todayDate.getFullYear();
@@ -42666,41 +42566,19 @@ v.RUNNING="running";v.PAUSED="paused";v.SUCCESS="success";v.CANCELED="canceled";
 					var itemMM = itemDate.getMonth()+1;
 					var itemYYYY = itemDate.getFullYear();
 
-					if ( (todayYYYY - itemYYYY < 2) && (itemMM > 8)  ) {
+					if ( (todayYYYY - itemYYYY === 1) && (itemMM > 8)  ) {
 						return true;
 					};
+					if ( (todayYYYY - itemYYYY === 0) && (itemMM < 6)  ) {
+						return true;
+					};
+
 				},
 
 				_renderRepeat: function () {
 					var xPostItems = Polymer.dom(this.root).querySelectorAll('x-post-item');
 					this.animationConfig['entry'][0].nodes = Array.prototype.slice.call(xPostItems);
 					this.playAnimation('entry');
-				},
-
-				_loadMoreData: function () {
-					console.log('trew');
-					// load async stuff. e.g. XHR
-			    asyncStuff(function done() {
-			      ironScrollTheshold.clearTriggers();
-			    });
-				},
-
-				_onLoadedImage: function(e) {
-					if ( e.target.offsetParent ) {
-						if ( e.target.classList.contains("video-id") ) {
-							e.target.$$("#placeholder").style.cssText = this.youtubeStyle;
-						};
-						if ( e.target.offsetParent.querySelector('.juicy-box') ) {
-							e.target.offsetParent.querySelector('.juicy-box').style.height = e.target.offsetHeight+'px';
-						};
-						this.$.list.notifyResize();
-					};
-				},
-
-				_showDialog: function(e) {
-					var dialog = this.$.animatedDialog;
-					this.dataItem = e.model.post;
-					dialog.open();
 				},
 
 			});
@@ -45718,37 +45596,107 @@ v.RUNNING="running";v.PAUSED="paused";v.SUCCESS="success";v.CANCELED="canceled";
 	})();
 	</script>
 </dom-module>
-<dom-module id="x-post-dialog" assetpath="x-post-dialog-content/">
+<dom-module id="x-post-dialog-item" assetpath="x-post-dialog-item/">
   <template>
     <style is="custom-style" include="shared-styles">
       :host {
         display: block;
         word-wrap: break-word;
       }
+			paper-dialog {
+				width: calc(100vw - 80px);
+				min-height: calc(100vh - 74px);
+			}
+			iron-image {
+				width: 100%;
+		    height: 100%;
+			}
+			iron-image::shadow img {
+				max-width: 100%;
+		    max-height: 100%;
+			}
+      .header {
+        text-align: center;
+      }
+      .post-text {
+        text-align: center;
+        width: 100%;
+        padding: 16px 0;
+      }
+			.image-box {
+        height: calc(100vh - 172px);
+        width: 100%;
+			}
+			.video-box {
+        height: calc(100vh - 172px);
+        width: 100%;
+			}
     </style>
-		<template is="dom-if" if="[[dataItem.image]]">
-			<iron-image class="postImage" src="[[dataItem.image]]" contain="" preload="" position="center" on-loaded-changed="_onLoadedImage" align="center"></iron-image>
-		</template>
 
-		<template is="dom-if" if="[[dataItem.video-id]]">
-			<iron-image class="video-id" src="https://i3.ytimg.com/vi/[[dataItem.video-id]]/hqdefault.jpg" contain="" preload="" position="center" on-loaded-changed="_onLoadedImage" align="center"></iron-image>
-		</template>
+    <paper-dialog id="animatedDialog" entry-animation="scale-up-animation" exit-animation="fade-out-animation" with-backdrop="" restore-focus-on-close="" opened="{{opened}}" on-iron-overlay-closed="_dialogClosed">
+      <div class="header layout horizontal center-center">
+        <div class="paper-font-headline flex">[[dataItem.name]]</div>
+        <paper-icon-button icon="close" title="Закрыть" on-tap="_close"></paper-icon-button>
+      </div>
+      <paper-dialog-scrollable>
+
+        <div class="scrollable-box layout vertical center-center">
+
+					<template is="dom-if" if="[[dataItem.image]]">
+						<div class="image-box">
+	      			<iron-image class="postImage" src="[[dataItem.image]]" sizing="contain" preload=""></iron-image>
+						</div>
+      		</template>
+
+					<template is="dom-if" if="[[dataItem.video-id]]">
+						<div class="video-box layout vertical center-center">
+							<google-youtube id="youtube" video-id="[[dataItem.video-id]]" width="704px" height="396px" rel="0" start="0" autoplay="0" style="max-width: 704px; max-height: 396px; width: 100%; height: 100%;">
+							</google-youtube>
+						</div>
+					</template>
+
+          <template is="dom-if" if="[[dataItem.text]]">
+            <div class="post-text">
+							<template is="juicy-html" content$="[[dataItem.text]]"></template>
+						</div>
+      		</template>
+
+        </div>
+
+      </paper-dialog-scrollable>
+    </paper-dialog>
+
   </template>
   <script>
   (function() {
     'use strict';
 
     Polymer({
-      is: 'x-post-dialog',
+      is: 'x-post-dialog-item',
       properties: {
         dataItem: {
           type: Object,
+          value: {},
+          notify: true
+        },
+        opened: {
+          type: Boolean,
+          value: false,
           notify: true
         }
       },
       ready: function() {
-        // console.log(dataItem);
-        console.log('dataItem');
+      },
+      attached: function() {
+      },
+			_dialogClosed: function(e, detail) {
+        var youtube = e.target.querySelector('#youtube');
+        if ( youtube ) {
+          youtube.pause();
+        }
+			},
+      _close: function() {
+        this.$.animatedDialog.close();
       }
     });
   })();
