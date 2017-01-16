@@ -115,7 +115,8 @@
 										path="/posts"
 										app-name="uomgo"
 										order-by-child="date"
-										data="{{dataDB}}"></firebase-query>
+										data="{{dataDB}}"
+										limit-to-last="[[limitToLast]]"></firebase-query>
 
 		<array-filter
 				items="[[dataDB]]"
@@ -123,75 +124,76 @@
 				sort="_computeSort"
 				filter="_filter"></array-filter>
 
-		<iron-scroll-threshold id="scrollTheshold"
-												   lower-threshold="500"
-												   on-lower-threshold="_loadMoreData">
-			<iron-list id="list"
-								 items="[[filtered]]"
-								 as="post"
-								 scroll-target="scrollThreshold"
-								 selection-enabled>
 
-				<template id="templateList">
-					<div>
-						<paper-card tabindex$="[[tabIndex]]"
-												elevation="4"
-												on-tap="_showDialog">
-							<div class="heading paper-font-headline">
-								[[post.name]]
-							</div>
-						  <div class="card-content layout horizontal center-center wrap">
-								<div class="imageBox">
+		<iron-list id="ironList"
+							 items="[[filtered]]"
+							 as="post"
+							 selection-enabled>
 
-									<template is="dom-if"
-														if="[[post.image]]">
-										<iron-image class="postImage"
-																src="[[post.image]]"
-																contain	preload
-																position="center"
-																on-loaded-changed="_onLoadedImage"
-																align="center"></iron-image>
-									</template>
-
-									<template is="dom-if"
-														if="[[post.video-id]]">
-										<iron-image class="video-id"
-																src="https://i3.ytimg.com/vi/[[post.video-id]]/hqdefault.jpg"
-																contain	preload
-																position="center"
-																on-loaded-changed="_onLoadedImage"
-																align="center"></iron-image>
-									</template>
-
-								</div>
+			<template id="templateList">
+				<div>
+					<paper-card tabindex$="[[tabIndex]]"
+											elevation="4"
+											on-tap="_showDialog">
+						<div class="heading paper-font-headline">
+							[[post.name]]
+						</div>
+					  <div class="card-content layout horizontal center-center wrap">
+							<div class="imageBox">
 
 								<template is="dom-if"
-													if="[[post.text]]">
-									<div class="juicy-box flex layout vertical shadow">
-										<div class="content" style="margin: auto 0;">
-											<template is="juicy-html"
-											content$="[[post.text]]"></template>
-										</div>
-									</div>
+													if="[[post.image]]">
+									<iron-image class="postImage"
+															src="[[post.image]]"
+															contain	preload
+															position="center"
+															on-loaded-changed="_onLoadedImage"
+															align="center"></iron-image>
+								</template>
+
+								<template is="dom-if"
+													if="[[post.video-id]]">
+									<iron-image class="video-id"
+															src="https://i3.ytimg.com/vi/[[post.video-id]]/hqdefault.jpg"
+															contain	preload
+															position="center"
+															on-loaded-changed="_onLoadedImage"
+															align="center"></iron-image>
 								</template>
 
 							</div>
-							<div class="card-actions layout horizontal center-justified wrap">
-								<div class="layout vertical center-center flex">
-									<moment-js date="[[post.date]]" format="DD.MM.YYYYг."></moment-js>
-								</div>
-								<div hidden$="[[!user]]">
-									<paper-icon-button class="edit"
-																		 icon="image:edit"></paper-icon-button>
-									<paper-icon-button class="delete"
-																		 icon="delete"></paper-icon-button>
-								</div>
-							</div>
-						</paper-card>
-					</div>
 
-				</template>
-			</iron-list>
+							<template is="dom-if"
+												if="[[post.text]]">
+								<div class="juicy-box flex layout vertical shadow">
+									<div class="content" style="margin: auto 0;">
+										<template is="juicy-html"
+										content$="[[post.text]]"></template>
+									</div>
+								</div>
+							</template>
+
+						</div>
+						<div class="card-actions layout horizontal center-justified wrap">
+							<div class="layout vertical center-center flex">
+								<!-- <moment-js date="[[post.date]]" format="DD.MM.YYYYг."></moment-js> -->
+							</div>
+							<div hidden$="[[!user]]">
+								<paper-icon-button class="edit"
+																	 icon="image:edit"></paper-icon-button>
+								<paper-icon-button class="delete"
+																	 icon="delete"></paper-icon-button>
+							</div>
+						</div>
+					</paper-card>
+				</div>
+
+			</template>
+		</iron-list>
+
+		<iron-scroll-threshold id="scrollTheshold"
+												   lower-threshold="500"
+												   on-lower-threshold="_loadMoreData">
 		</iron-scroll-threshold>
 
 		<x-post-dialog-item on-tap="_showDialog"
@@ -244,10 +246,20 @@
 					opened: {
 						type: Boolean,
 						value: false
+					},
+					limitToLast: {
+						type: Number,
+						value: 5
 					}
 				},
 
 				ready: function() {
+					var ironList = this.querySelector('#ironList');
+					var scrollTheshold = this.querySelector('#scrollTheshold');
+					var headerPanelMain = document.querySelector('#headerPanelMain');
+					ironList.scrollTarget = headerPanelMain.scroller;
+				  scrollTheshold.scrollTarget = headerPanelMain.scroller;
+
 					this.youtubeStyle = "display: inherit !important;";
 					this.youtubeStyle += " background: url(";
 					this.youtubeStyle += app.baseUrl;
@@ -282,21 +294,22 @@
 				// },
 
 				_filter: function(item) {
-					var todayDate = new Date();
-					var todayMM = todayDate.getMonth()+1; //January is 0!
-					var todayYYYY = todayDate.getFullYear();
-					var itemDate = new Date(item.date);
-					var itemMM = itemDate.getMonth()+1;
-					var itemYYYY = itemDate.getFullYear();
-
-					if ( itemYYYY === 2016 ) {
-						if ( itemMM === 11 ) {
-							// console.log( typeof(itemDate) );
-							return true;
-						}
-					} else {
-						return false;
-					}
+					// var todayDate = new Date();
+					// var todayMM = todayDate.getMonth()+1; //January is 0!
+					// var todayYYYY = todayDate.getFullYear();
+					// var itemDate = new Date(item.date);
+					// var itemMM = itemDate.getMonth()+1;
+					// var itemYYYY = itemDate.getFullYear();
+					//
+					// if ( itemYYYY === 2016 ) {
+					// 	if ( itemMM === 11 ) {
+					// 		// console.log( typeof(itemDate) );
+					// 		return true;
+					// 	}
+					// } else {
+					// 	return false;
+					// }
+					return true;
 				},
 
 				_renderRepeat: function () {
@@ -305,9 +318,10 @@
 					this.playAnimation('entry');
 				},
 
-				_loadMoreData: function () {
-					console.log(this.$.scrollTheshold);
-					// this.$.scrollTheshold.clearTriggers();
+				_loadMoreData: function (e) {
+					console.log(e.target);
+					this.limitToLast += 5;
+					e.target.clearTriggers();
 				},
 
 				_onLoadedImage: function(e) {
@@ -318,7 +332,7 @@
 						if ( e.target.offsetParent.querySelector('.juicy-box') ) {
 							e.target.offsetParent.querySelector('.juicy-box').style.height = e.target.offsetHeight+'px';
 						};
-						this.$.list.notifyResize();
+						this.$.ironList.notifyResize();
 					};
 				},
 
