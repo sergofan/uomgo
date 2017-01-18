@@ -114,78 +114,79 @@
 		<firebase-query id="firebaseQueryPosts"
 										path="/posts"
 										app-name="uomgo"
-										order-by-child="date"
-										data="{{dataDB}}"
-										limit-to-last="[[limitToLast]]"></firebase-query>
+										data="{{dataDB}}"></firebase-query>
 
 		<array-filter
-				items="[[dataDB]]"
-				filtered="{{filtered}}"
-				sort="_computeSort"
-				filter="_filter"></array-filter>
+				items="{{dataDB}}"
+				filtered="{{_posts}}"
+				filter="_filter"
+				sort="_computeSort"></array-filter>
 
 
 		<iron-list id="ironList"
-							 items="[[filtered]]"
+							 items="[[_posts]]"
 							 as="post"
 							 selection-enabled>
 
 			<template id="templateList">
 				<div>
-					<paper-card tabindex$="[[tabIndex]]"
-											elevation="4"
-											on-tap="_showDialog">
-						<div class="heading paper-font-headline">
-							[[post.name]]
-						</div>
-					  <div class="card-content layout horizontal center-center wrap">
-							<div class="imageBox">
-
-								<template is="dom-if"
-													if="[[post.image]]">
-									<iron-image class="postImage"
-															src="[[post.image]]"
-															contain	preload
-															position="center"
-															on-loaded-changed="_onLoadedImage"
-															align="center"></iron-image>
-								</template>
-
-								<template is="dom-if"
-													if="[[post.video-id]]">
-									<iron-image class="video-id"
-															src="https://i3.ytimg.com/vi/[[post.video-id]]/hqdefault.jpg"
-															contain	preload
-															position="center"
-															on-loaded-changed="_onLoadedImage"
-															align="center"></iron-image>
-								</template>
-
+					<template is="dom-if" if="[[post.enabled]]">
+						<paper-card tabindex$="[[tabIndex]]"
+												elevation="4"
+												on-tap="_showDialog">
+							<div class="heading paper-font-headline">
+								[[post.name]]
 							</div>
+						  <div class="card-content layout horizontal center-center wrap">
+								<div class="imageBox">
 
-							<template is="dom-if"
-												if="[[post.text]]">
-								<div class="juicy-box flex layout vertical shadow">
-									<div class="content" style="margin: auto 0;">
-										<template is="juicy-html"
-										content$="[[post.text]]"></template>
-									</div>
+									<template is="dom-if"
+														if="[[post.image]]">
+										<iron-image class="postImage"
+																src="[[post.image]]"
+																contain	preload
+																position="center"
+																on-loaded-changed="_onLoadedImage"
+																align="center"></iron-image>
+									</template>
+
+									<template is="dom-if"
+														if="[[post.video-id]]">
+										<iron-image class="video-id"
+																src="https://i3.ytimg.com/vi/[[post.video-id]]/hqdefault.jpg"
+																contain	preload
+																position="center"
+																on-loaded-changed="_onLoadedImage"
+																align="center"></iron-image>
+									</template>
+
 								</div>
-							</template>
 
-						</div>
-						<div class="card-actions layout horizontal center-justified wrap">
-							<div class="layout vertical center-center flex">
-								<!-- <moment-js date="[[post.date]]" format="DD.MM.YYYYг."></moment-js> -->
+								<template is="dom-if"
+													if="[[post.text]]">
+									<div class="juicy-box flex layout vertical shadow">
+										<div class="content" style="margin: auto 0;">
+											<template is="juicy-html"
+											content$="[[post.text]]"></template>
+										</div>
+									</div>
+								</template>
+
 							</div>
-							<div hidden$="[[!user]]">
-								<paper-icon-button class="edit"
-																	 icon="image:edit"></paper-icon-button>
-								<paper-icon-button class="delete"
-																	 icon="delete"></paper-icon-button>
+							<div class="card-actions layout horizontal center-justified wrap">
+								<div class="layout vertical center-center flex">
+									<!-- <moment-js date="[[post.date]]" format="DD.MM.YYYYг."></moment-js> -->
+									[[post.date]]
+								</div>
+								<div hidden$="[[!user]]">
+									<paper-icon-button class="edit"
+																		 icon="image:edit"></paper-icon-button>
+									<paper-icon-button class="delete"
+																		 icon="delete"></paper-icon-button>
+								</div>
 							</div>
-						</div>
-					</paper-card>
+						</paper-card>
+					</template>
 				</div>
 
 			</template>
@@ -320,7 +321,6 @@
 
 				_loadMoreData: function (e) {
 					console.log(e.target);
-					this.limitToLast += 5;
 					e.target.clearTriggers();
 				},
 

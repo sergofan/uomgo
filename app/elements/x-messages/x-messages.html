@@ -31,9 +31,11 @@
 							sort="_computeSort"
 							target-framerate="60">
 
-			<template is="dom-if" if="[[message.visible]]">
-				<x-message-item message="[[message]]"></x-message-item>
-			</template>
+			<div>
+				<template is="dom-if" if="[[message.visible]]">
+					<x-message-item message="[[message]]"></x-message-item>
+				</template>
+			</div>
 
 		</template>
 
