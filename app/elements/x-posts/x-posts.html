@@ -95,18 +95,21 @@
 			}
 
 			iron-image {
-				--iron-image-width: 100%;
+				/*--iron-image-width: 100%;*/
 				--iron-image-height: 100%;
-				max-width: 320px;
+				/*max-width: 320px;*/
 				display: block;
+				height: 240px;
+				padding-right: 16px;
 			}
 
-			.juicy-box {
+			.text-box {
 				align-content: center;
 				/*max-height: calc(360px - 32px);*/
 				min-width: 207px;
 				padding: 0;
 				overflow: auto;
+				height: 240px;
 			}
 
 		</style>
@@ -164,7 +167,7 @@
 
 								<template is="dom-if"
 													if="[[post.text]]">
-									<div class="juicy-box flex layout vertical shadow">
+									<div class="text-box flex layout vertical shadow">
 										<div class="content" style="margin: auto 0;">
 											<template is="juicy-html"
 											content$="[[post.text]]"></template>
@@ -330,9 +333,9 @@
 							e.target.$$("#placeholder").style.cssText = this.youtubeStyle;
 						};
 						if ( e.target.offsetParent.querySelector('.juicy-box') ) {
-							e.target.offsetParent.querySelector('.juicy-box').style.height = e.target.offsetHeight+'px';
+							// e.target.offsetParent.querySelector('.juicy-box').style.height = e.target.offsetHeight+'px';
 						};
-						this.$.ironList.notifyResize();
+						// this.$.ironList.notifyResize();
 					};
 				},
 
