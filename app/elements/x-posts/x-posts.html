@@ -123,81 +123,82 @@
 				items="{{dataDB}}"
 				filtered="{{_posts}}"
 				filter="_filter"
+				observe="date"
 				sort="_computeSort"></array-filter>
 
-
-		<iron-list id="ironList"
-							 items="[[_posts]]"
-							 as="post"
-							 selection-enabled>
-
-			<template id="templateList">
-				<div>
-					<template is="dom-if" if="[[post.enabled]]">
-						<paper-card tabindex$="[[tabIndex]]"
-												elevation="4"
-												on-tap="_showDialog">
-							<div class="heading paper-font-headline">
-								[[post.name]]
-							</div>
-						  <div class="card-content layout horizontal center-center wrap">
-								<div class="imageBox">
-
-									<template is="dom-if"
-														if="[[post.image]]">
-										<iron-image class="postImage"
-																src="[[post.image]]"
-																contain	preload
-																position="center"
-																on-loaded-changed="_onLoadedImage"
-																align="center"></iron-image>
-									</template>
-
-									<template is="dom-if"
-														if="[[post.video-id]]">
-										<iron-image class="video-id"
-																src="https://i3.ytimg.com/vi/[[post.video-id]]/hqdefault.jpg"
-																contain	preload
-																position="center"
-																on-loaded-changed="_onLoadedImage"
-																align="center"></iron-image>
-									</template>
-
-								</div>
-
-								<template is="dom-if"
-													if="[[post.text]]">
-									<div class="text-box flex layout vertical shadow">
-										<div class="content" style="margin: auto 0;">
-											<template is="juicy-html"
-											content$="[[post.text]]"></template>
-										</div>
-									</div>
-								</template>
-
-							</div>
-							<div class="card-actions layout horizontal center-justified wrap">
-								<div class="layout vertical center-center flex">
-									<!-- <moment-js date="[[post.date]]" format="DD.MM.YYYYг."></moment-js> -->
-									[[post.date]]
-								</div>
-								<div hidden$="[[!user]]">
-									<paper-icon-button class="edit"
-																		 icon="image:edit"></paper-icon-button>
-									<paper-icon-button class="delete"
-																		 icon="delete"></paper-icon-button>
-								</div>
-							</div>
-						</paper-card>
-					</template>
-				</div>
-
-			</template>
-		</iron-list>
 
 		<iron-scroll-threshold id="scrollTheshold"
 												   lower-threshold="500"
 												   on-lower-threshold="_loadMoreData">
+			<iron-list id="ironList"
+								 items="[[_posts]]"
+								 as="post"
+								 scroll-target="scrollThreshold"
+								 selection-enabled>
+
+				<template id="templateList">
+					<div>
+						<template is="dom-if" if="[[post.enabled]]" on-dom-change="_onDomIfChange">
+							<paper-card tabindex$="[[tabIndex]]"
+													elevation="4"
+													on-tap="_showDialog">
+								<div class="heading paper-font-headline">
+									[[post.name]]
+								</div>
+							  <div class="card-content layout horizontal center-center wrap">
+									<div class="imageBox">
+
+										<template is="dom-if"
+															if="[[post.image]]">
+											<iron-image class="postImage"
+																	src="[[post.image]]"
+																	contain	preload
+																	position="center"
+																	on-loaded-changed="_onLoadedImage"
+																	align="center"></iron-image>
+										</template>
+
+										<template is="dom-if"
+															if="[[post.video-id]]">
+											<iron-image class="video-id"
+																	src="https://i3.ytimg.com/vi/[[post.video-id]]/hqdefault.jpg"
+																	contain	preload
+																	position="center"
+																	on-loaded-changed="_onLoadedImage"
+																	align="center"></iron-image>
+										</template>
+
+									</div>
+
+									<template is="dom-if"
+														if="[[post.text]]">
+										<div class="text-box flex layout vertical shadow">
+											<div class="content" style="margin: auto 0;">
+												<template is="juicy-html"
+												content$="[[post.text]]"></template>
+											</div>
+										</div>
+									</template>
+
+								</div>
+								<div class="card-actions layout horizontal center-justified wrap">
+									<div class="layout vertical center-center flex">
+										<moment-js date="[[post.date]]" format="DD.MM.YYYYг."></moment-js>
+										<!-- [[post.date]] -->
+									</div>
+									<div hidden$="[[!user]]">
+										<paper-icon-button class="edit"
+																			 icon="image:edit"></paper-icon-button>
+										<paper-icon-button class="delete"
+																			 icon="delete"></paper-icon-button>
+									</div>
+								</div>
+							</paper-card>
+						</template>
+					</div>
+
+				</template>
+			</iron-list>
 		</iron-scroll-threshold>
 
 		<x-post-dialog-item on-tap="_showDialog"
@@ -261,7 +262,6 @@
 					var ironList = this.querySelector('#ironList');
 					var scrollTheshold = this.querySelector('#scrollTheshold');
 					var headerPanelMain = document.querySelector('#headerPanelMain');
-					ironList.scrollTarget = headerPanelMain.scroller;
 				  scrollTheshold.scrollTarget = headerPanelMain.scroller;
 
 					this.youtubeStyle = "display: inherit !important;";
@@ -313,6 +313,7 @@
 					// } else {
 					// 	return false;
 					// }
+					console.log(item);
 					return true;
 				},
 
@@ -320,6 +321,12 @@
 					var xPostItems = Polymer.dom(this.root).querySelectorAll('x-post-item');
 					this.animationConfig['entry'][0].nodes = Array.prototype.slice.call(xPostItems);
 					this.playAnimation('entry');
+				},
+
+				_onDomIfChange: function(e) {
+					// var post = this.$.ironList.modelForElement(e.currentTarget.parentElement).post;
+	        // this.$.ironList.updateSizeForItem(post);
+					this.$.ironList.notifyResize();
 				},
 
 				_loadMoreData: function (e) {
