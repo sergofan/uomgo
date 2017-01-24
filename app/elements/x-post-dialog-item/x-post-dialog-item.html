@@ -80,6 +80,20 @@
 					</template>
 
           <template is="dom-if"
+                    if="[[dataItem.images]]">
+            <template is="dom-repeat"
+                      items="[[dataItem.images]]"
+                      as="image">
+              <div class="image-box" style="margin-top: 16px;">
+                <iron-image class="postImage"
+                            sizing="contain"
+                            src="[[image]]"
+  	      									preload></iron-image>
+              </div>
+            </template>
+          </template>
+
+          <template is="dom-if"
       							if="[[dataItem.text]]">
             <div class="post-text">
 							<template is="juicy-html"
