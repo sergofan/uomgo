@@ -237,6 +237,10 @@
 							};
 						}
 					},
+					numberOfRecords: {
+						type: Number,
+						value: 10
+					},
 					youtubeStyle: {
 						type: String
 					},
@@ -296,7 +300,7 @@
 				// 	} else return false;
 				// },
 
-				_filter: function(item) {
+				_filter: function(item, index) {
 					// var todayDate = new Date();
 					// var todayMM = todayDate.getMonth()+1; //January is 0!
 					// var todayYYYY = todayDate.getFullYear();
@@ -312,8 +316,9 @@
 					// } else {
 					// 	return false;
 					// }
-					console.log(item);
-					return true;
+					if (index < this.numberOfRecords) {
+						return true;
+					}
 				},
 
 				_renderRepeat: function () {
