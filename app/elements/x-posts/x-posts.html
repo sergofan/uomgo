@@ -117,14 +117,14 @@
 		<firebase-query id="firebaseQueryPosts"
 										path="/posts"
 										app-name="uomgo"
-										data="{{dataDB}}"></firebase-query>
+										data="{{dataDB}}"
+										order-by-child="date"></firebase-query>
 
 		<array-filter
 				items="{{dataDB}}"
 				filtered="{{_posts}}"
 				filter="_filter"
-				observe="enabled-date"
-				sort="_computeSort"></array-filter>
+				observe="enabled-date"></array-filter>
 
 
 		<iron-scroll-threshold id="scrollTheshold"
@@ -254,10 +254,6 @@
 					opened: {
 						type: Boolean,
 						value: false
-					},
-					limitToLast: {
-						type: Number,
-						value: 5
 					}
 				},
 
@@ -316,9 +312,10 @@
 					// } else {
 					// 	return false;
 					// }
-					if (index < this.numberOfRecords) {
+
+					// if (index < this.numberOfRecords) {
 						return true;
-					}
+					// }
 				},
 
 				_renderRepeat: function () {
@@ -334,7 +331,8 @@
 				},
 
 				_loadMoreData: function (e) {
-					console.log(e.target);
+					// console.log("_loadMoreData", e.target);
+					// this.numberOfRecords += 1;
 					e.target.clearTriggers();
 				},
 
