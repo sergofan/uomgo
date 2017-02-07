@@ -227,6 +227,10 @@
 					Polymer.NeonAnimationRunnerBehavior
 				],
 				properties: {
+					dataDB: {
+			      type: Object,
+			      observer: '_dataChanged'
+			    },
 					animationConfig: {
 						value: function() {
 							return {
@@ -260,6 +264,10 @@
 					opened: {
 						type: Boolean,
 						value: false
+					},
+					n: {
+						type: Number,
+						value: 0
 					}
 				},
 
@@ -276,6 +284,11 @@
 					this.youtubeStyle += " 50% 50% / cover no-repeat transparent;";
 					this.youtubeStyle += " background-size: cover;";
 				},
+
+				_dataChanged: function (newData, oldData) {
+					this.n += 1;
+					console.log(this.n, newData, oldData);
+			  },
 
 				_computeSort: function(a, b) {
 					if (a.date == b.date) {
