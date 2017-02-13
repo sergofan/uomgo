@@ -40664,9 +40664,8 @@ v.RUNNING="running";v.PAUSED="paused";v.SUCCESS="success";v.CANCELED="canceled";
 
 		<firebase-document id="firebaseDocument" app-name="uomgo"></firebase-document>
 
-		<x-messages></x-messages>
 		
-	 <x-posts user="[[user]]"></x-posts>
+		<x-posts user="[[user]]"></x-posts>
 
 		<template is="dom-if" if="[[user]]">
 			<paper-fab id="add" icon="add" mini="true" class="green" style="position:fixed;bottom:48px;right:16px;"></paper-fab>
@@ -40682,22 +40681,6 @@ v.RUNNING="running";v.PAUSED="paused";v.SUCCESS="success";v.CANCELED="canceled";
 		Polymer({
 			is: 't-main-template',
 			properties: {
-				limitToLast: {
-					type: Number,
-					notify: true,
-				},
-				limitToFirst: {
-					type: Number,
-					notify: true,
-				},
-				startAt: {
-					type: String,
-					notify: true
-				},
-				endAt: {
-					type: String,
-					notify: true,
-				},
 				dataDB: {
 					type: Object,
 					observer: 'dataChanged',
@@ -42434,9 +42417,11 @@ v.RUNNING="running";v.PAUSED="paused";v.SUCCESS="success";v.CANCELED="canceled";
 
 		<template is="dom-repeat" items="[[dataDB]]" as="message" sort="_computeSort" target-framerate="60">
 
-			<template is="dom-if" if="[[message.visible]]">
-				<x-message-item message="[[message]]"></x-message-item>
-			</template>
+			<div>
+				<template is="dom-if" if="[[message.visible]]">
+					<x-message-item message="[[message]]"></x-message-item>
+				</template>
+			</div>
 
 		</template>
 
@@ -42468,36 +42453,176 @@ v.RUNNING="running";v.PAUSED="paused";v.SUCCESS="success";v.CANCELED="canceled";
 		<style is="custom-style" include="shared-styles">
 			:host {
 				display: block;
+				word-wrap: break-word;
 			}
-			#grid {
-				@apply(--layout-wrap);
-				@apply(--layout-horizontal);
-				@apply(--layout-center-justified);
+
+			paper-card {
+				transition: all 250ms ease-out;
+				--paper-card: {
+					@apply(--layout-vertical);
+					background-color: white;
+					border: 1px solid #ddd;
+					border-radius: 8px;
+					/*margin: 16px 16px 0 16px;*/
+					/*margin: 0 16px 16px;*/
+					margin-bottom: 16px;
+					padding: 16px;
+					text-align: center;
+				};
+				--paper-card-header-text: {
+					text-align: center;
+				};
+				--paper-card-content: {
+					text-align: center;
+				};
+				--paper-card-actions: {
+					text-align: center;
+					padding: 16px 16px 0;
+				};
 			}
-			x-post-item {
-				margin: 0 4px 16px;
+
+			paper-icon-button.edit {
+				/*--paper-icon-button-ink-color: white;*/
+				--paper-icon-button: {
+					width: 24px;
+					height: 24px;
+					background-color: white;
+					color: var(--paper-green-a700);
+					border-radius: 3px;
+					padding: 0px;
+				}
+				--paper-icon-button-hover: {
+					background-color: var(--paper-green-a400);
+					color: black;
+				}
 			}
-			.postItem {
-				@apply(--layout-wrap);
-				@apply(--layout-horizontal);
-				@apply(--layout-center-justified);
+
+			paper-icon-button.delete {
+				/*--paper-icon-button-ink-color: black;*/
+				--paper-icon-button: {
+					width: 24px;
+					height: 24px;
+					background-color: white;
+					color: var(--paper-red-500);
+					border-radius: 3px;
+					padding: 0px;
+				}
+				--paper-icon-button-hover: {
+					background-color: var(--paper-red-500);
+					color: white;
+				}
 			}
+
+			paper-card:hover {
+				cursor: pointer;
+				transform: scale(1.02);
+			}
+
+			.loadingIndicator {
+				height: 40px;
+	      text-align: center;
+	    }
+
+			.loadingIndicator paper-spinner {
+				height: 20px;
+				margin-right: 10px;
+	      width: 20px;
+	    }
+
+			iron-list {
+				background-color: var(--paper-grey-200, #eee);
+		    padding-bottom: 16px;
+				margin: 0 16px;
+		  }
+
+			@media (max-width: 600px) {
+				iron-list {
+					margin-left: 0;
+					margin-right: 0;
+				}
+			}
+
+			iron-image {
+				/*--iron-image-width: 100%;*/
+				--iron-image-height: 100%;
+				/*max-width: 320px;*/
+				display: block;
+				height: 240px;
+				padding-right: 16px;
+			}
+
+			.text-box {
+				align-content: center;
+				/*max-height: calc(360px - 32px);*/
+				min-width: 207px;
+				padding: 0;
+				overflow: auto;
+				height: 240px;
+			}
+
 		</style>
 
 		
-		<firebase-query id="firebaseQueryPosts" path="/posts" app-name="uomgo" order-by-child="date" start-at="{{startAt}}" end-at="{{endAt}}" limit-to-first="[[limitToFirst]]" limit-to-last="[[limitToLast]]" data="{{dataDB}}"></firebase-query>
 
-		<array-filter items="[[dataDB]]" filtered="{{filtered}}" sort="_computeSort" filter="_filter"></array-filter>
+		<firebase-query id="firebaseQueryPosts" path="/posts" app-name="uomgo" data="{{dataDB}}" order-by-child="date"></firebase-query>
 
-		<div id="grid">
-			<template id="domRepeat" is="dom-repeat" items="[[filtered]]" as="post" target-framerate="60" on-dom-change="_renderRepeat">
+		<array-filter items="{{dataDB}}" filtered="{{_posts}}" filter="_filter" observe="enabled-date"></array-filter>
 
-				<div class="postItem">
-					<x-post-item post="[[post]]" user="[[user]]"></x-post-item>
-				</div>
-			</template>
 
-		</div>
+		<iron-scroll-threshold id="scrollTheshold" lower-threshold="500" on-lower-threshold="_loadMoreData">
+			<iron-list id="ironList" items="[[_posts]]" as="post" scroll-target="scrollThreshold" selection-enabled="">
+
+				<template id="templateList">
+					<div>
+						<template is="dom-if" if="[[post.enabled]]" on-dom-change="_onDomIfChange">
+							<paper-card tabindex$="[[tabIndex]]" elevation="4" on-tap="_showDialog">
+								<div class="heading paper-font-headline">
+									[[post.name]]
+								</div>
+							  <div class="card-content layout horizontal center-center wrap">
+									<div class="imageBox">
+
+										<template is="dom-if" if="[[post.image]]">
+											<iron-image class="postImage" src="[[post.image]]" contain="" preload="" position="center" on-loaded-changed="_onLoadedImage" align="center"></iron-image>
+										</template>
+
+										<template is="dom-if" if="[[post.video-id]]">
+											<iron-image class="video-id" src="https://i3.ytimg.com/vi/[[post.video-id]]/hqdefault.jpg" contain="" preload="" position="center" on-loaded-changed="_onLoadedImage" align="center"></iron-image>
+										</template>
+
+									</div>
+
+									<template is="dom-if" if="[[post.text]]">
+										<div class="text-box flex layout vertical shadow">
+											<div class="content" style="margin: auto 0;">
+												<template is="juicy-html" content$="[[post.text]]"></template>
+											</div>
+										</div>
+									</template>
+
+								</div>
+								<div class="card-actions layout horizontal center-justified wrap">
+									<div class="layout vertical center-center flex">
+										<moment-js date="[[post.date]]" format="DD.MM.YYYYг."></moment-js>
+									</div>
+									<div hidden$="[[!user]]">
+										<paper-icon-button class="edit" icon="image:edit"></paper-icon-button>
+										<paper-icon-button class="delete" icon="delete"></paper-icon-button>
+									</div>
+								</div>
+							</paper-card>
+						</template>
+					</div>
+
+				</template>
+			</iron-list>
+		</iron-scroll-threshold>
+
+		<x-post-dialog-item on-tap="_showDialog" data-item="[[dataItem]]" opened="{{opened}}"></x-post-dialog-item>
+
+	  <div class="loadingIndicator">
+			<paper-spinner-lite active="" alt="Загрузка ..."></paper-spinner-lite>
+	  </div>
 
 
 	</template>
@@ -42511,6 +42636,10 @@ v.RUNNING="running";v.PAUSED="paused";v.SUCCESS="success";v.CANCELED="canceled";
 					Polymer.NeonAnimationRunnerBehavior
 				],
 				properties: {
+					dataDB: {
+			      type: Object,
+			      observer: '_dataChanged'
+			    },
 					animationConfig: {
 						value: function() {
 							return {
@@ -42527,29 +42656,48 @@ v.RUNNING="running";v.PAUSED="paused";v.SUCCESS="success";v.CANCELED="canceled";
 							};
 						}
 					},
+					numberOfRecords: {
+						type: Number,
+						value: 10
+					},
+					youtubeStyle: {
+						type: String
+					},
 					user: {
 						type: Object
 					},
-					// limitToLast: {
-					// 	type: Number,
-					// 	notify: true
-					// },
-					// limitToFirst: {
-					// 	type: Number,
-					// 	notify: true,
-					// },
-					// startAt: {
-					// 	type: String,
-					// 	notify: true
-					// },
-					// endAt: {
-					// 	type: String,
-					// 	notify: true,
-					// }
+					dataItem: {
+						type: Object,
+						value: {}
+					},
+					opened: {
+						type: Boolean,
+						value: false
+					},
+					n: {
+						type: Number,
+						value: 0
+					}
 				},
 
 				ready: function() {
+					var ironList = this.querySelector('#ironList');
+					var scrollTheshold = this.querySelector('#scrollTheshold');
+					var headerPanelMain = document.querySelector('#headerPanelMain');
+				  scrollTheshold.scrollTarget = headerPanelMain.scroller;
+
+					this.youtubeStyle = "display: inherit !important;";
+					this.youtubeStyle += " background: url(";
+					this.youtubeStyle += app.baseUrl;
+					this.youtubeStyle += "images/youtube.png)";
+					this.youtubeStyle += " 50% 50% / cover no-repeat transparent;";
+					this.youtubeStyle += " background-size: cover;";
 				},
+
+				_dataChanged: function (newData, oldData) {
+					this.n += 1;
+					console.log(this.n, newData, oldData);
+			  },
 
 				_computeSort: function(a, b) {
 					if (a.date == b.date) {
@@ -42558,27 +42706,81 @@ v.RUNNING="running";v.PAUSED="paused";v.SUCCESS="success";v.CANCELED="canceled";
 					return a.date > b.date ? -1 : 1;
 				},
 
-				_filter: function(item) {
-					var todayDate = new Date();
-					var todayMM = todayDate.getMonth()+1; //January is 0!
-					var todayYYYY = todayDate.getFullYear();
-					var itemDate = new Date(item.date);
-					var itemMM = itemDate.getMonth()+1;
-					var itemYYYY = itemDate.getFullYear();
+				// _filter: function(item) {
+				// 	var todayDate = new Date();
+				// 	var todayMM = todayDate.getMonth()+1; //January is 0!
+				// 	var todayYYYY = todayDate.getFullYear();
+				// 	var itemDate = new Date(item.date);
+				// 	var itemMM = itemDate.getMonth()+1;
+				// 	var itemYYYY = itemDate.getFullYear();
+				// 	// if ( todayYYYY - itemYYYY === 1 && itemMM > 8 ) {
+				// 	// 	return true;
+				// 	// } else if ( todayYYYY - itemYYYY === 0 && itemMM < 6 ) {
+				// 	// 	return true;
+				// 	// } else return false;
+				//
+				// 	if ( itemYYYY === 2016 && itemMM === 10 ) {
+				// 		return true;
+				// 	} else return false;
+				// },
 
-					if ( (todayYYYY - itemYYYY === 1) && (itemMM > 8)  ) {
-						return true;
-					};
-					if ( (todayYYYY - itemYYYY === 0) && (itemMM < 6)  ) {
-						return true;
-					};
+				_filter: function(item, index) {
+					// var todayDate = new Date();
+					// var todayMM = todayDate.getMonth()+1; //January is 0!
+					// var todayYYYY = todayDate.getFullYear();
+					// var itemDate = new Date(item.date);
+					// var itemMM = itemDate.getMonth()+1;
+					// var itemYYYY = itemDate.getFullYear();
+					//
+					// if ( itemYYYY === 2016 ) {
+					// 	if ( itemMM === 11 ) {
+					// 		// console.log( typeof(itemDate) );
+					// 		return true;
+					// 	}
+					// } else {
+					// 	return false;
+					// }
 
+					// if (index < this.numberOfRecords) {
+						return true;
+					// }
 				},
 
 				_renderRepeat: function () {
 					var xPostItems = Polymer.dom(this.root).querySelectorAll('x-post-item');
 					this.animationConfig['entry'][0].nodes = Array.prototype.slice.call(xPostItems);
 					this.playAnimation('entry');
+				},
+
+				_onDomIfChange: function(e) {
+					// var post = this.$.ironList.modelForElement(e.currentTarget.parentElement).post;
+	        // this.$.ironList.updateSizeForItem(post);
+					// this.$.ironList.notifyResize();
+				},
+
+				_loadMoreData: function (e) {
+					// console.log("_loadMoreData", e.target);
+					// this.numberOfRecords += 1;
+					e.target.clearTriggers();
+				},
+
+				_onLoadedImage: function(e) {
+					if ( e.target.offsetParent ) {
+						if ( e.target.classList.contains("video-id") ) {
+							e.target.$$("#placeholder").style.cssText = this.youtubeStyle;
+						};
+						if ( e.target.offsetParent.querySelector('.juicy-box') ) {
+							// e.target.offsetParent.querySelector('.juicy-box').style.height = e.target.offsetHeight+'px';
+						};
+						// this.$.ironList.notifyResize();
+					};
+				},
+
+				_showDialog: function(e) {
+					if (e.model) {
+						this.dataItem = e.model.post;
+						this.opened = true;
+					};
 				},
 
 			});
@@ -45654,6 +45856,14 @@ v.RUNNING="running";v.PAUSED="paused";v.SUCCESS="success";v.CANCELED="canceled";
 							</google-youtube>
 						</div>
 					</template>
+
+          <template is="dom-if" if="[[dataItem.images]]">
+            <template is="dom-repeat" items="[[dataItem.images]]" as="image">
+              <div class="image-box" style="margin-top: 16px;">
+                <iron-image class="postImage" sizing="contain" src="[[image]]" preload=""></iron-image>
+              </div>
+            </template>
+          </template>
 
           <template is="dom-if" if="[[dataItem.text]]">
             <div class="post-text">
