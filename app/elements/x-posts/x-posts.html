@@ -127,7 +127,7 @@
 										data="{{dataDB}}"
 										order-by-child="date"></firebase-query> -->
 
-		<!-- <iron-ajax
+		<iron-ajax
 		    auto
 		    url="https://api.scorocode.ru/api/v1/data/find"
 				content-type="application/json"
@@ -137,7 +137,7 @@
 							    "coll" : "posts"}'
 		    handle-as="json"
 		    on-response="_handleResponse"
-		    debounce-duration="300"></iron-ajax> -->
+		    debounce-duration="300"></iron-ajax>
 
 		<array-filter
 				items="{{dataDB}}"
@@ -300,8 +300,6 @@
 					this.youtubeStyle += "images/youtube.png)";
 					this.youtubeStyle += " 50% 50% / cover no-repeat transparent;";
 					this.youtubeStyle += " background-size: cover;";
-
-					this._scInit();
 				},
 
 				_dataChanged: function (newData, oldData) {
@@ -396,29 +394,6 @@
 				_handleResponse: function(data) {
 					console.log( data.detail.response );
 				},
-
-				_scInit: function() {
-					var sc = require('scorocode');
-					sc.Init({
-					    ApplicationID: "671087465f924714b2f7e212f5d68f55",
-					    JavaScriptKey: "9c386463a16541ffbf0740adb7c35cf8",
-							MasterKey: "18a2419c9b6e4d6e8870836dd7d7e23c"
-					});
-					// Создадим новый экземпляр запроса к коллекции items.
-					sc.Query("items");
-					// Запросим все объекты коллекции
-					data.find()
-					    // Обработка успешного выполнения запроса
-					    .then((finded) =>{
-					        var util = require('util');
-					        //Выведем полученные данные в консоль
-					        console.log(util.inspect(finded, {showHidden: false, depth: null}))
-					    })
-					    // Обработка ошибки
-					    .catch((err)=>{
-					        console.log(err)
-					    });
-				}
 
 			});
 	})();
