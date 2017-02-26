@@ -130,7 +130,8 @@
       attached: function() {
       },
 			_dialogClosed: function(e, detail) {
-        var youtube = e.target.querySelector('#youtube');
+        var element = e.target;
+        var youtube = element.querySelector('#youtube');
         if ( youtube ) {
           youtube.pause();
         }
