@@ -72,12 +72,12 @@
 				transform: scale(1.02);
 			}
 
-			.loadingIndicator {
+			#loadingIndicator {
 				height: 40px;
 	      text-align: center;
 	    }
 
-			.loadingIndicator paper-spinner {
+			#loadingIndicator paper-spinner {
 				height: 20px;
 				margin-right: 10px;
 	      width: 20px;
@@ -201,7 +201,7 @@
 			</iron-list>
 		</iron-scroll-threshold>
 
-	  <div class="loadingIndicator">
+	  <div id="loadingIndicator">
 			<paper-spinner-lite active
 										 alt="Загрузка ..."></paper-spinner-lite>
 	  </div>
@@ -298,14 +298,21 @@
 
 				_loadMoreData: function (e) {
 					var data;
-					this.limit += 1;
+					var length;
+					var loadingIndicator = this.$.loadingIndicator;
+
+					loadingIndicator.hidden = false;
+					// console.log(length,this.limit);
 					data = new this.sc.Query("posts").limit(this.limit).descending("date");
 					data.find()
 				    .then((finded)=>{
-								this.dataDB = finded.result;
+							this.dataDB = finded.result;
+							this.limit += 1;
+							console.log(finded.result.length,this.limit);
+							loadingIndicator.hidden = true;
 				    })
 				    .catch((err)=>{
-				        console.log(err)
+			        console.log(err)
 				    });
 					e.target.clearTriggers();
 				},
