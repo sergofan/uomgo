@@ -301,20 +301,31 @@
 					var length;
 					var loadingIndicator = this.$.loadingIndicator;
 
-					loadingIndicator.hidden = false;
-					// console.log(length,this.limit);
-					data = new this.sc.Query("posts").limit(this.limit).descending("date");
-					data.find()
-				    .then((finded)=>{
-							this.dataDB = finded.result;
+					// this.limit += 1;
+					if (this.dataDB) {
+						if (this.limit <= this.dataDB.length) {
 							this.limit += 1;
-							console.log(finded.result.length,this.limit);
-							loadingIndicator.hidden = true;
-				    })
-				    .catch((err)=>{
-			        console.log(err)
-				    });
+						}
+					} else {
+						this.limit = 1
+					}
+
+					data = new this.sc.Query("posts").limit(this.limit).descending("date");
+
+					this.debounce('dataFind', function() {
+						loadingIndicator.hidden = false;
+						data.find()
+					    .then((finded)=>{
+								this.dataDB = finded.result;
+								// console.log(finded.result.length,this.limit);
+								loadingIndicator.hidden = true;
+					    })
+					    .catch((err)=>{
+				        console.log(err)
+					    });
+				  }, 300);
 					e.target.clearTriggers();
+
 				},
 
 				_onLoadedImage: function(e) {
