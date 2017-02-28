@@ -116,21 +116,10 @@
 
 		</style>
 
-		<!-- <iron-ajax
-		    auto
-		    url="https://api.scorocode.ru/api/v1/data/find"
-		    params='{ "app" : "671087465f924714b2f7e212f5d68f55",
-									"cli" : "9c386463a16541ffbf0740adb7c35cf8",
-									"sess" : "false"
-							    "coll" : "posts"}'
-				body='content-type=application/json'
-				last-response="{{ajaxResponse}}"
-		    debounce-duration="300"></iron-ajax> -->
-
-
 		<iron-scroll-threshold id="scrollTheshold"
 												   lower-threshold="500"
 												   on-lower-threshold="_loadMoreData">
+
 			<iron-list id="ironList"
 								 items="[[dataDB]]"
 								 as="post"
@@ -296,36 +285,33 @@
 					// this.$.ironList.notifyResize();
 				},
 
-				_loadMoreData: function (e) {
+				_dataFind: function() {
 					var data;
-					var length;
 					var loadingIndicator = this.$.loadingIndicator;
+					loadingIndicator.hidden = false;
+					data = new this.sc.Query("posts").limit(this.limit).descending("date");
+					data.find()
+						.then((finded)=>{
+							this.dataDB = finded.result;
+							loadingIndicator.hidden = true;
+						})
+						.catch((err)=>{
+							console.log(err)
+						});
+				},
 
-					// this.limit += 1;
+				_loadMoreData: function (e) {
 					if (this.dataDB) {
 						if (this.limit <= this.dataDB.length) {
+							// console.log('limit -> ' ,this.limit, 'length -> ', this.dataDB.length);
+							this.debounce('dataFind', this._dataFind, 300);
 							this.limit += 1;
 						}
-					} else {
-						this.limit = 1
+					} else if (this.limit === 0) {
+						this.limit = 2
+						this.debounce('_dataFind', this._dataFind, 300);
 					}
-
-					data = new this.sc.Query("posts").limit(this.limit).descending("date");
-
-					this.debounce('dataFind', function() {
-						loadingIndicator.hidden = false;
-						data.find()
-					    .then((finded)=>{
-								this.dataDB = finded.result;
-								// console.log(finded.result.length,this.limit);
-								loadingIndicator.hidden = true;
-					    })
-					    .catch((err)=>{
-				        console.log(err)
-					    });
-				  }, 300);
 					e.target.clearTriggers();
-
 				},
 
 				_onLoadedImage: function(e) {
@@ -336,6 +322,7 @@
 						if ( e.target.offsetParent.querySelector('.juicy-box') ) {
 							// e.target.offsetParent.querySelector('.juicy-box').style.height = e.target.offsetHeight+'px';
 						};
+						// this.$.ironList.fire('iron-resize');
 						// this.$.ironList.notifyResize();
 					};
 				},
