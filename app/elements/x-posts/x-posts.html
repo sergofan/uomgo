@@ -283,6 +283,12 @@
 					// var post = this.$.ironList.modelForElement(e.currentTarget.parentElement).post;
 	        // this.$.ironList.updateSizeForItem(post);
 					// this.$.ironList.notifyResize();
+					// var xPostItems = Polymer.dom(this.root).querySelectorAll('paper-card');
+					// console.log(e.target.parentElement);
+					// this.animationConfig['entry'][0].nodes = Array.prototype.slice.call(xPostItems);
+					// this.playAnimation('entry');
+					console.log(this.animationConfig['entry'][0]);
+					// this.playAnimation('entry');
 				},
 
 				_dataFind: function() {
@@ -301,16 +307,17 @@
 				},
 
 				_loadMoreData: function (e) {
+					if (this.limit === 0) {
+						this.limit = 2
+						this.debounce('dataFind', this._dataFind, 300);
+					};
 					if (this.dataDB) {
 						if (this.limit <= this.dataDB.length) {
 							// console.log('limit -> ' ,this.limit, 'length -> ', this.dataDB.length);
 							this.debounce('dataFind', this._dataFind, 300);
 							this.limit += 1;
-						}
-					} else if (this.limit === 0) {
-						this.limit = 2
-						this.debounce('_dataFind', this._dataFind, 300);
-					}
+						};
+					};
 					e.target.clearTriggers();
 				},
 
