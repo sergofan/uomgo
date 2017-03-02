@@ -1,6 +1,5 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <script src="../../scripts/scorocode.min.js"></script>
-<!-- <script data-main="scripts/main" src="../../scripts/require.js"></script> -->
 
 <dom-module id="x-posts">
 	<template>
@@ -8,68 +7,6 @@
 			:host {
 				display: block;
 				word-wrap: break-word;
-			}
-
-			paper-card {
-				transition: all 250ms ease-out;
-				--paper-card: {
-					@apply(--layout-vertical);
-					background-color: white;
-					border: 1px solid #ddd;
-					border-radius: 8px;
-					/*margin: 16px 16px 0 16px;*/
-					/*margin: 0 16px 16px;*/
-					margin-bottom: 16px;
-					padding: 16px;
-					text-align: center;
-				};
-				--paper-card-header-text: {
-					text-align: center;
-				};
-				--paper-card-content: {
-					text-align: center;
-				};
-				--paper-card-actions: {
-					text-align: center;
-					padding: 16px 16px 0;
-				};
-			}
-
-			paper-icon-button.edit {
-				/*--paper-icon-button-ink-color: white;*/
-				--paper-icon-button: {
-					width: 24px;
-					height: 24px;
-					background-color: white;
-					color: var(--paper-green-a700);
-					border-radius: 3px;
-					padding: 0px;
-				}
-				--paper-icon-button-hover: {
-					background-color: var(--paper-green-a400);
-					color: black;
-				}
-			}
-
-			paper-icon-button.delete {
-				/*--paper-icon-button-ink-color: black;*/
-				--paper-icon-button: {
-					width: 24px;
-					height: 24px;
-					background-color: white;
-					color: var(--paper-red-500);
-					border-radius: 3px;
-					padding: 0px;
-				}
-				--paper-icon-button-hover: {
-					background-color: var(--paper-red-500);
-					color: white;
-				}
-			}
-
-			paper-card:hover {
-				cursor: pointer;
-				transform: scale(1.02);
 			}
 
 			#loadingIndicator {
@@ -96,24 +33,6 @@
 				}
 			}
 
-			iron-image {
-				/*--iron-image-width: 100%;*/
-				--iron-image-height: 100%;
-				/*max-width: 320px;*/
-				display: block;
-				height: 240px;
-				padding-right: 16px;
-			}
-
-			.text-box {
-				align-content: center;
-				/*max-height: calc(360px - 32px);*/
-				min-width: 207px;
-				padding: 0;
-				overflow: auto;
-				height: 240px;
-			}
-
 		</style>
 
 		<iron-scroll-threshold id="scrollTheshold"
@@ -129,60 +48,9 @@
 				<template id="templateList">
 					<div>
 						<template is="dom-if" if="[[post.enabled]]" on-dom-change="_onDomIfChange">
-							<paper-card tabindex$="[[tabIndex]]"
-													elevation="4"
-													on-tap="_addDialog">
-								<div class="heading paper-font-headline">
-									[[post.name]]
-								</div>
-							  <div class="card-content layout horizontal center-center wrap">
-									<div class="imageBox">
-
-										<template is="dom-if"
-															if="[[post.image]]">
-											<iron-image class="postImage"
-																	src="[[post.image]]"
-																	contain	preload
-																	position="center"
-																	on-loaded-changed="_onLoadedImage"
-																	align="center"></iron-image>
-										</template>
-
-										<template is="dom-if"
-															if="[[post.video_id]]">
-											<iron-image class="video_id"
-																	src="https://i3.ytimg.com/vi/[[post.video_id]]/hqdefault.jpg"
-																	contain	preload
-																	position="center"
-																	on-loaded-changed="_onLoadedImage"
-																	align="center"></iron-image>
-										</template>
-
-									</div>
-
-									<template is="dom-if"
-														if="[[post.text]]">
-										<div class="text-box flex layout vertical shadow">
-											<div class="content" style="margin: auto 0;">
-												<template is="juicy-html"
-												content$="[[post.text]]"></template>
-											</div>
-										</div>
-									</template>
-
-								</div>
-								<div class="card-actions layout horizontal center-justified wrap">
-									<div class="layout vertical center-center flex">
-										<moment-js date="[[post.date]]" format="DD.MM.YYYYг."></moment-js>
-									</div>
-									<div hidden$="[[!user]]">
-										<paper-icon-button class="edit"
-																			 icon="image:edit"></paper-icon-button>
-										<paper-icon-button class="delete"
-																			 icon="delete"></paper-icon-button>
-									</div>
-								</div>
-							</paper-card>
+							<x-post-item post="[[post]]"
+													 dialog-visible="{{dialogVisible}}"
+													 data-item="{{dataItem}}"></x-post-item>
 						</template>
 					</div>
 
@@ -210,6 +78,10 @@
 			      type: Array,
 			      observer: '_dataChanged'
 			    },
+					dataItem: {
+						type: Object,
+						value: {}
+					},
 					animationConfig: {
 						value: function() {
 							return {
@@ -226,11 +98,12 @@
 							};
 						}
 					},
-					youtubeStyle: {
-						type: String
-					},
 					user: {
 						type: Object
+					},
+					dialogVisible: {
+						type: Boolean,
+						observer: '_toggleDialog'
 					},
 					sc: {
 						type: Object,
@@ -247,14 +120,6 @@
 					var scrollTheshold = this.querySelector('#scrollTheshold');
 					var headerPanelMain = document.querySelector('#headerPanelMain');
 				  scrollTheshold.scrollTarget = headerPanelMain.scroller;
-
-					this.youtubeStyle = "display: inherit !important;";
-					this.youtubeStyle += " background: url(";
-					this.youtubeStyle += app.baseUrl;
-					this.youtubeStyle += "images/youtube.png)";
-					this.youtubeStyle += " 50% 50% / cover no-repeat transparent;";
-					this.youtubeStyle += " background-size: cover;";
-
 					this.sc.Init({
 					    ApplicationID: "671087465f924714b2f7e212f5d68f55",
 					    JavaScriptKey: "9c386463a16541ffbf0740adb7c35cf8",
@@ -265,13 +130,6 @@
 				_dataChanged: function (newData, oldData) {
 					// console.log(newData, oldData);
 			  },
-
-				_computeSort: function(a, b) {
-					if (a.date == b.date) {
-						return 0;
-					}
-					return a.date > b.date ? -1 : 1;
-				},
 
 				_renderRepeat: function () {
 					var xPostItems = Polymer.dom(this.root).querySelectorAll('x-post-item');
@@ -307,7 +165,6 @@
 					};
 					if (this.dataDB) {
 						if (this.limit <= this.dataDB.length) {
-							// console.log('limit -> ' ,this.limit, 'length -> ', this.dataDB.length);
 							this.debounce('dataFind', this._dataFind, 300);
 							this.limit += 1;
 						};
@@ -315,26 +172,12 @@
 					e.target.clearTriggers();
 				},
 
-				_onLoadedImage: function(e) {
-					if ( e.target.offsetParent ) {
-						if ( e.target.classList.contains("video_id") ) {
-							e.target.$$("#placeholder").style.cssText = this.youtubeStyle;
-						};
-						if ( e.target.offsetParent.querySelector('.juicy-box') ) {
-							// e.target.offsetParent.querySelector('.juicy-box').style.height = e.target.offsetHeight+'px';
-						};
-						// this.$.ironList.fire('iron-resize');
-						// this.$.ironList.notifyResize();
-					};
-				},
-
-				_addDialog: function (e) {
-					var dataItem = e.model.post
+				_addDialog: function () {
 					this.importHref(this.resolveUrl('../x-post-dialog-item/x-post-dialog-item.html'), function (e) {
 						var importDialog = document.createElement("x-post-dialog-item");
 						importDialog.id = "dialog";
-						importDialog.dataItem = dataItem;
-						importDialog.opened = true;
+						importDialog.dataItem = this.dataItem;
+						importDialog.setAttribute("dialog-visible", "{{this.dialogVisible}}");
 						this.appendChild(importDialog);
 					});
 				},
@@ -343,6 +186,15 @@
 					var element = this.$.dialog;
 					if (element) {
 						element.parentNode.removeChild(element);
+					}
+				},
+
+				_toggleDialog: function(e) {
+					console.log(this.dialogVisible);
+					if (this.dialogVisible) {
+						this._addDialog();
+					} else {
+						this._removeDialog();
 					}
 				}
 

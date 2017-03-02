@@ -42,7 +42,7 @@
   								exit-animation="fade-out-animation"
   								with-backdrop
                   restore-focus-on-close
-                  opened="{{opened}}"
+                  opened="{{dialogVisible}}"
 									on-iron-overlay-closed="_dialogClosed">
       <div class="header layout horizontal center-center">
         <div class="paper-font-headline flex">[[dataItem.name]]</div>
@@ -119,26 +119,35 @@
           value: {},
           notify: true
         },
-        opened: {
+        dialogVisible: {
           type: Boolean,
-          value: false,
+          reflectToAttribute: true,
           notify: true
         }
       },
+
       ready: function() {
+        console.log('ready -> ', this.dialogVisible);
       },
+
       attached: function() {
+        console.log('attached -> ',this.dialogVisible);
       },
-			_dialogClosed: function(e, detail) {
-        var element = e.target;
-        var youtube = element.querySelector('#youtube');
-        if ( youtube ) {
-          youtube.pause();
-        }
+
+      _dialogClosed: function(e, detail) {
+        // var element = e.target;
+        // var youtube = element.querySelector('#youtube');
+        // if ( youtube ) {
+        //   youtube.pause();
+        // };
+        console.log(e.target.parentElement);
 			},
+
       _close: function() {
+        // this.dialogVisible = false;
         this.$.animatedDialog.close();
       }
+
     });
   })();
   </script>
