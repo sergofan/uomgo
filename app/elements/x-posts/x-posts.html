@@ -174,10 +174,12 @@
 
 				_addDialog: function () {
 					this.importHref(this.resolveUrl('../x-post-dialog-item/x-post-dialog-item.html'), function (e) {
-						var importDialog = document.createElement("x-post-dialog-item");
+						var importDialog;
+						importDialog = document.createElement("x-post-dialog-item");
 						importDialog.id = "dialog";
 						importDialog.dataItem = this.dataItem;
-						importDialog.setAttribute("dialog-visible", "{{this.dialogVisible}}");
+						importDialog.setAttribute("dialog-visible", this.dialogVisible);
+						console.log("importDialog -> ",importDialog);
 						this.appendChild(importDialog);
 					});
 				},
