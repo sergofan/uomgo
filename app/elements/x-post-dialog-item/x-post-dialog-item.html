@@ -121,31 +121,32 @@
         },
         dialogVisible: {
           type: Boolean,
-          reflectToAttribute: true,
+          observer: '_toggleDialog',
           notify: true
         }
       },
 
-      ready: function() {
-        console.log('ready -> ', this.dialogVisible);
-      },
-
-      attached: function() {
-        console.log('attached -> ',this.dialogVisible);
-      },
-
       _dialogClosed: function(e, detail) {
-        // var element = e.target;
-        // var youtube = element.querySelector('#youtube');
-        // if ( youtube ) {
-        //   youtube.pause();
-        // };
-        console.log(e.target.parentElement);
+        var element = e.target;
+        var youtube = element.querySelector('#youtube');
+        if ( youtube ) {
+          youtube.pause();
+        };
 			},
 
       _close: function() {
-        // this.dialogVisible = false;
         this.$.animatedDialog.close();
+      },
+
+      _toggleDialog: function(e) {
+        console.log('x-post-dialog-item -> ',this.dialogVisible);
+        if (this.dialogVisible) {
+          this.dialogVisible = true;
+          this.$.animatedDialog.open();
+        } else {
+          this.dialogVisible = false;
+          this.$.animatedDialog.close();
+        }
       }
 
     });

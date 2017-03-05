@@ -92,7 +92,7 @@
 
 		<paper-card tabindex$="[[tabIndex]]"
 								elevation="4"
-								on-tap="_addDialog">
+								on-tap="_openDialog">
 			<div class="heading paper-font-headline">
 				[[post.name]]
 			</div>
@@ -166,8 +166,8 @@
 				},
 				dialogVisible: {
 					type: Boolean,
-					value: false,
-					notify: true
+					notify: true,
+					observer: 'ttt'
 				},
 				youtubeStyle: {
 					type: String
@@ -214,14 +214,12 @@
 				};
 			},
 
-			_addDialog: function() {
+			_openDialog: function() {
 				this.dialogVisible = true;
-				this.dataItem = this.post;
 			},
 
-			_removeDialog: function() {
-				this.dialogVisible = false;
-				this.dataItem = {};
+			ttt: function() {
+				console.log('x-post -> ',this.dialogVisible);
 			}
 
 		});

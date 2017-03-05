@@ -49,7 +49,6 @@
 					<div>
 						<template is="dom-if" if="[[post.enabled]]" on-dom-change="_onDomIfChange">
 							<x-post-item post="[[post]]"
-													 dialog-visible="{{dialogVisible}}"
 													 data-item="{{dataItem}}"></x-post-item>
 						</template>
 					</div>
@@ -62,6 +61,10 @@
 			<paper-spinner-lite active
 										 alt="Загрузка ..."></paper-spinner-lite>
 	  </div>
+
+		<x-post-dialog-item id = "dialog"
+												dataItem = "{{dataItem}}"
+												dialog-visible = "{{dialogVisible}}"></x-post-dialog-item>
 
 	</template>
 	<script>
@@ -103,7 +106,9 @@
 					},
 					dialogVisible: {
 						type: Boolean,
-						observer: '_toggleDialog'
+						value: false,
+						notify: true,
+						observer: 'ttt'
 					},
 					sc: {
 						type: Object,
@@ -172,32 +177,8 @@
 					e.target.clearTriggers();
 				},
 
-				_addDialog: function () {
-					this.importHref(this.resolveUrl('../x-post-dialog-item/x-post-dialog-item.html'), function (e) {
-						var importDialog;
-						importDialog = document.createElement("x-post-dialog-item");
-						importDialog.id = "dialog";
-						importDialog.dataItem = this.dataItem;
-						importDialog.setAttribute("dialog-visible", this.dialogVisible);
-						console.log("importDialog -> ",importDialog);
-						this.appendChild(importDialog);
-					});
-				},
-
-				_removeDialog: function () {
-					var element = this.$.dialog;
-					if (element) {
-						element.parentNode.removeChild(element);
-					}
-				},
-
-				_toggleDialog: function(e) {
-					console.log(this.dialogVisible);
-					if (this.dialogVisible) {
-						this._addDialog();
-					} else {
-						this._removeDialog();
-					}
+				ttt: function() {
+					console.log('x-posts -> ',this.dialogVisible);
 				}
 
 			});
