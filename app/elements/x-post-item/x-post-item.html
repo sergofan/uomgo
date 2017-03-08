@@ -145,7 +145,7 @@
 			</div>
 		</paper-card>
 
-	</template>
+</template>
 	<script>
 	(function() {
 		'use strict';
@@ -161,25 +161,18 @@
 					type: Object
 				},
 				post: {
-					type: Object,
-					notify: true
+					type: Object
 				},
 				dialogVisible: {
 					type: Boolean,
-					notify: true,
-					observer: 'ttt'
+					notify: true
 				},
 				youtubeStyle: {
 					type: String
-				},
-				dataItem: {
-					type: Object,
-					notify: true
-				},
+				}
 			},
 
 			ready: function() {
-				this.dataItem = this.post;
 				this.youtubeStyle = "display: inherit !important;";
 				this.youtubeStyle += " background: url(";
 				this.youtubeStyle += app.baseUrl;
@@ -216,10 +209,6 @@
 
 			_openDialog: function() {
 				this.dialogVisible = true;
-			},
-
-			ttt: function() {
-				console.log('x-post -> ',this.dialogVisible);
 			}
 
 		});

@@ -45,7 +45,7 @@
                   opened="{{dialogVisible}}"
 									on-iron-overlay-closed="_dialogClosed">
       <div class="header layout horizontal center-center">
-        <div class="paper-font-headline flex">[[dataItem.name]]</div>
+        <div class="paper-font-headline flex">[[post.name]]</div>
         <paper-icon-button icon="close"
                            title="Закрыть"
                            on-tap="_close"></paper-icon-button>
@@ -55,20 +55,20 @@
         <div class="scrollable-box layout vertical center-center">
 
 					<template is="dom-if"
-      							if="[[dataItem.image]]">
+      							if="[[post.image]]">
 						<div class="image-box">
 	      			<iron-image class="postImage"
-	      									src="[[dataItem.image]]"
+	      									src="[[post.image]]"
 	      									sizing="contain"
 	      									preload></iron-image>
 						</div>
       		</template>
 
-					<template  is="dom-if" if="[[dataItem.video_id]]">
+					<template  is="dom-if" if="[[post.video_id]]">
 						<div class="video-box layout vertical center-center">
 							<google-youtube
                 id="youtube"
-								video-id="[[dataItem.video_id]]"
+								video-id="[[post.video_id]]"
                 width="704px"
                 height="396px"
 								rel="0"
@@ -80,9 +80,9 @@
 					</template>
 
           <template is="dom-if"
-                    if="[[dataItem.images]]">
+                    if="[[post.images]]">
             <template is="dom-repeat"
-                      items="[[dataItem.images]]"
+                      items="[[post.images]]"
                       as="image">
               <div class="image-box" style="margin-top: 16px;">
                 <iron-image class="postImage"
@@ -94,10 +94,10 @@
           </template>
 
           <template is="dom-if"
-      							if="[[dataItem.text]]">
+      							if="[[post.text]]">
             <div class="post-text">
 							<template is="juicy-html"
-												content$="[[dataItem.text]]"></template>
+												content$="[[post.text]]"></template>
 						</div>
       		</template>
 
@@ -114,10 +114,8 @@
     Polymer({
       is: 'x-post-dialog-item',
       properties: {
-        dataItem: {
-          type: Object,
-          value: {},
-          notify: true
+        post: {
+          type: Object
         },
         dialogVisible: {
           type: Boolean,
@@ -126,7 +124,11 @@
         }
       },
 
-      _dialogClosed: function(e, detail) {
+      ready: function() {
+        console.log(this.post);
+      },
+
+      _dialogClosed: function(e) {
         var element = e.target;
         var youtube = element.querySelector('#youtube');
         if ( youtube ) {
@@ -139,12 +141,9 @@
       },
 
       _toggleDialog: function(e) {
-        console.log('x-post-dialog-item -> ',this.dialogVisible);
         if (this.dialogVisible) {
-          this.dialogVisible = true;
           this.$.animatedDialog.open();
         } else {
-          this.dialogVisible = false;
           this.$.animatedDialog.close();
         }
       }

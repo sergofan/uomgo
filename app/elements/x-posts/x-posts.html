@@ -49,7 +49,7 @@
 					<div>
 						<template is="dom-if" if="[[post.enabled]]" on-dom-change="_onDomIfChange">
 							<x-post-item post="[[post]]"
-													 data-item="{{dataItem}}"></x-post-item>
+																dialog-visible = "{{dialogVisible}}"></x-post-item>
 						</template>
 					</div>
 
@@ -63,7 +63,7 @@
 	  </div>
 
 		<x-post-dialog-item id = "dialog"
-												dataItem = "{{dataItem}}"
+												post = "[[post]]"
 												dialog-visible = "{{dialogVisible}}"></x-post-dialog-item>
 
 	</template>
@@ -77,14 +77,6 @@
 					Polymer.NeonAnimationRunnerBehavior
 				],
 				properties: {
-					dataDB: {
-			      type: Array,
-			      observer: '_dataChanged'
-			    },
-					dataItem: {
-						type: Object,
-						value: {}
-					},
 					animationConfig: {
 						value: function() {
 							return {
@@ -101,14 +93,16 @@
 							};
 						}
 					},
+					dataDB: {
+			      type: Array,
+			      observer: '_dataChanged'
+			    },
+					post: {
+						type: Object,
+						value: {}
+					},
 					user: {
 						type: Object
-					},
-					dialogVisible: {
-						type: Boolean,
-						value: false,
-						notify: true,
-						observer: 'ttt'
 					},
 					sc: {
 						type: Object,
@@ -117,6 +111,9 @@
 					limit: {
 						type: Number,
 						value: 0
+					},
+					dialogVisible: {
+						type: Boolean
 					}
 				},
 
@@ -175,10 +172,6 @@
 						};
 					};
 					e.target.clearTriggers();
-				},
-
-				ttt: function() {
-					console.log('x-posts -> ',this.dialogVisible);
 				}
 
 			});
