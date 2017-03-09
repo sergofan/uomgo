@@ -163,6 +163,10 @@
 				post: {
 					type: Object
 				},
+				dataItem: {
+					type: Object,
+					notify: true
+				},
 				dialogVisible: {
 					type: Boolean,
 					notify: true
@@ -207,7 +211,8 @@
 				};
 			},
 
-			_openDialog: function() {
+			_openDialog: function(e) {
+				this.dataItem = document.querySelector('iron-list').modelForElement(e.target).post;
 				this.dialogVisible = true;
 			}
 

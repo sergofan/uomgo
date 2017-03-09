@@ -48,8 +48,9 @@
 				<template id="templateList">
 					<div>
 						<template is="dom-if" if="[[post.enabled]]" on-dom-change="_onDomIfChange">
-							<x-post-item post="[[post]]"
-																dialog-visible = "{{dialogVisible}}"></x-post-item>
+							<x-post-item	post="[[post]]"
+														data-item = "{{dataItem}}"
+														dialog-visible = "{{dialogVisible}}"></x-post-item>
 						</template>
 					</div>
 
@@ -63,7 +64,7 @@
 	  </div>
 
 		<x-post-dialog-item id = "dialog"
-												post = "[[post]]"
+												data-item = "[[dataItem]]"
 												dialog-visible = "{{dialogVisible}}"></x-post-dialog-item>
 
 	</template>
@@ -77,27 +78,15 @@
 					Polymer.NeonAnimationRunnerBehavior
 				],
 				properties: {
-					animationConfig: {
-						value: function() {
-							return {
-								'entry': [{
-									name: 'cascaded-animation',
-									animation: 'scale-up-animation',
-									node: this,
-									nodeDelay: 50,
-									timing: {
-										duration: 150,
-										delay: 0
-									}
-								}]
-							};
-						}
-					},
 					dataDB: {
 			      type: Array,
 			      observer: '_dataChanged'
 			    },
 					post: {
+						type: Object,
+						value: {}
+					},
+					dataItem: {
 						type: Object,
 						value: {}
 					},
