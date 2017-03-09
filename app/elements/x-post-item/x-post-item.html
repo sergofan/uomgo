@@ -145,6 +145,11 @@
 			</div>
 		</paper-card>
 
+		<x-post-dialog-item id="dialog"
+												post="[[post]]"
+												dialog-visible="{{dialogVisible}}"
+												keep-with-parent=true></x-post-dialog-item>
+
 </template>
 	<script>
 	(function() {
@@ -162,10 +167,6 @@
 				},
 				post: {
 					type: Object
-				},
-				dataItem: {
-					type: Object,
-					notify: true
 				},
 				dialogVisible: {
 					type: Boolean,
@@ -212,7 +213,7 @@
 			},
 
 			_openDialog: function(e) {
-				this.dataItem = document.querySelector('iron-list').modelForElement(e.target).post;
+				// this.dataItem = document.querySelector('iron-list').modelForElement(e.target).post;
 				this.dialogVisible = true;
 			}
 

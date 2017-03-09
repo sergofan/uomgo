@@ -48,12 +48,9 @@
 				<template id="templateList">
 					<div>
 						<template is="dom-if" if="[[post.enabled]]" on-dom-change="_onDomIfChange">
-							<x-post-item	post="[[post]]"
-														data-item = "{{dataItem}}"
-														dialog-visible = "{{dialogVisible}}"></x-post-item>
+							<x-post-item	post="[[post]]"></x-post-item>
 						</template>
 					</div>
-
 				</template>
 			</iron-list>
 		</iron-scroll-threshold>
@@ -62,10 +59,6 @@
 			<paper-spinner-lite active
 										 alt="Загрузка ..."></paper-spinner-lite>
 	  </div>
-
-		<x-post-dialog-item id = "dialog"
-												data-item = "[[dataItem]]"
-												dialog-visible = "{{dialogVisible}}"></x-post-dialog-item>
 
 	</template>
 	<script>
@@ -83,10 +76,6 @@
 			      observer: '_dataChanged'
 			    },
 					post: {
-						type: Object,
-						value: {}
-					},
-					dataItem: {
 						type: Object,
 						value: {}
 					},
