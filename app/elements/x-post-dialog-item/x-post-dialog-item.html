@@ -37,7 +37,7 @@
 			}
     </style>
 
-    <paper-dialog id="animatedDialog"
+    <paper-dialog id="dialog"
   								entry-animation="scale-up-animation"
   								exit-animation="fade-out-animation"
                   restore-focus-on-close
@@ -128,11 +128,12 @@
       },
 
       ready: function() {
+        console.log(this.keepWithParent);
+
         if (this.keepWithParent !== true) {
           document.querySelector('body').appendChild(this);
-        } else {
-          // document.querySelector('body').appendChild(this);
-        }
+        };
+
       },
 
       _dialogClosed: function(e) {
@@ -144,14 +145,14 @@
 			},
 
       _close: function() {
-        this.$.animatedDialog.close();
+        this.$.dialog.close();
       },
 
       _toggleDialog: function(e) {
 				if (this.dialogVisible) {
-					this.$.animatedDialog.open();
+					this.$.dialog.open();
         } else {
-          this.$.animatedDialog.close();
+          this.$.dialog.close();
         }
       }
 
