@@ -118,8 +118,8 @@
           type: Object
         },
         keepWithParent: {
-          type: Boolean
-        },
+					type: Boolean
+				},
         dialogVisible: {
           type: Boolean,
           observer: '_toggleDialog',
@@ -128,7 +128,7 @@
       },
 
       ready: function() {
-        console.log(this.keepWithParent);
+        console.log(this.keepWithParent,typeof(this.keepWithParent));
 
         if (this.keepWithParent !== true) {
           document.querySelector('body').appendChild(this);

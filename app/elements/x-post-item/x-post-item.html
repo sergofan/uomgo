@@ -147,7 +147,8 @@
 
 		<x-post-dialog-item id="dialog"
 												post="[[post]]"
-												dialog-visible="{{dialogVisible}}"></x-post-dialog-item>
+												dialog-visible="{{dialogVisible}}"
+												keep-with-parent=isFalse></x-post-dialog-item>
 
 </template>
 	<script>
@@ -163,6 +164,10 @@
 			properties: {
 				user: {
 					type: Object
+				},
+				ttt: {
+					type: Boolean,
+					value: false
 				},
 				post: {
 					type: Object
