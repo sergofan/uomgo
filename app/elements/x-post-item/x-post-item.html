@@ -145,10 +145,10 @@
 			</div>
 		</paper-card>
 
-		<x-post-dialog-item id="dialog"
+		<!-- <x-post-dialog-item id="dialog"
 												post="[[post]]"
 												dialog-visible="{{dialogVisible}}"
-												keep-with-parent=isFalse></x-post-dialog-item>
+												keep-with-parent="false"></x-post-dialog-item> -->
 
 </template>
 	<script>
@@ -164,10 +164,6 @@
 			properties: {
 				user: {
 					type: Object
-				},
-				ttt: {
-					type: Boolean,
-					value: false
 				},
 				post: {
 					type: Object

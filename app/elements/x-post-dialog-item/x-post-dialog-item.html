@@ -40,7 +40,6 @@
     <paper-dialog id="dialog"
   								entry-animation="scale-up-animation"
   								exit-animation="fade-out-animation"
-                  restore-focus-on-close
                   opened="{{dialogVisible}}"
 									on-iron-overlay-closed="_dialogClosed"
 									with-backdrop>
@@ -118,7 +117,7 @@
           type: Object
         },
         keepWithParent: {
-					type: Boolean
+					type: Object
 				},
         dialogVisible: {
           type: Boolean,
@@ -128,12 +127,20 @@
       },
 
       ready: function() {
-        console.log(this.keepWithParent,typeof(this.keepWithParent));
+        var dialog = this.querySelector("#dialog");
+        dialog.addEventListener('opened-changed', function() {
+          if(dialog.opened) {
+            Polymer.IronDropdownScrollManager.pushScrollLock(dialog);
+          } else {
+            Polymer.IronDropdownScrollManager.removeScrollLock(dialog);
+          }
+        });
+      },
 
+      attached: function() {
         if (this.keepWithParent !== true) {
           document.querySelector('body').appendChild(this);
         };
-
       },
 
       _dialogClosed: function(e) {
