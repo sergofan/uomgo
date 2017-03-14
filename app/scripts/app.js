@@ -1,25 +1,6 @@
 (function(document) {
 	'use strict';
 
-	// var webComponentsSupported = ('registerElement' in document
-	// 	&& 'content' in document.createElement('template')
-	// );
-
-	// if(webComponentsSupported) {
-
-		//Good to go
-		// alert("Yes");
-		// document.title = 'Supported browser detected!';
-
-	// } else {
-
-		//Is not supported
-		// alert("No");
-		// document.title = 'no-webcomponents - Unsupported browser detected!';
-		// window.location = "https://browser-update.org/update.html";
-
-	// }
-
 	// Grab a reference to our auto-binding template
 	// and give it some initial binding values
 	// Learn more about auto-binding templates at http://goo.gl/Dx1u2g

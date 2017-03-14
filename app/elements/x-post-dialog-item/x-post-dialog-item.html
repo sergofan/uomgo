@@ -40,7 +40,7 @@
     <paper-dialog id="dialog"
   								entry-animation="scale-up-animation"
   								exit-animation="fade-out-animation"
-                  opened="{{dialogVisible}}"
+                  opened="{{showDialogVisible}}"
 									on-iron-overlay-closed="_dialogClosed"
 									with-backdrop>
       <div class="header layout horizontal center-center">
@@ -119,7 +119,7 @@
         keepWithParent: {
 					type: Object
 				},
-        dialogVisible: {
+        showDialogVisible: {
           type: Boolean,
           observer: '_toggleDialog',
           notify: true
@@ -156,7 +156,8 @@
       },
 
       _toggleDialog: function(e) {
-				if (this.dialogVisible) {
+        console.log(this.showDialogVisible);
+				if (this.showDialogVisible) {
 					this.$.dialog.open();
         } else {
           this.$.dialog.close();

@@ -147,7 +147,7 @@
 
 		<!-- <x-post-dialog-item id="dialog"
 												post="[[post]]"
-												dialog-visible="{{dialogVisible}}"
+												dialog-visible="{{showDialogVisible}}"
 												keep-with-parent="false"></x-post-dialog-item> -->
 
 </template>
@@ -168,7 +168,7 @@
 				post: {
 					type: Object
 				},
-				dialogVisible: {
+				showDialogVisible: {
 					type: Boolean,
 					notify: true
 				},
@@ -176,6 +176,10 @@
 					type: String
 				}
 			},
+
+			observers: [
+				'setVar("showDialogVisible", showDialogVisible)'
+			],
 
 			ready: function() {
 				this.youtubeStyle = "display: inherit !important;";
@@ -213,8 +217,29 @@
 			},
 
 			_openDialog: function(e) {
-				// this.dataItem = document.querySelector('iron-list').modelForElement(e.target).post;
-				this.dialogVisible = true;
+				this.makeComp();
+				this.showDialogVisible = true;
+				document.head.appendChild(this.comp);
+			},
+
+			makeComp: function() {
+				this.comp = document.createElement('x-post-dialog-item');
+				this.comp.addEventListener('showDialogVisible-changed', this.getVar('showDialogVisible'));
+			},
+
+			setVar: function (varName, value) {
+				if(!this.comp) this.makeComp();
+				this.comp[varName] = value;
+			},
+
+			getVar: function (varName) {
+				var that = this;
+				return function (evt) {
+					var newValue = evt.detail.value;
+					if(that[varName] != newValue) {
+						that[varName] = newValue;
+					}
+				};
 			}
 
 		});
