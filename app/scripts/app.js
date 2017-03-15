@@ -9,6 +9,34 @@
 	// Sets app default base URL
 	app.baseUrl = '/';
 
+	window.addEventListener('load', function() {
+
+		var onload = function() {
+	    // For native Imports, manually fire WCR so user code
+	    // can use the same code path for native and polyfill'd imports.
+	    if (!window.HTMLImports) {
+	      window.dispatchEvent(
+	          new CustomEvent('WebComponentsReady', {bubbles: true}));
+	    }
+	  };
+
+		var webComponentsSupported = (
+	    'registerElement' in document
+	    && 'import' in document.createElement('link')
+	    && 'content' in document.createElement('template'));
+
+		if (!webComponentsSupported) {
+	    var script = document.createElement('script');
+	    script.async = true;
+	    script.src = './bower_components/webcomponentsjs/webcomponents-lite.min.js';
+	    script.onload = onload;
+	    document.head.appendChild(script);
+	  } else {
+	    onload();
+	  }
+
+	});
+
 	// app.displayInstalledToast = function() {
 	// 	// Check to make sure caching is actually enabled—it won't be in the dev environment.
 	// 	if (!Polymer.dom(document).querySelector('platinum-sw-cache').disabled) {
@@ -22,8 +50,13 @@
 		// console.log('Our app is ready to rock!');
 	});
 
-	// See https://github.com/Polymer/polymer/issues/1381
+// See https://github.com/Polymer/polymer/issues/1381
 	window.addEventListener('WebComponentsReady', function() {
+		console.log('WebComponentsReady');
+		app.readyApp();
+	});
+
+	app.readyApp = function() {
 		var scrollHeaderPanel = document.querySelector('paper-scroll-header-panel');
 		var scrollThreshold = document.querySelector('#scrollThreshold');
 		var arrowUp = document.querySelector('#arrowUp');
@@ -33,6 +66,7 @@
 		/* background for toolbar when it is at its full size */
 		var header = document.querySelector('#headerBg');
 		var condensedHeader = document.querySelector('#condensedHeaderBg');
+
 		header.style.backgroundImage='url'+'('+app.baseUrl+'images/header.jpg'+')';
 		condensedHeader.style.backgroundImage='url'+'('+app.baseUrl+'images/header2.jpg'+')';
 		scrollThreshold.scrollTarget = scrollHeaderPanel.scroller;
@@ -44,7 +78,7 @@
 				arrowUp.hidden = true;
 			}
 		});
-	});
+	};
 
 	// Main area's paper-scroll-header-panel custom condensing transformation of
 	// the appName in the middle-container and the bottom title in the bottom-container.
