@@ -219,7 +219,8 @@
 			_openDialog: function(e) {
 				this.makeComp();
 				this.showDialogVisible = true;
-				document.head.appendChild(this.comp);
+				// document.head.appendChild(this.comp);
+				app.insertElement(this.comp);
 			},
 
 			makeComp: function() {

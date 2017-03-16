@@ -109,6 +109,11 @@
 		Polymer.Base.transform('scale(' + scaleMiddle + ') translateZ(0)', appName);
 	});
 
+	app.insertElement = function(el) {
+		var s = document.getElementsByTagName('script')[0];
+		s.parentNode.insertBefore(el, s);
+	};
+
 	app.closeDrawer = function() {
 		app.$.paperDrawerPanel.closeDrawer();
 	};
