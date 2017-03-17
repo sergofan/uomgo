@@ -178,7 +178,7 @@
 			},
 
 			observers: [
-				'setVar("showDialogVisible", showDialogVisible)'
+				// 'setVar("showDialogVisible", showDialogVisible)'
 			],
 
 			ready: function() {
@@ -217,10 +217,10 @@
 			},
 
 			_openDialog: function(e) {
-				this.makeComp();
-				this.showDialogVisible = true;
+				// this.makeComp();
+				// this.showDialogVisible = true;
 				// document.head.appendChild(this.comp);
-				app.insertElement(this.comp);
+				app.insertElement();
 			},
 
 			makeComp: function() {

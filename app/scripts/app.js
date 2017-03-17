@@ -109,9 +109,20 @@
 		Polymer.Base.transform('scale(' + scaleMiddle + ') translateZ(0)', appName);
 	});
 
-	app.insertElement = function(el) {
-		var s = document.getElementsByTagName('script')[0];
-		s.parentNode.insertBefore(el, s);
+	app.insertElement = function() {
+		// var s = document.getElementsByTagName('script')[0];
+		// s.parentNode.insertBefore(el, s);
+		// var comp = document.createElement('x-post-dialog-item');
+		// var comp = new xPostDialogItem();
+
+		// var xPostDialogItem = document.registerElement('x-post-dialog-item');
+		// var comp = new xPostDialogItem();
+		// comp.showDialogVisible = true;
+
+		var root = app.createShadowRoot();
+		var xPostDialogItem = document.createElement('x-post-dialog-item');
+		xPostDialogItem.showDialogVisible = true;
+		root.appendChild(xPostDialogItem);
 	};
 
 	app.closeDrawer = function() {
