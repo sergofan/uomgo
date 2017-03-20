@@ -48,7 +48,9 @@
 				<template id="templateList">
 					<div>
 						<template is="dom-if" if="[[post.enabled]]" on-dom-change="_onDomIfChange">
-							<x-post-item	post="[[post]]"></x-post-item>
+							<x-post-item	post="[[post]]"
+														show-dialog-visible="{{showDialogVisible}}"
+														post-item="{{postItem}}"></x-post-item>
 						</template>
 					</div>
 				</template>
@@ -59,6 +61,10 @@
 			<paper-spinner-lite active
 										 alt="Загрузка ..."></paper-spinner-lite>
 	  </div>
+
+		<x-post-dialog-item id="dialog"
+												post-item="{{postItem}}"
+												show-dialog-visible="{{showDialogVisible}}"</x-post-dialog-item>
 
 	</template>
 	<script>
@@ -76,8 +82,10 @@
 			      observer: '_dataChanged'
 			    },
 					post: {
-						type: Object,
-						value: {}
+						type: Object
+					},
+					postItem: {
+						type: Object
 					},
 					user: {
 						type: Object
@@ -91,8 +99,9 @@
 						value: 0
 					},
 					showDialogVisible: {
-						type: Boolean
-					}
+	          type: Boolean,
+						value: false
+	        }
 				},
 
 				ready: function() {

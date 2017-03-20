@@ -92,7 +92,7 @@
 
 		<paper-card tabindex$="[[tabIndex]]"
 								elevation="4"
-								on-tap="_openDialog">
+								on-tap="_openShowDialog">
 			<div class="heading paper-font-headline">
 				[[post.name]]
 			</div>
@@ -145,11 +145,6 @@
 			</div>
 		</paper-card>
 
-		<!-- <x-post-dialog-item id="dialog"
-												post="[[post]]"
-												dialog-visible="{{showDialogVisible}}"
-												keep-with-parent="false"></x-post-dialog-item> -->
-
 </template>
 	<script>
 	(function() {
@@ -168,6 +163,10 @@
 				post: {
 					type: Object
 				},
+				postItem: {
+					type: Object,
+					notify: true
+				},
 				showDialogVisible: {
 					type: Boolean,
 					notify: true
@@ -176,10 +175,6 @@
 					type: String
 				}
 			},
-
-			observers: [
-				// 'setVar("showDialogVisible", showDialogVisible)'
-			],
 
 			ready: function() {
 				this.youtubeStyle = "display: inherit !important;";
@@ -216,31 +211,9 @@
 				};
 			},
 
-			_openDialog: function(e) {
-				// this.makeComp();
-				// this.showDialogVisible = true;
-				// document.head.appendChild(this.comp);
-				app.insertElement();
-			},
-
-			makeComp: function() {
-				this.comp = document.createElement('x-post-dialog-item');
-				this.comp.addEventListener('showDialogVisible-changed', this.getVar('showDialogVisible'));
-			},
-
-			setVar: function (varName, value) {
-				if(!this.comp) this.makeComp();
-				this.comp[varName] = value;
-			},
-
-			getVar: function (varName) {
-				var that = this;
-				return function (evt) {
-					var newValue = evt.detail.value;
-					if(that[varName] != newValue) {
-						that[varName] = newValue;
-					}
-				};
+			_openShowDialog: function(e) {
+				this.postItem = this.post;
+				this.showDialogVisible = true;
 			}
 
 		});
