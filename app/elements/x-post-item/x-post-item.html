@@ -185,6 +185,10 @@
 				this.youtubeStyle += " background-size: cover;";
 			},
 
+			attached: function() {
+				// Polymer.dom(this.parentNode).parentNode.notifyResize();
+			},
+
 			_youtubeBackground: function() {
 				return app.baseUrl+'images/youtube.png';
 			},
