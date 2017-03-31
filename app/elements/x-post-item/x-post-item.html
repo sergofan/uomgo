@@ -156,9 +156,25 @@
 		Polymer({
 			is: 'x-post-item',
 			behaviors: [
-				Polymer.NeonAnimationRunnerBehavior,
+				Polymer.NeonAnimationRunnerBehavior
 			],
-
+			animationConfig: {
+				value: function() {
+					return {
+						entry: {
+							name: 'fade-in-animation',
+							node: this
+						},
+						exit: {
+							name: 'fade-out-animation',
+							node: this,
+							timing: {
+								duration: 500
+							}
+						}
+					};
+				}
+			},
 			properties: {
 				user: {
 					type: Object

@@ -47,82 +47,81 @@
 	<!-- <script src="./bower_components/webcomponentsjs/webcomponents.js"></script> -->
 	<!-- endbuild -->
 
-	<script type="text/javascript">
-		var $buoop = {vs:{i:11,f:-4,o:-4,s:7,c:-4},c:4};
-		function $buo_f(){
-			var e = document.createElement("script");
-			e.src = "//browser-update.org/update.min.js";
-			document.body.appendChild(e);
-		};
-		try {document.addEventListener("DOMContentLoaded", $buo_f,false)}
-		catch(e){window.attachEvent("onload", $buo_f)}
-	</script>
-
 	<!-- Because this project uses vulcanize this should be your only html import
 			 in this file. All other imports should go in elements.html -->
 	<link rel="import" href="./elements/elements.html">
-
-	<style is="custom-style" include="iron-flex iron-flex-alignment shared-styles">
-		paper-scroll-header-panel {
-			--paper-scroll-header-panel-header-container: {
-				pointer-events: none;
-			};
-		}
-		.middle.middle-container {
-			pointer-events: none;
-		}
-		.bookmark {
-			position: absolute;
-			bottom: -24px;
-			right: 24px;
-			fill: #4285f4;
-			height: 48px;
-			width: 48px;
-		}
-		paper-tabs {
-			border-radius: 50px;
-			/*background-color: var(--primary-color);*/
-			/*background-color: rgba(33,150,243,0.6);*/
-			background-color: rgba(33,150,243,0);
-			width: 100%;
-		}
-		#drawer.paper-drawer-panel > [drawer] {
-			background-color: white;
-		}
-		#div-background {
-			margin: 16px;
-			max-width: 652px;
-		}
-		#zagolovok {
-			--iron-image-width: 100%;
-		}
-		paper-icon-button::shadow iron-icon {
-			height: 24px !important;
-			width: 24px !important;
-		}
-		paper-item {
-			--paper-item : {
-				cursor: pointer;
-			};
-		}
-		#mainToolbar {
-			box-shadow: 0 8px 10px 1px rgba(0, 0, 0, 0.14),
-			0 3px 14px 2px rgba(0, 0, 0, 0.12),
-			0 5px 5px -3px rgba(0, 0, 0, 0.4);
-		}
-		@media all and (min-width: 0) and (max-width: 600px) {
-			#main_tabs {
-				display: none;
-			}
-		}
-		#authErrorToast {
-			--paper-toast-background-color: red;
-			--paper-toast-color: white;
-		}
-	</style>
-
 </head>
 
+<style is="custom-style" include="iron-flex iron-flex-alignment shared-styles">
+	paper-scroll-header-panel {
+		--paper-scroll-header-panel-header-container: {
+			pointer-events: none;
+		};
+	}
+	.middle.middle-container {
+		pointer-events: none;
+	}
+	.bookmark {
+		position: absolute;
+		bottom: -24px;
+		right: 24px;
+		fill: #4285f4;
+		height: 48px;
+		width: 48px;
+	}
+	paper-tabs {
+		border-radius: 50px;
+		/*background-color: var(--primary-color);*/
+		/*background-color: rgba(33,150,243,0.6);*/
+		background-color: rgba(33,150,243,0);
+		width: 100%;
+	}
+	#drawer.paper-drawer-panel > [drawer] {
+		background-color: white;
+	}
+	#div-background {
+		margin: 16px;
+		max-width: 652px;
+	}
+	#zagolovok {
+		--iron-image-width: 100%;
+	}
+	paper-icon-button::shadow iron-icon {
+		height: 24px !important;
+		width: 24px !important;
+	}
+	paper-item {
+		--paper-item : {
+			cursor: pointer;
+		};
+	}
+	#mainToolbar {
+		box-shadow: 0 8px 10px 1px rgba(0, 0, 0, 0.14),
+		0 3px 14px 2px rgba(0, 0, 0, 0.12),
+		0 5px 5px -3px rgba(0, 0, 0, 0.4);
+	}
+	@media all and (min-width: 0) and (max-width: 600px) {
+		#main_tabs {
+			display: none;
+		}
+	}
+	#authErrorToast {
+		--paper-toast-background-color: red;
+		--paper-toast-color: white;
+	}
+
+</style>
+
+<script type="text/javascript">
+	var $buoop = {vs:{i:11,f:-4,o:-4,s:7,c:-4},c:4};
+	function $buo_f(){
+		var e = document.createElement("script");
+		e.src = "//browser-update.org/update.min.js";
+		document.body.appendChild(e);
+	};
+	try {document.addEventListener("DOMContentLoaded", $buo_f,false)}
+	catch(e){window.attachEvent("onload", $buo_f)}
+</script>
 
 <body unresolved>
 

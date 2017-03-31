@@ -39,13 +39,15 @@
 												   lower-threshold="500"
 												   on-lower-threshold="_loadMoreData">
 
-			<iron-list id="ironList"
+			<!-- <iron-list id="ironList"
 								 items="[[dataDB]]"
 								 as="post"
 								 scroll-target="scrollThreshold"
 								 selection-enabled>
 
-				<template id="templateList">
+				<template id="templateList"> -->
+
+				<template is="dom-repeat" items="[[dataDB]]" as="post" target-framerate="60" delay="5000">
 					<div>
 						<template is="dom-if" if="[[post.enabled]]" on-dom-change="_onDomIfChange">
 							<x-post-item	post="[[post]]"
@@ -54,7 +56,9 @@
 						</template>
 					</div>
 				</template>
-			</iron-list>
+
+				<!-- </template>
+			</iron-list> -->
 		</iron-scroll-threshold>
 
 	  <div id="loadingIndicator">
@@ -127,8 +131,8 @@
 				},
 
 				_onDomIfChange: function(e) {
-					var post = this.$.ironList.modelForElement(e.currentTarget.parentElement).post;
-	        this.$.ironList.updateSizeForItem(post);
+					// var post = this.$.ironList.modelForElement(e.currentTarget.parentElement).post;
+	        // this.$.ironList.updateSizeForItem(post);
 					// this.$.ironList.notifyResize();
 				},
 
