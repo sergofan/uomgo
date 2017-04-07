@@ -70,6 +70,13 @@
 												post-item="{{postItem}}"
 												show-dialog-visible="{{showDialogVisible}}"</x-post-dialog-item>
 
+		<x-post-dialog-item id="dialogAdd"
+												post-item="{{postItem}}"
+												show-dialog-visible="{{showDialogVisible}}"</x-post-dialog-item>
+
+		<iron-a11y-keys id="a11y" keys="enter" target="[[target]]"
+		                    on-keys-pressed="onEnter"></iron-a11y-keys>
+
 	</template>
 	<script>
 	(function() {
@@ -105,7 +112,16 @@
 					showDialogVisible: {
 	          type: Boolean,
 						value: false
-	        }
+	        },
+					target: {
+		        type: Object,
+		        value: function() {
+		          return document.body;
+		        }
+		      },
+					userInput: {
+				    type: String
+				  }
 				},
 
 				ready: function() {
@@ -163,6 +179,10 @@
 						};
 					};
 					e.target.clearTriggers();
+				},
+
+				onEnter: function() {
+				  console.log(this.userInput);
 				}
 
 			});
