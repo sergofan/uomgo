@@ -38,19 +38,22 @@
 
 		<paper-card image=""
 								elevation="4"
-								animated-shadow="false"
-								heading="Правила рассмотрения электронных обращений граждан">
+								animated-shadow="false">
+
+			<paper-button raised elevation="4" on-tap="changePage">
+				Обратиться
+			</paper-button>
 
 			<div class="card-content">
 				<template is="juicy-html"
 									content$="[[docData.text]]"></template>
 			</div>
 
-			<div class="card-actions">
-				<paper-button raised on-tap="changePage">
+			<!-- <div class="card-actions"> -->
+				<!-- <paper-button raised on-tap="changePage">
 					Я согласен с правилами электронного обращения
-				</paper-button>
-			</div>
+				</paper-button> -->
+			<!-- </div> -->
 		</paper-card>
 
 	</template>
