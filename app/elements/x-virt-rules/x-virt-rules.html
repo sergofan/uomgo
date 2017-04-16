@@ -9,23 +9,29 @@
 				/*word-break: break-all;*/
 			}
 			paper-card {
-				width: 100%;
+				/*width: 100%;*/
 				border-radius: 8px;
+				--paper-card: {
+		      width: 100%;
+		    };
 				--paper-card-header-text: {
 					text-align: center;
 				};
 				--paper-card-content: {
 				};
 			}
-			a paper-button,
-			a:active paper-button,
-			a:visited paper-button {
-				margin: 16px 0;
-				color: #000;
-				/*background-color: var(--paper-green-a400);*/
+			.card-header {
+				padding: 16px 16px 0;
 			}
-			a:hover paper-button {
-				background-color: var(--paper-indigo-100);
+			paper-button {
+				background-color: rgba(0,230,118,0.5);
+				border-radius: 8px;
+				color: black;
+				margin: auto;
+				width: 100%;
+			}
+			paper-button:hover {
+				background-color: var(--paper-green-a400);
 			}
 		</style>
 
@@ -40,9 +46,14 @@
 								elevation="4"
 								animated-shadow="false">
 
-			<paper-button raised elevation="4" on-tap="changePage">
-				Обратиться
-			</paper-button>
+			<div class="card-header">
+				<paper-button raised on-tap="changePage">
+					<div class="flex"></div>
+					Обратиться
+					<div class="flex"></div>
+					<iron-icon icon="check"></iron-icon>
+				</paper-button>
+			</div>
 
 			<div class="card-content">
 				<template is="juicy-html"
@@ -65,7 +76,7 @@
 			is: 'x-virt-rules',
 			changePage: function() {
 				this.set('route.path', '/virt/messages');
-				app.scrollPageToTop();
+				// app.scrollPageToTop();
 			}
 		});
 	})();

@@ -73,7 +73,41 @@
 				background-color: var(--paper-grey-500);
 			}
 			#recaptcha {
-				margin-top: 16px;
+				margin: auto;
+		    padding: 16px 0 0;
+		    width: 100%;
+			}
+			@media all and (min-width: 0) and (max-width: 320px) and (orientation: portrait) {
+				#recaptcha {
+					transform:scale(0.74);
+					-webkit-transform:scale(0.74);
+					transform-origin:0 0;
+					-webkit-transform-origin:0 0;
+				}
+			}
+			@media all and (min-width: 321px) and (max-width: 360px) and (orientation: portrait) {
+				#recaptcha {
+					transform:scale(0.88);
+					-webkit-transform:scale(0.88);
+					transform-origin:0 0;
+					-webkit-transform-origin:0 0;
+				}
+			}
+			@media all and (min-width: 361px) and (max-width: 375px) and (orientation: portrait) {
+				#recaptcha {
+					transform:scale(0.92);
+					-webkit-transform:scale(0.92);
+					transform-origin:0 0;
+					-webkit-transform-origin:0 0;
+				}
+			}
+			@media all and (min-width: 376px) and (max-width: 384px) and (orientation: portrait) {
+				#recaptcha {
+					transform:scale(0.96);
+					-webkit-transform:scale(0.96);
+					transform-origin:0 0;
+					-webkit-transform-origin:0 0;
+				}
 			}
 			.formElement {
 				margin: 0 16px;
@@ -155,9 +189,10 @@
 															auto-validate
 															label="Текст обращения"></paper-textarea>
 
-							<re-captcha id="recaptcha"
-													class="formElement"
-													sitekey="6LfvTSkTAAAAAJddQYrmqJZB81BILzdaOOKjGGSq"></re-captcha>
+							<div class="formElement">
+								<re-captcha id="recaptcha"
+														sitekey="6LfvTSkTAAAAAJddQYrmqJZB81BILzdaOOKjGGSq"></re-captcha>
+							</div>
 
 					</div>
 
@@ -294,7 +329,7 @@
 				messageKey: String,
 				selected: {
 					type: Number,
-					value: 0
+					value: 3
 				},
 				show: {
 					type: Boolean,
