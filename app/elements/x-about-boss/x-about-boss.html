@@ -24,29 +24,22 @@
 			}
 		</style>
 
-		<!-- <firebase-query id="firebaseQueryPosts"
-										path="/about/images/boss"
-										app-name="uomgo"
-										data="{{dataDB}}"></firebase-query> -->
-
-		<firebase-document path="/about/images"
+		<firebase-document path="/about"
 											 app-name="uomgo"
-		  								 data="{{image}}">
-
-		</firebase-document>
+		  								 data="{{dataDB}}"></firebase-document>
 
 		<paper-material elevation="4" class="layout horizontal center-center">
 			<grid-element ga="16px" center>
 
 				<grid-col s="2" class="shadow">
-					<p class="paper-font-headline">Начальник управления</p>
+					<p class="paper-font-headline">[[dataDB.boss.position]]</p>
 
-					<template is="dom-if" if="[[image.enabled]]">
-						<iron-image src="[[image.boss]]"
+					<template is="dom-if" if="[[dataDB.boss.photo.enabled]]">
+						<iron-image src="[[dataDB.boss.photo.image]]"
 												preload></iron-image>
 					</template>
 
-					<p>Коваль Светлана Александровна</p>
+					<p>[[dataDB.boss.name]]</p>
 				</grid-col>
 
 				<grid-col s="1" class="shadow">
