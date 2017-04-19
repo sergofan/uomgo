@@ -24,13 +24,28 @@
 			}
 		</style>
 
+		<!-- <firebase-query id="firebaseQueryPosts"
+										path="/about/images/boss"
+										app-name="uomgo"
+										data="{{dataDB}}"></firebase-query> -->
+
+		<firebase-document path="/about/images"
+											 app-name="uomgo"
+		  								 data="{{image}}">
+
+		</firebase-document>
+
 		<paper-material elevation="4" class="layout horizontal center-center">
 			<grid-element ga="16px" center>
 
 				<grid-col s="2" class="shadow">
 					<p class="paper-font-headline">Начальник управления</p>
-					<iron-image src="[[app.baseUrl]]images/koval.jpg"
-											preload></iron-image>
+
+					<template is="dom-if" if="[[image.enabled]]">
+						<iron-image src="[[image.boss]]"
+												preload></iron-image>
+					</template>
+
 					<p>Коваль Светлана Александровна</p>
 				</grid-col>
 
@@ -56,7 +71,7 @@
 			</grid-element>
 		</paper-material>
 
-<!-- 
+<!--
 		<paper-material elevation="4" class="content layout horizontal center-justified wrap">
 
 			<div class="shadow layout vertical center-center wrap" style="text-align:center;">
@@ -68,31 +83,31 @@
 				<iron-image src="[[app.baseUrl]]images/koval.jpg"
 										preload></iron-image>
 				<div style="width:100%"><p>Коваль Светлана Александровна</p></div>
-			
+
 			</div>
 
 			<div class="shadow layout vertical center-justified wrap">
-				
+
 				<div class="yellow-gradient content">
 					<div><b>Прием граждан по личным</b></div>
 					<div><b>вопросам</b></div>
 				</div>
-				
+
 				<div class="red-gradient content">
 					<div>2-я среда месяца</div>
 					<div>с <b>8 <sup><u>30</u></sup></b> до <b>10 <sup><u>00</u></sup></b></div>
 					<div>4-й четверг месяца</div>
 					<div>с <b>14 <sup><u>00</u></sup></b> до <b>16 <sup><u>00</u></sup></b></div>
 				</div>
-				
+
 				<div class="green-gradient content">
 					<div>Телефон предварительной</div>
 					<div>записи <b>2-04-36</b></div>
 				</div>
-			
+
 			</div>
 		</paper-material>
- -->	
+ -->
 	</template>
 	<script>
 	(function() {

@@ -42338,12 +42338,22 @@ Z(G.prototype,"ref",G.prototype.la);ra.STATE_CHANGED="state_changed";x.RUNNING="
 			}
 		</style>
 
+		
+
+		<firebase-document path="/about/images" app-name="uomgo" data="{{image}}">
+
+		</firebase-document>
+
 		<paper-material elevation="4" class="layout horizontal center-center">
 			<grid-element ga="16px" center="">
 
 				<grid-col s="2" class="shadow">
 					<p class="paper-font-headline">Начальник управления</p>
-					<iron-image src="[[app.baseUrl]]images/koval.jpg" preload=""></iron-image>
+
+					<template is="dom-if" if="[[image.enabled]]">
+						<iron-image src="[[image.boss]]" preload=""></iron-image>
+					</template>
+
 					<p>Коваль Светлана Александровна</p>
 				</grid-col>
 
@@ -42369,7 +42379,7 @@ Z(G.prototype,"ref",G.prototype.la);ra.STATE_CHANGED="state_changed";x.RUNNING="
 			</grid-element>
 		</paper-material>
 
-	
+
 	</template>
 	<script>
 	(function() {
