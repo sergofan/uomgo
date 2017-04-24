@@ -19,7 +19,8 @@
     "gold-email-input": "^1.0.9",
     "google-signin": "^1.3.7",
     "array-filter": "43081j/array-filter#^1.0.2",
-    "iron-accordions": "^1.1.0"
+    "iron-accordions": "^1.1.0",
+    "animated-lazy-pages": "paulvarache/animated-lazy-pages#^1.0.0"
   },
   "devDependencies": {
     "web-component-tester": "^5.0.0"
