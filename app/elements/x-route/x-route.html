@@ -12,12 +12,12 @@
 
 		<app-route route="{{route}}"
 									pattern="/:page"
-									data="{{data}}"
+									data="{{appRouteData}}"
 									tail="{{tail}}"></app-route>
 
 		<app-route route="{{tail}}"
 							 pattern="/:page"
-							 data="{{subdata}}"></app-route>
+							 data="{{appRouteSubdata}}"></app-route>
 	</template>
 	<script>
 	(function() {
@@ -26,14 +26,14 @@
 		Polymer({
 			is: 'x-route',
 			observers: [
-				'pathChanged(route)'
+				'_pathChanged(route)'
 			],
 			properties: {
 				route: {
 					type: Object,
 					notify: true
 				},
-				data: {
+				appRouteData: {
 					type: Object,
 					notify: true
 				},
@@ -41,36 +41,37 @@
 					type: Object,
 					notify: true
 				},
-				subdata: {
+				appRouteSubdata: {
 					type: Object,
 					notify: true
 				}
 			},
 			ready: function() {
 			},
-			pathChanged: function(route) {
+			_pathChanged: function(route) {
+				console.log('route -> ', this.route, 'appRouteSubdata -> ', this.appRouteSubdata, 'appRouteData -> ', this.appRouteData);
 				this.async(function() {
-					switch(route.path) {
-						case '':
-							this.set('route.path', '/main');
-							break;
-						case '/':
-							this.set('route.path', '/main');
-							break;
-						case '/about':
-							this.set('route.path', '/about/boss');
-							break;
-						case '/about/docs':
-							// this.set('route.path', '/about/docs');
-							break;
-						case '/virt':
-							if (app.user) {
-								this.set('route.path', '/virt/messages');
-							} else {
-								this.set('route.path', '/virt/rules');
-							};
-							break;
-					}
+			//		switch(route.path) {
+			// 			case '':
+			// 				this.set('route.path', '/main');
+			// 				break;
+			// 			case '/':
+			// 				this.set('route.path', '/main');
+			// 				break;
+			//			case '/about':
+			//				this.set('route.path', '/about/boss');
+			//				break;
+			// 			case '/about/docs':
+			// 				// this.set('route.path', '/about/docs');
+			// 				break;
+			// 			case '/virt':
+			// 				if (app.user) {
+			// 					this.set('route.path', '/virt/messages');
+			// 				} else {
+			// 					this.set('route.path', '/virt/rules');
+			// 				};
+			// 				break;
+			//		}
 				});
 			}
 		});

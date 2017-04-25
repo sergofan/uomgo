@@ -91,7 +91,7 @@
 		  Управление образованием Мысковского городского округа
 		</paper-tooltip>
 
-		<paper-menu attr-for-selected="data-route" selected='{{data.page}}'>
+		<paper-menu attr-for-selected="data-route" selected='{{appRouteData.page}}'>
 
 			<paper-icon-item icon="home" label="Главная" data-route="main">
 				<iron-icon icon="home" item-icon></iron-icon>
@@ -131,7 +131,7 @@
 
 				<paper-menu class="menu-content"
 										attr-for-selected="data-route"
-										selected='{{data.page}}'>
+										selected='{{appRouteData.page}}'>
 
 					<paper-item class="submenu-items" data-route="inspect">
 						<span>Отдел инспектирования качества образования</span>
@@ -170,7 +170,7 @@
 
 				<paper-menu class="menu-content"
 										attr-for-selected="data-route"
-										selected='{{data.page}}'>
+										selected='{{appRouteData.page}}'>
 
 					<paper-item class="submenu-items" data-route="metod">
 						<paper-item-body>
@@ -251,7 +251,15 @@
 		Polymer({
 			is: 'x-drawer-menu',
 			properties: {
-				data: {
+				route: {
+					type: Object,
+					notify: true
+				},
+				appRouteData: {
+					type: Object,
+					notify: true
+				},
+				appRouteSubdata: {
 					type: Object,
 					notify: true
 				}

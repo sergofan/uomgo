@@ -40,8 +40,6 @@
 			}
 		</style>
 
-		<x-route route="{{route}}"></x-route>
-
 		<div id="collapsePanel" class="layout horizontal">
 			<div id="verticalText">
 				План работы УОМГО
@@ -93,6 +91,10 @@
 				},
 				user: {
 					type: Object
+				},
+				route: {
+					type: Object,
+					notify: true
 				}
 			},
 			ready: function() {

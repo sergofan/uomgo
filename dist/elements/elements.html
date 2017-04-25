@@ -63,6 +63,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 
 
+
+
 </head><body><div hidden="" by-vulcanize="">
 
 <script>(function () {
@@ -32727,6 +32729,331 @@ Polymer({
 })();
 </script>
 
+<dom-module id="animated-lazy-pages" assetpath="../bower_components/animated-lazy-pages/">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+
+    <content></content>
+  </template>
+  <script>
+  (function() {
+    Polymer({
+
+      is: 'animated-lazy-pages',
+
+      behaviors: [Polymer.IronSelectableBehavior, Polymer.NeonAnimationRunnerBehavior],
+
+      properties: {
+        // as the selected page is the only one visible, activateEvent
+        // is both non-sensical and problematic; e.g. in cases where a user
+        // handler attempts to change the page and the activateEvent
+        // handler immediately changes it back
+        // Disabled for this element.
+        activateEvent: {
+          type: String,
+          value: null
+        },
+
+        /**
+         * Indicates if the page is currently lazy-loading.
+         */
+        loading: {
+          type: Boolean,
+          value: false,
+          notify: true,
+          readOnly: true
+        },
+
+        /**
+         * When true, elements will be removed from DOM and discarded when
+         * the page path does not match anymore and re-created and added back
+         * to the DOM when the page path matches again.
+         * By default, stamped elements will be hidden but left in the DOM
+         * when a page path does not match anymore, which is generally results
+         * in better performance.
+         */
+        restamp: {
+          type: Boolean,
+          value: false
+        },
+        // if true, the initial page selection will also be animated according to its animation config.
+        animateInitialSelection: {
+          type: Boolean,
+          value: false
+        }
+      },
+
+      listeners: {
+        'iron-select': '_itemSelected'
+      },
+
+      _itemSelected: function(event) {
+        var newPage = event.detail.item,
+            oldPage = this._valueToItem(this._prevSelected),
+            oldPageName = oldPage ? oldPage.getAttribute(this.attrForSelected) : null,
+            newPageName = newPage ? newPage.getAttribute(this.attrForSelected) : null,
+            fromName = oldPage ? 'from-' + oldPageName : 'entry',
+            toName = 'to-' + newPageName,
+            animating;
+
+        this._prevSelected = this.selected;
+        // Do not listen to possible sub-selectors if these fired and iron-select
+        if (event.target !== this) {
+          return;
+        }
+        this._setLoading(true);
+        // Cancel currently running animations, in case page changes happened fast
+        this.cancelAnimation();
+        // Removes the animating class from all the pages
+        animating = Polymer.dom(this.root).querySelectorAll('.animating');
+        for (var i = 0; i < animating.length; i++) {
+          this.toggleClass('animating', false, animating[i]);
+        }
+        // Load the new page
+        newPage._loadAndShow(function() {
+          this._setLoading(false);
+          this.async(function () {
+              this.animationConfig = [];
+              var newTarget,
+                  oldTarget,
+                  onAnimationFinish = function () {
+                      this.removeEventListener('neon-animation-finish', onAnimationFinish, false);
+                      if (newTarget) {
+                          this.toggleClass('animating', false, newTarget);
+                      }
+                      if (oldPage) {
+                          this.toggleClass('animating', false, oldTarget);
+                          oldPage._hide(this.restamp);
+                      }
+                  }.bind(this);
+              // Do not configure the new page animation if this is the initial nimation and `animateInitialSelection` is not set
+              if (oldPage || this.animateInitialSelection) {
+                  newTarget = this._getAnimationTarget(newPage);
+                  if (newTarget.getAnimationConfig) {
+                      if (!this._hasAnimation(newTarget, fromName)) {
+                          fromName = 'entry';
+                      }
+                      this.animationConfig.push({
+                          animatable: newTarget,
+                          type: fromName
+                      });
+                  }
+              }
+              if (oldPage) {
+                  oldTarget = this._getAnimationTarget(oldPage);
+                  if (oldTarget.getAnimationConfig) {
+                      if (!this._hasAnimation(oldTarget, toName)) {
+                          toName = 'exit';
+                      }
+                      this.animationConfig.push({
+                          animatable: oldTarget,
+                          type: toName
+                      });
+                  }
+                  this._fillFromToPage(oldTarget, newTarget, toName);
+                  this.toggleClass('animating', true, oldTarget);
+              }
+              if (newTarget) {
+                  this._fillFromToPage(newTarget, oldTarget, fromName, true);
+                  this.toggleClass('animating', true, newTarget);
+              }
+              this.addEventListener('neon-animation-finish', onAnimationFinish, false);
+              this.playAnimation(undefined, {
+                 fromPage: oldTarget,
+                 toPage: newTarget
+              });
+          }.bind(this));
+        }.bind(this));
+      },
+
+      /**
+       * Goes through the animations of a page and fills the `fromPage` or `toPage` missing fields
+       * @param  {HTMLElement}  animtable   Element with the animation configuration
+       * @param  {HTMLElement}  target      Other element, targetted by the `fromPage` of `toPage`
+       * @param  {String}       type        Type of the animation (e.g. `entry`, `exit`...)
+       * @param  {Boolean}      entering    Defines the direction of the animation. Set to `true` to configure the entering page, `false` to configure the leaving page
+       */
+      _fillFromToPage: function (animatable, target, type, entering) {
+          var pageKey = entering ? 'fromPage' : 'toPage',
+              animations;
+          if (!animatable.getAnimationConfig) {
+              return;
+          }
+          animations = animatable.getAnimationConfig(type);
+          animations.forEach(function (animation) {
+              animation[pageKey] = target;
+          });
+      },
+
+      /**
+       * Check whether the given element has a configuration for a given type
+       * @param  {HTMLElement}  animatable An animatable element
+       * @param  {String}       type       A type of animation (e.g. `entry`, `exit`...)
+       * @return {Boolean}                 Whether the element has a configuration for the animation
+       */
+      _hasAnimation: function(animatable, type) {
+          return animatable.getAnimationConfig(type).length;
+      },
+
+      /**
+       * Finds the element containing the animation configuration
+       * @param  {HTMLTemplateElement} page     The template containing the animatable element
+       * @return {HTMLElement|null}             The animatable element
+       */
+      _getAnimationTarget: function (page) {
+        var animationTarget;
+        // The template is not instanciated or the instance has no child
+        if (!page._instance || !page._instance._children) {
+          return null;
+        }
+        // Loop through all the children until it finds the first element with the `animation-target` attribute
+        for (var i = 0; i < page._instance._children.length; i++) {
+          animationTarget = page._instance._children[i];
+          if (animationTarget instanceof HTMLElement && animationTarget.hasAttribute('animation-target')) {
+            return animationTarget;
+          }
+        }
+      },
+
+      _filterItem: function(node) {
+        return !this._excludedLocalNames[node.localName] || node.getAttribute('is') === 'animated-lazy-page';
+      }
+    });
+    Polymer({
+      is: 'animated-lazy-page',
+
+      extends: 'template',
+
+      properties: {
+        /**
+         * The url corresponding to the content which should be lazy-loaded.
+         */
+        path: {
+          type: String,
+          value: ''
+        }
+      },
+
+      behaviors: [
+        Polymer.Templatizer
+      ],
+
+      /*
+        ##################
+        BEGIN DOM-IF LOGIC
+        ##################
+       */
+      _loadAndShow: function(cb, loadAsync) {
+        var onImportFinished = function() {
+          this._stamp();
+          this._instance._showHideChildren(this.__hideTemplateChildren__);
+          cb();
+        }.bind(this);
+
+        if (!this.loaded && this.path) {
+          this._importHref(onImportFinished, loadAsync);
+        } else {
+          onImportFinished();
+        }
+      },
+
+      _stamp: function() {
+        if (!this.ctor) {
+          this.templatize(this);
+        }
+        // Attach logic of dom-if
+        var parentNode = Polymer.dom(this).parentNode;
+        if (parentNode) {
+          var parent = Polymer.dom(parentNode);
+          if (!this._instance) {
+            this._instance = this.stamp();
+            var root = this._instance.root;
+            parent.insertBefore(root, parent.firstElementChild);
+          } else {
+            var c$ = this._instance._children;
+            if (c$ && c$.length) {
+              // Detect case where dom-if was re-attached in new position
+              var lastChild = Polymer.dom(this).previousSibling;
+              if (lastChild !== c$[c$.length-1]) {
+                for (var i=0, n; (i<c$.length) && (n=c$[i]); i++) {
+                  parent.insertBefore(n, this);
+                }
+              }
+            }
+          }
+        }
+      },
+
+      // Implements extension point from Templatizer mixin
+      // Called as side-effect of a host property change, responsible for
+      // notifying parent.<prop> path change on instance
+      _forwardParentProp: function(prop, value) {
+        if (this._instance) {
+          this._instance[prop] = value;
+        }
+      },
+      // Implements extension point from Templatizer
+      // Called as side-effect of a host path change, responsible for
+      // notifying parent.<path> path change on each row
+      _forwardParentPath: function(path, value) {
+        if (this._instance) {
+          this._instance._notifyPath(path, value, true);
+        }
+      },
+
+      /*
+        ##################
+        END DOM-IF LOGIC
+        ##################
+       */
+
+      _importHref: function(cb, loadAsync) {
+        if (!this.timesFailed) {
+          this._path = this.path;
+          this.timesFailed = 0;
+        }
+        var self = this;
+        this.importHref(this._path, function(e) {
+          self.loaded = true;
+          self.timesFailed = 0;
+          document.head.removeChild(e.target || e.srcElement);
+          cb();
+        }, function(e) {
+          document.head.removeChild(e.target || e.srcElement);
+          self._path = self.path + '?' + self.timesFailed++;
+          cb();
+        }, loadAsync);
+      },
+
+      _hide: function(restamp) {
+        if (this._instance) {
+          if (restamp) {
+            var c$ = this._instance._children;
+            if (c$ && c$.length) {
+              // use first child parent, for case when dom-if may have been detached
+              var parent = Polymer.dom(Polymer.dom(c$[0]).parentNode);
+              for (var i=0, n; (i<c$.length) && (n=c$[i]); i++) {
+                parent.removeChild(n);
+              }
+            }
+            this._instance = null;
+          } else {
+            this._instance._showHideChildren(true);
+          }
+        }
+      }
+    });
+  })();
+  </script>
+</dom-module>
+
+<dom-module id="animated-lazy-page" assetpath="../bower_components/animated-lazy-pages/">
+</dom-module>
+
 
 <script>
   window.MomentJs = window.MomentJs || {};
@@ -41365,8 +41692,6 @@ Z(G.prototype,"ref",G.prototype.la);ra.STATE_CHANGED="state_changed";x.RUNNING="
 			}
 		</style>
 
-		<x-route route="{{route}}"></x-route>
-
 		<div id="collapsePanel" class="layout horizontal">
 			<div id="verticalText">
 				План работы УОМГО
@@ -41380,7 +41705,7 @@ Z(G.prototype,"ref",G.prototype.la);ra.STATE_CHANGED="state_changed";x.RUNNING="
 
 		<firebase-document id="firebaseDocument" app-name="uomgo"></firebase-document>
 
-		<x-messages></x-messages>
+		
 		<x-posts user="[[user]]"></x-posts>
 
 		<template is="dom-if" if="[[user]]">
@@ -41412,6 +41737,10 @@ Z(G.prototype,"ref",G.prototype.la);ra.STATE_CHANGED="state_changed";x.RUNNING="
 				},
 				user: {
 					type: Object
+				},
+				route: {
+					type: Object,
+					notify: true
 				}
 			},
 			ready: function() {
@@ -41425,7 +41754,6 @@ Z(G.prototype,"ref",G.prototype.la);ra.STATE_CHANGED="state_changed";x.RUNNING="
 						collapsePanel.hidden = false;
 					}
 				});
-
 			},
 			editPostDialogOpen: function(e) {
 				this.postData = {};
@@ -41496,9 +41824,10 @@ Z(G.prototype,"ref",G.prototype.la);ra.STATE_CHANGED="state_changed";x.RUNNING="
 				border-radius: 8px 8px 0 0;
 			}
 		</style>
+
 		<x-route subdata="{{data}}"></x-route>
 
-		<paper-tabs id="tabs" scrollable="" selected="{{data.page}}" attr-for-selected="data-route">
+		<paper-tabs id="tabs" scrollable="" selected="{{appRouteSubdata.page}}" attr-for-selected="data-route">
 
 			<paper-tab data-route="about">О нас</paper-tab>
 			<paper-tab data-route="boss">Руководство</paper-tab>
@@ -41509,33 +41838,63 @@ Z(G.prototype,"ref",G.prototype.la);ra.STATE_CHANGED="state_changed";x.RUNNING="
 
 		</paper-tabs>
 
-		<lazy-pages id="pages" selected="{{data.page}}" attr-for-selected="data-route" entry-animation="fade-in-animation" exit-animation="fade-out-animation">
+		<animated-lazy-pages attr-for-selected="data-route" selected="{{appRouteSubdata.page}}" animate-initial-selection="" loading="{{loading}}">
 
-			<template is="dom-if" data-route="about">
-				<x-about-about></x-about-about>
+			<template is="dom-if" if="[[loading]]">
+				<div class="layout horizontal center-center">
+					<paper-spinner-lite active="[[loading]]" alt="Загрузка ..."></paper-spinner-lite>
+				</div>
 			</template>
 
-			<template is="dom-if" data-route="boss">
-				<x-about-boss></x-about-boss>
+			<template is="animated-lazy-page" data-route="about">
+				<neon-animatable entry-animation="fade-in-animation" exit-animation="fade-out-animation" animation-target="">
+
+					<x-about-about></x-about-about>
+
+				</neon-animatable>
 			</template>
 
-			<template is="dom-if" data-route="struct">
-				<x-about-struct></x-about-struct>
+			<template is="animated-lazy-page" data-route="boss">
+				<neon-animatable entry-animation="fade-in-animation" exit-animation="fade-out-animation" animation-target="">
+
+					<x-about-boss></x-about-boss>
+
+				</neon-animatable>
 			</template>
 
-			<template is="dom-if" data-route="slave">
-				<x-about-slave></x-about-slave>
+			<template is="animated-lazy-page" data-route="struct">
+				<neon-animatable entry-animation="fade-in-animation" exit-animation="fade-out-animation" animation-target="">
+
+					<x-about-struct></x-about-struct>
+
+				</neon-animatable>
 			</template>
 
-			<template is="dom-if" data-route="docs">
-				<x-about-docs></x-about-docs>
+			<template is="animated-lazy-page" data-route="slave">
+				<neon-animatable entry-animation="fade-in-animation" exit-animation="fade-out-animation" animation-target="">
+
+					<x-about-slave></x-about-slave>
+
+				</neon-animatable>
 			</template>
 
-			<template is="dom-if" data-route="localGov">
-				<x-about-local-gov></x-about-local-gov>
+			<template is="animated-lazy-page" data-route="docs">
+				<neon-animatable entry-animation="fade-in-animation" exit-animation="fade-out-animation" animation-target="">
+
+					<x-about-docs></x-about-docs>
+
+				</neon-animatable>
 			</template>
 
-		</lazy-pages>
+			<template is="animated-lazy-page" data-route="localGov">
+				<neon-animatable entry-animation="fade-in-animation" exit-animation="fade-out-animation" animation-target="">
+
+					<x-about-local-gov></x-about-local-gov>
+
+				</neon-animatable>
+			</template>
+
+		</animated-lazy-pages>
 
 	</template>
 	<script>
@@ -41543,7 +41902,26 @@ Z(G.prototype,"ref",G.prototype.la);ra.STATE_CHANGED="state_changed";x.RUNNING="
 		'use strict';
 
 		Polymer({
-			is: 't-about-template'
+			is: 't-about-template',
+			properties: {
+				route: {
+					type: Object,
+					notify: true
+				},
+				appRouteData: {
+					type: Object,
+					notify: true
+				},
+				appRouteSubdata: {
+					type: Object,
+					notify: true
+				}
+			},
+			ready: function() {
+				this.async(function() {
+					this.set('route.path', '/about/boss');
+				});
+			}
 		});
 	})();
 	</script>
@@ -42034,7 +42412,7 @@ Z(G.prototype,"ref",G.prototype.la);ra.STATE_CHANGED="state_changed";x.RUNNING="
 		  Управление образованием Мысковского городского округа
 		</paper-tooltip>
 
-		<paper-menu attr-for-selected="data-route" selected="{{data.page}}">
+		<paper-menu attr-for-selected="data-route" selected="{{appRouteData.page}}">
 
 			<paper-icon-item icon="home" label="Главная" data-route="main">
 				<iron-icon icon="home" item-icon=""></iron-icon>
@@ -42065,7 +42443,7 @@ Z(G.prototype,"ref",G.prototype.la);ra.STATE_CHANGED="state_changed";x.RUNNING="
 					</paper-item-body>
 				</paper-icon-item>
 
-				<paper-menu class="menu-content" attr-for-selected="data-route" selected="{{data.page}}">
+				<paper-menu class="menu-content" attr-for-selected="data-route" selected="{{appRouteData.page}}">
 
 					<paper-item class="submenu-items" data-route="inspect">
 						<span>Отдел инспектирования качества образования</span>
@@ -42102,7 +42480,7 @@ Z(G.prototype,"ref",G.prototype.la);ra.STATE_CHANGED="state_changed";x.RUNNING="
 					</paper-item-body>
 				</paper-icon-item>
 
-				<paper-menu class="menu-content" attr-for-selected="data-route" selected="{{data.page}}">
+				<paper-menu class="menu-content" attr-for-selected="data-route" selected="{{appRouteData.page}}">
 
 					<paper-item class="submenu-items" data-route="metod">
 						<paper-item-body>
@@ -42176,7 +42554,15 @@ Z(G.prototype,"ref",G.prototype.la);ra.STATE_CHANGED="state_changed";x.RUNNING="
 		Polymer({
 			is: 'x-drawer-menu',
 			properties: {
-				data: {
+				route: {
+					type: Object,
+					notify: true
+				},
+				appRouteData: {
+					type: Object,
+					notify: true
+				},
+				appRouteSubdata: {
 					type: Object,
 					notify: true
 				}
@@ -42338,23 +42724,19 @@ Z(G.prototype,"ref",G.prototype.la);ra.STATE_CHANGED="state_changed";x.RUNNING="
 			}
 		</style>
 
-		
-
-		<firebase-document path="/about/images" app-name="uomgo" data="{{image}}">
-
-		</firebase-document>
+		<firebase-document path="/about" app-name="uomgo" data="{{dataDB}}"></firebase-document>
 
 		<paper-material elevation="4" class="layout horizontal center-center">
 			<grid-element ga="16px" center="">
 
 				<grid-col s="2" class="shadow">
-					<p class="paper-font-headline">Начальник управления</p>
+					<p class="paper-font-headline">[[dataDB.boss.position]]</p>
 
-					<template is="dom-if" if="[[image.enabled]]">
-						<iron-image src="[[image.boss]]" preload=""></iron-image>
+					<template is="dom-if" if="[[dataDB.boss.photo.enabled]]">
+						<iron-image src="[[dataDB.boss.photo.image]]" preload=""></iron-image>
 					</template>
 
-					<p>Коваль Светлана Александровна</p>
+					<p>[[dataDB.boss.name]]</p>
 				</grid-col>
 
 				<grid-col s="1" class="shadow">
@@ -42624,9 +43006,9 @@ Z(G.prototype,"ref",G.prototype.la);ra.STATE_CHANGED="state_changed";x.RUNNING="
 
 		<app-location route="{{route}}" use-hash-as-path=""></app-location>
 
-		<app-route route="{{route}}" pattern="/:page" data="{{data}}" tail="{{tail}}"></app-route>
+		<app-route route="{{route}}" pattern="/:page" data="{{appRouteData}}" tail="{{tail}}"></app-route>
 
-		<app-route route="{{tail}}" pattern="/:page" data="{{subdata}}"></app-route>
+		<app-route route="{{tail}}" pattern="/:page" data="{{appRouteSubdata}}"></app-route>
 	</template>
 	<script>
 	(function() {
@@ -42635,14 +43017,14 @@ Z(G.prototype,"ref",G.prototype.la);ra.STATE_CHANGED="state_changed";x.RUNNING="
 		Polymer({
 			is: 'x-route',
 			observers: [
-				'pathChanged(route)'
+				'_pathChanged(route)'
 			],
 			properties: {
 				route: {
 					type: Object,
 					notify: true
 				},
-				data: {
+				appRouteData: {
 					type: Object,
 					notify: true
 				},
@@ -42650,36 +43032,37 @@ Z(G.prototype,"ref",G.prototype.la);ra.STATE_CHANGED="state_changed";x.RUNNING="
 					type: Object,
 					notify: true
 				},
-				subdata: {
+				appRouteSubdata: {
 					type: Object,
 					notify: true
 				}
 			},
 			ready: function() {
 			},
-			pathChanged: function(route) {
+			_pathChanged: function(route) {
+				console.log('route -> ', this.route, 'appRouteSubdata -> ', this.appRouteSubdata, 'appRouteData -> ', this.appRouteData);
 				this.async(function() {
-					switch(route.path) {
-						case '':
-							this.set('route.path', '/main');
-							break;
-						case '/':
-							this.set('route.path', '/main');
-							break;
-						case '/about':
-							this.set('route.path', '/about/boss');
-							break;
-						case '/about/docs':
-							// this.set('route.path', '/about/docs');
-							break;
-						case '/virt':
-							if (app.user) {
-								this.set('route.path', '/virt/messages');
-							} else {
-								this.set('route.path', '/virt/rules');
-							};
-							break;
-					}
+			//		switch(route.path) {
+			// 			case '':
+			// 				this.set('route.path', '/main');
+			// 				break;
+			// 			case '/':
+			// 				this.set('route.path', '/main');
+			// 				break;
+			//			case '/about':
+			//				this.set('route.path', '/about/boss');
+			//				break;
+			// 			case '/about/docs':
+			// 				// this.set('route.path', '/about/docs');
+			// 				break;
+			// 			case '/virt':
+			// 				if (app.user) {
+			// 					this.set('route.path', '/virt/messages');
+			// 				} else {
+			// 					this.set('route.path', '/virt/rules');
+			// 				};
+			// 				break;
+			//		}
 				});
 			}
 		});
@@ -45549,18 +45932,9 @@ Z(G.prototype,"ref",G.prototype.la);ra.STATE_CHANGED="state_changed";x.RUNNING="
 			}
 		</style>
 
-		<x-route subdata="{{data}}"></x-route>
-
-		<neon-animated-pages id="pages" selected="{{data.page}}" attr-for-selected="data-route" entry-animation="fade-in-animation" exit-animation="fade-out-animation">
-
-			
+		<neon-animated-pages id="pages" selected="{{appRouteSubdata.page}}" attr-for-selected="data-route" entry-animation="fade-in-animation" exit-animation="fade-out-animation">
 				<x-virt-rules data-route="rules"></x-virt-rules>
-			
-
-			
 				<x-virt-messages data-route="messages" user="[[user]]"></x-virt-messages>
-			
-
 		</neon-animated-pages>
 
 
@@ -45574,7 +45948,30 @@ Z(G.prototype,"ref",G.prototype.la);ra.STATE_CHANGED="state_changed";x.RUNNING="
 			properties: {
 				user: {
 					type: Array
+				},
+				route: {
+					type: Object,
+					notify: true
+				},
+				appRouteData: {
+					type: Object,
+					notify: true
+				},
+				appRouteSubdata: {
+					type: Object,
+					notify: true
 				}
+			},
+			ready: function() {
+				this.async(function() {
+					this.set('appRouteSubdata.page', 'rules');
+					this.set('route.path', '/virt/rules');
+					// if (this.user) {
+					// 	this.set('route.path', '/virt/messages');
+					// } else {
+					// 	this.set('route.path', '/virt/rules');
+					// }
+				});
 			}
 		});
 	})();
@@ -46501,6 +46898,220 @@ Z(G.prototype,"ref",G.prototype.la);ra.STATE_CHANGED="state_changed";x.RUNNING="
           value: 'x-post-dialog-add',
           notify: true
         }
+      }
+    });
+  })();
+  </script>
+</dom-module>
+<dom-module id="x-app-pages" assetpath="x-app-pages/">
+  <template>
+    <style is="custom-style" include="shared-styles">
+      :host {
+        display: block;
+        word-wrap: break-word;
+      }
+    </style>
+
+    <animated-lazy-pages attr-for-selected="data-route" selected="{{appRouteData.page}}" animate-initial-selection="" loading="{{loading}}">
+
+      <template is="animated-lazy-page" data-route="main">
+       <neon-animatable entry-animation="fade-in-animation" exit-animation="fade-out-animation" animation-target="">
+
+          <t-main-template user="[[user]]" route="{{route}}"></t-main-template>
+
+        <neon-animatable>
+      </neon-animatable></neon-animatable></template>
+
+      <template is="animated-lazy-page" data-route="about">
+        <neon-animatable entry-animation="fade-in-animation" exit-animation="fade-out-animation" animation-target="">
+
+          <t-about-template app-route-subdata="{{appRouteSubdata}}" route="{{route}}"></t-about-template>
+
+      </neon-animatable></template>
+
+      <template is="animated-lazy-page" data-route="virt">
+        <neon-animatable entry-animation="fade-in-animation" exit-animation="fade-out-animation" animation-target="">
+
+          <t-virt-template user="[[user]]" app-route-subdata="{{appRouteSubdata}}" route="{{route}}"></t-virt-template>
+
+      </neon-animatable>
+      </template>
+
+      <template is="animated-lazy-page" data-route="plan">
+        <neon-animatable entry-animation="fade-in-animation" exit-animation="fade-out-animation" animation-target="">
+
+          <t-plan-template user="[[user]]"></t-plan-template>
+
+      </neon-animatable>
+      </template>
+
+      <template is="animated-lazy-page" data-route="inspect">
+        <neon-animatable entry-animation="fade-in-animation" exit-animation="fade-out-animation" animation-target="">
+
+          <t-inspect-template data-route="inspect"></t-inspect-template>
+
+      </neon-animatable>
+      </template>
+
+      <template is="animated-lazy-page" data-route="preschool">
+        <neon-animatable entry-animation="fade-in-animation" exit-animation="fade-out-animation" animation-target="">
+
+          <t-preschool-template data-route="preschool"></t-preschool-template>
+
+      </neon-animatable>
+      </template>
+
+      <template is="animated-lazy-page" data-route="sport">
+        <neon-animatable entry-animation="fade-in-animation" exit-animation="fade-out-animation" animation-target="">
+
+          <t-sport-template data-route="sport"></t-sport-template>
+
+      </neon-animatable>
+      </template>
+
+      <template is="animated-lazy-page" data-route="upbringe">
+        <neon-animatable entry-animation="fade-in-animation" exit-animation="fade-out-animation" animation-target="">
+
+          <t-upbringe-template data-route="upbringe"></t-upbringe-template>
+
+      </neon-animatable>
+      </template>
+
+      <template is="animated-lazy-page" data-route="tutelage">
+        <neon-animatable entry-animation="fade-in-animation" exit-animation="fade-out-animation" animation-target="">
+
+          <t-tutelage-template data-route="tutelage"></t-tutelage-template>
+
+      </neon-animatable>
+      </template>
+
+      <template is="animated-lazy-page" data-route="legal">
+        <neon-animatable entry-animation="fade-in-animation" exit-animation="fade-out-animation" animation-target="">
+
+          <t-legal-template data-route="legal"></t-legal-template>
+
+      </neon-animatable>
+      </template>
+
+      <template is="animated-lazy-page" data-route="orgs">
+        <neon-animatable entry-animation="fade-in-animation" exit-animation="fade-out-animation" animation-target="">
+
+          <t-orgs-template data-route="orgs">
+
+        </t-orgs-template></neon-animatable>
+      </template>
+
+      <template is="animated-lazy-page" data-route="metod">
+        <neon-animatable entry-animation="fade-in-animation" exit-animation="fade-out-animation" animation-target="">
+
+          <t-metod-template data-route="metod">
+
+        </t-metod-template></neon-animatable>
+      </template>
+
+      <template is="animated-lazy-page" data-route="diet">
+        <neon-animatable entry-animation="fade-in-animation" exit-animation="fade-out-animation" animation-target="">
+
+          <t-diet-template data-route="diet">
+
+        </t-diet-template></neon-animatable>
+      </template>
+
+      <template is="animated-lazy-page" data-route="counting">
+        <neon-animatable entry-animation="fade-in-animation" exit-animation="fade-out-animation" animation-target="">
+
+          <t-counting-template data-route="counting">
+
+        </t-counting-template></neon-animatable>
+      </template>
+
+      <template is="animated-lazy-page" data-route="transport">
+        <neon-animatable entry-animation="fade-in-animation" exit-animation="fade-out-animation" animation-target="">
+
+          <t-transport-template data-route="transport">
+
+        </t-transport-template></neon-animatable>
+      </template>
+
+      <template is="animated-lazy-page" data-route="public">
+        <neon-animatable entry-animation="fade-in-animation" exit-animation="fade-out-animation" animation-target="">
+
+          <t-public-template data-route="public">
+
+        </t-public-template></neon-animatable>
+      </template>
+
+      <template is="animated-lazy-page" data-route="business">
+        <neon-animatable entry-animation="fade-in-animation" exit-animation="fade-out-animation" animation-target="">
+
+          <t-business-template data-route="business">
+
+        </t-business-template></neon-animatable>
+      </template>
+
+      <template is="animated-lazy-page" data-route="museum">
+        <neon-animatable entry-animation="fade-in-animation" exit-animation="fade-out-animation" animation-target="">
+
+          <t-museum-template data-route="museum">
+
+        </t-museum-template></neon-animatable>
+      </template>
+
+      <template is="animated-lazy-page" data-route="hotline">
+        <neon-animatable entry-animation="fade-in-animation" exit-animation="fade-out-animation" animation-target="">
+
+          <t-hotline-template data-route="hotline">
+
+        </t-hotline-template></neon-animatable>
+      </template>
+
+      <template is="animated-lazy-page" data-route="jobs">
+        <neon-animatable entry-animation="fade-in-animation" exit-animation="fade-out-animation" animation-target="">
+
+          <t-jobs-template data-route="jobs">
+
+        </t-jobs-template></neon-animatable>
+      </template>
+
+      
+
+    </animated-lazy-pages>
+
+    <template is="dom-if" if="[[loading]]">
+      <div class="layout horizontal center-center">
+        <paper-spinner-lite active="[[loading]]" alt="Загрузка ..."></paper-spinner-lite>
+      </div>
+    </template>
+
+  </template>
+  <script>
+  (function() {
+    'use strict';
+
+    Polymer({
+      is: 'x-app-pages',
+      properties: {
+        user: {
+          type: Object,
+          notify: true
+        },
+        route: {
+          type: Object,
+          notify: true
+        },
+        appRouteData: {
+          type: Object,
+          notify: true
+        },
+        appRouteSubdata: {
+          type: Object,
+          notify: true
+        }
+      },
+      ready: function() {
+        this.async(function() {
+					this.set('route.path', '/main');
+				});
       }
     });
   })();

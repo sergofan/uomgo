@@ -20,11 +20,12 @@
 				border-radius: 8px 8px 0 0;
 			}
 		</style>
+
 		<x-route subdata="{{data}}"></x-route>
 
 		<paper-tabs id="tabs"
 								scrollable
-								selected="{{data.page}}"
+								selected="{{appRouteSubdata.page}}"
 								attr-for-selected="data-route">
 
 			<paper-tab data-route="about">О нас</paper-tab>
@@ -36,37 +37,79 @@
 
 		</paper-tabs>
 
-		<lazy-pages id="pages"
-								selected="{{data.page}}"
-								attr-for-selected="data-route"
-								entry-animation="fade-in-animation"
-								exit-animation="fade-out-animation">
+		<animated-lazy-pages attr-for-selected="data-route"
+												 selected="{{appRouteSubdata.page}}"
+												 animate-initial-selection
+												 loading="{{loading}}">
 
-			<template is="dom-if" data-route="about">
-				<x-about-about></x-about-about>
+			<template  is="dom-if" if="[[loading]]">
+				<div class="layout horizontal center-center">
+					<paper-spinner-lite active="[[loading]]"
+															alt="Загрузка ..."></paper-spinner-lite>
+				</div>
 			</template>
 
-			<template is="dom-if" data-route="boss">
-				<x-about-boss></x-about-boss>
+			<template is="animated-lazy-page" data-route="about">
+				<neon-animatable entry-animation="fade-in-animation"
+												 exit-animation="fade-out-animation"
+												 animation-target>
+
+					<x-about-about></x-about-about>
+
+				</neon-animatable>
 			</template>
 
-			<template is="dom-if" data-route="struct">
-				<x-about-struct></x-about-struct>
+			<template is="animated-lazy-page" data-route="boss">
+				<neon-animatable entry-animation="fade-in-animation"
+												 exit-animation="fade-out-animation"
+												 animation-target>
+
+					<x-about-boss></x-about-boss>
+
+				</neon-animatable>
 			</template>
 
-			<template is="dom-if" data-route="slave">
-				<x-about-slave></x-about-slave>
+			<template is="animated-lazy-page" data-route="struct">
+				<neon-animatable entry-animation="fade-in-animation"
+												 exit-animation="fade-out-animation"
+												 animation-target>
+
+					<x-about-struct></x-about-struct>
+
+				</neon-animatable>
 			</template>
 
-			<template is="dom-if" data-route="docs">
-				<x-about-docs></x-about-docs>
+			<template is="animated-lazy-page" data-route="slave">
+				<neon-animatable entry-animation="fade-in-animation"
+												 exit-animation="fade-out-animation"
+												 animation-target>
+
+					<x-about-slave></x-about-slave>
+
+				</neon-animatable>
 			</template>
 
-			<template is="dom-if" data-route="localGov">
-				<x-about-local-gov></x-about-local-gov>
+			<template is="animated-lazy-page" data-route="docs">
+				<neon-animatable entry-animation="fade-in-animation"
+												 exit-animation="fade-out-animation"
+												 animation-target>
+
+					<x-about-docs></x-about-docs>
+
+				</neon-animatable>
 			</template>
 
-		</lazy-pages>
+			<template is="animated-lazy-page" data-route="localGov">
+				<neon-animatable entry-animation="fade-in-animation"
+												 exit-animation="fade-out-animation"
+												 animation-target>
+
+					<x-about-local-gov></x-about-local-gov>
+
+				</neon-animatable>
+			</template>
+
+		</animated-lazy-pages>
 
 	</template>
 	<script>
@@ -74,7 +117,26 @@
 		'use strict';
 
 		Polymer({
-			is: 't-about-template'
+			is: 't-about-template',
+			properties: {
+				route: {
+					type: Object,
+					notify: true
+				},
+				appRouteData: {
+					type: Object,
+					notify: true
+				},
+				appRouteSubdata: {
+					type: Object,
+					notify: true
+				}
+			},
+			ready: function() {
+				this.async(function() {
+					this.set('route.path', '/about/boss');
+				});
+			}
 		});
 	})();
 	</script>

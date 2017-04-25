@@ -64,7 +64,6 @@
 		var auxScale = heightDiff / (1 - maxMiddleScale);
 		var scaleMiddle = Math.max(maxMiddleScale, auxHeight / auxScale + maxMiddleScale);
 		var scaleBottom = 1 - yRatio;
-
 		// Move/translate middleContainer
 		//Polymer.Base.transform('translate3d(0,' + yRatio * 100 + '%,0)', middleContainer);
 		Polymer.Base.transform('scale(' + scaleMiddle + ') translateZ(0)', middleContainer);

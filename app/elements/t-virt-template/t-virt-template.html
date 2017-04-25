@@ -22,22 +22,13 @@
 			}
 		</style>
 
-		<x-route subdata="{{data}}"></x-route>
-
 		<neon-animated-pages id="pages"
-								selected="{{data.page}}"
+								selected="{{appRouteSubdata.page}}"
 								attr-for-selected="data-route"
 								entry-animation="fade-in-animation"
 								exit-animation="fade-out-animation">
-
-			<!-- <template is="dom-if" data-route="rules"> -->
 				<x-virt-rules data-route="rules"></x-virt-rules>
-			<!-- </template> -->
-
-			<!-- <template is="dom-if" data-route="messages"> -->
 				<x-virt-messages data-route="messages" user="[[user]]"></x-virt-messages>
-			<!-- </template> -->
-
 		</neon-animated-pages>
 
 
@@ -51,7 +42,30 @@
 			properties: {
 				user: {
 					type: Array
+				},
+				route: {
+					type: Object,
+					notify: true
+				},
+				appRouteData: {
+					type: Object,
+					notify: true
+				},
+				appRouteSubdata: {
+					type: Object,
+					notify: true
 				}
+			},
+			ready: function() {
+				this.async(function() {
+					this.set('appRouteSubdata.page', 'rules');
+					this.set('route.path', '/virt/rules');
+					// if (this.user) {
+					// 	this.set('route.path', '/virt/messages');
+					// } else {
+					// 	this.set('route.path', '/virt/rules');
+					// }
+				});
 			}
 		});
 	})();
