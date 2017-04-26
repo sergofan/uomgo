@@ -91,7 +91,9 @@
 		  Управление образованием Мысковского городского округа
 		</paper-tooltip>
 
-		<paper-menu attr-for-selected="data-route" selected='{{appRouteData.page}}'>
+		<paper-menu id="mainMenu"
+								attr-for-selected="data-route"
+								selected='{{appRouteData.page}}'>
 
 			<paper-icon-item icon="home" label="Главная" data-route="main">
 				<iron-icon icon="home" item-icon></iron-icon>
@@ -113,14 +115,7 @@
 					Обращения граждан
 				</paper-item-body>
 			</paper-icon-item>
-<!--
-			<paper-icon-item data-route="plan">
-				<iron-icon icon="mail" item-icon></iron-icon>
-				<paper-item-body>
-					План работы
-				</paper-item-body>
-			</paper-icon-item>
- -->
+
 			<paper-submenu>
 				<paper-icon-item class="menu-trigger menu-items">
 					<iron-icon icon="folder" item-icon></iron-icon>
@@ -257,12 +252,14 @@
 				},
 				appRouteData: {
 					type: Object,
-					notify: true
-				},
-				appRouteSubdata: {
-					type: Object,
-					notify: true
+					notify: true,
+					observer: '_selectedIndexChanged'
 				}
+			},
+			ready: function() {
+			},
+			_selectedIndexChanged: function(newValue, oldValue) {
+				// console.log(oldValue, newValue);
 			}
 		});
 	})();

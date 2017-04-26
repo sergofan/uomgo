@@ -133,7 +133,9 @@
 			</div>
 		</template>
 
-		<template id="formDomIf" is="dom-if" if="[[!user]]" restamp>
+		<template id="formDomIf" is="dom-if"
+							if="[[!user]]" restamp on-dom-change="_formChanged">
+
 			<form is="iron-form" id="form" on-iron-form-presubmit="_presubmit">
 				<paper-card heading="Форма обращения" elevation="4">
 					<div class="card-content">
@@ -210,6 +212,7 @@
 
 				</paper-card>
 			</form>
+
 		</template>
 
 		<div id="messages">
@@ -338,33 +341,6 @@
 				}
 			},
 			ready: function() {
-				var that = this;
-				var formDomIf = this.querySelector('#formDomIf');
-				var domRepeat = this.$.domRepeat;
-
-				formDomIf.addEventListener('dom-change', function(e) {
-					var element = e.srcElement.parentElement;
-					var recaptcha = element.$$('#recaptcha');
-					var submit = element.$$('#submit');
-					var dropdownMenuInput = element.$$('#dropdownMenuInput');
-					var paperMenu = element.$$('paper-menu');
-
-					// if (submit) {
-					// 	submit.disabled = false;
-					// };
-
-					if (recaptcha) {
-						recaptcha.addEventListener('captcha-response', function(e) {
-							submit.disabled = false;
-						});
-						recaptcha.addEventListener('captcha-expired', function(e) {
-							submit.disabled = true;
-						});
-					};
-					// if (paperMenu) {
-					// 	paperMenu.selected = 0;
-					// };
-				});
 			},
 			_computeSort: function(a, b) {
 				if (a.date == b.date) {
@@ -468,6 +444,21 @@
 			},
 			_showChanged: function(newValue, oldValue) {
 				this.$.domRepeat.render();
+			},
+			_formChanged: function(e) {
+				var element = e.srcElement.parentElement;
+				var recaptcha = element.querySelector('#recaptcha');
+				var submit = element.querySelector('#submit');
+				var dropdownMenuInput = element.querySelector('#dropdownMenuInput');
+				var paperMenu = element.querySelector('paper-menu');
+				if (recaptcha) {
+					recaptcha.addEventListener('captcha-response', function(e) {
+						submit.disabled = false;
+					});
+					recaptcha.addEventListener('captcha-expired', function(e) {
+						submit.disabled = true;
+					});
+				};
 			}
 		});
 	})();

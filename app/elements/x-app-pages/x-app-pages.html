@@ -29,8 +29,7 @@
                         exit-animation="fade-out-animation"
                         animation-target>
 
-          <t-about-template app-route-subdata="{{appRouteSubdata}}"
-                            route="{{route}}"></t-about-template>
+          <t-about-template app-route-subdata="{{appRouteSubdata}}"></t-about-template>
 
       </template>
 
@@ -40,8 +39,7 @@
                         animation-target>
 
           <t-virt-template user="[[user]]"
-                           app-route-subdata="{{appRouteSubdata}}"
-                           route="{{route}}"></t-virt-template>
+                           app-route-subdata="{{appRouteSubdata}}"></t-virt-template>
 
       </neon-animatable>
       </template>
@@ -61,7 +59,7 @@
                         exit-animation="fade-out-animation"
                         animation-target>
 
-          <t-inspect-template data-route="inspect"></t-inspect-template>
+          <t-inspect-template></t-inspect-template>
 
       </neon-animatable>
       </template>
@@ -71,7 +69,7 @@
                         exit-animation="fade-out-animation"
                         animation-target>
 
-          <t-preschool-template data-route="preschool"></t-preschool-template>
+          <t-preschool-template></t-preschool-template>
 
       </neon-animatable>
       </template>
@@ -81,7 +79,7 @@
                         exit-animation="fade-out-animation"
                         animation-target>
 
-          <t-sport-template data-route="sport"></t-sport-template>
+          <t-sport-template></t-sport-template>
 
       </neon-animatable>
       </template>
@@ -91,7 +89,7 @@
                         exit-animation="fade-out-animation"
                         animation-target>
 
-          <t-upbringe-template data-route="upbringe"></t-upbringe-template>
+          <t-upbringe-template></t-upbringe-template>
 
       </neon-animatable>
       </template>
@@ -101,7 +99,7 @@
                         exit-animation="fade-out-animation"
                         animation-target>
 
-          <t-tutelage-template data-route="tutelage"></t-tutelage-template>
+          <t-tutelage-template></t-tutelage-template>
 
       </neon-animatable>
       </template>
@@ -111,7 +109,7 @@
                         exit-animation="fade-out-animation"
                         animation-target>
 
-          <t-legal-template data-route="legal"></t-legal-template>
+          <t-legal-template></t-legal-template>
 
       </neon-animatable>
       </template>
@@ -121,7 +119,7 @@
                         exit-animation="fade-out-animation"
                         animation-target>
 
-          <t-orgs-template data-route="orgs"></t-legal-template>
+          <t-orgs-template></t-legal-template>
 
         </neon-animatable>
       </template>
@@ -131,7 +129,7 @@
                         exit-animation="fade-out-animation"
                         animation-target>
 
-          <t-metod-template data-route="metod"></t-legal-template>
+          <t-metod-template></t-legal-template>
 
         </neon-animatable>
       </template>
@@ -141,7 +139,7 @@
                         exit-animation="fade-out-animation"
                         animation-target>
 
-          <t-diet-template data-route="diet"></t-legal-template>
+          <t-diet-template></t-legal-template>
 
         </neon-animatable>
       </template>
@@ -151,7 +149,7 @@
                         exit-animation="fade-out-animation"
                         animation-target>
 
-          <t-counting-template data-route="counting"></t-legal-template>
+          <t-counting-template></t-legal-template>
 
         </neon-animatable>
       </template>
@@ -161,7 +159,7 @@
                         exit-animation="fade-out-animation"
                         animation-target>
 
-          <t-transport-template data-route="transport"></t-legal-template>
+          <t-transport-template></t-legal-template>
 
         </neon-animatable>
       </template>
@@ -171,7 +169,7 @@
                         exit-animation="fade-out-animation"
                         animation-target>
 
-          <t-public-template data-route="public"></t-legal-template>
+          <t-public-template></t-legal-template>
 
         </neon-animatable>
       </template>
@@ -181,7 +179,7 @@
                         exit-animation="fade-out-animation"
                         animation-target>
 
-          <t-business-template data-route="business"></t-legal-template>
+          <t-business-template></t-legal-template>
 
         </neon-animatable>
       </template>
@@ -191,7 +189,7 @@
                         exit-animation="fade-out-animation"
                         animation-target>
 
-          <t-museum-template data-route="museum"></t-legal-template>
+          <t-museum-template></t-legal-template>
 
         </neon-animatable>
       </template>
@@ -201,7 +199,7 @@
                         exit-animation="fade-out-animation"
                         animation-target>
 
-          <t-hotline-template data-route="hotline"></t-legal-template>
+          <t-hotline-template></t-legal-template>
 
         </neon-animatable>
       </template>
@@ -211,7 +209,7 @@
                         exit-animation="fade-out-animation"
                         animation-target>
 
-          <t-jobs-template data-route="jobs"></t-legal-template>
+          <t-jobs-template></t-legal-template>
 
         </neon-animatable>
       </template>
@@ -261,9 +259,6 @@
         }
       },
       ready: function() {
-        this.async(function() {
-					this.set('route.path', '/main');
-				});
       }
     });
   })();

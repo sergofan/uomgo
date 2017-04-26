@@ -45,7 +45,7 @@
 				План работы УОМГО
 			</div>
 			<div class="content layout vertical center-center">
-				<paper-button on-tap="goToDocs" raised
+				<paper-button on-tap="_goToDocs" raised
 											style="margin-left: 32px; text-align: center;">
 					Перейти в раздел документы
 					<iron-icon icon="arrow-forward"></iron-icon></paper-button>
@@ -149,7 +149,7 @@
 			_computePath: function(key) {
 				return "/posts/" + key;
 			},
-			goToDocs: function() {
+			_goToDocs: function() {
 				this.async(function() {
 					this.set('route.path', '/about/docs');
 				});

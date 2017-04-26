@@ -22,15 +22,39 @@
 			}
 		</style>
 
-		<neon-animated-pages id="pages"
-								selected="{{appRouteSubdata.page}}"
-								attr-for-selected="data-route"
-								entry-animation="fade-in-animation"
-								exit-animation="fade-out-animation">
-				<x-virt-rules data-route="rules"></x-virt-rules>
-				<x-virt-messages data-route="messages" user="[[user]]"></x-virt-messages>
-		</neon-animated-pages>
+		<animated-lazy-pages attr-for-selected="data-route"
+                         selected="{{appRouteSubdata.page}}"
+                         animate-initial-selection
+                         loading="{{loading}}">
 
+			<template is="animated-lazy-page" data-route="rules">
+        <neon-animatable entry-animation="fade-in-animation"
+                         exit-animation="fade-out-animation"
+                         animation-target>
+
+          <x-virt-rules></x-virt-rules>
+
+        <neon-animatable>
+      </template>
+
+			<template is="animated-lazy-page" data-route="messages">
+        <neon-animatable entry-animation="fade-in-animation"
+                         exit-animation="fade-out-animation"
+                         animation-target>
+
+          <x-virt-messages user="[[user]]"></x-virt-messages>
+
+        <neon-animatable>
+      </template>
+
+		</animated-lazy-pages>
+
+		<template  is="dom-if" if="[[loading]]">
+      <div class="layout horizontal center-center">
+        <paper-spinner-lite active="[[loading]]"
+                            alt="Загрузка ..."></paper-spinner-lite>
+      </div>
+    </template>
 
 	</template>
 	<script>
@@ -57,15 +81,15 @@
 				}
 			},
 			ready: function() {
-				this.async(function() {
-					this.set('appRouteSubdata.page', 'rules');
-					this.set('route.path', '/virt/rules');
-					// if (this.user) {
-					// 	this.set('route.path', '/virt/messages');
-					// } else {
-					// 	this.set('route.path', '/virt/rules');
-					// }
-				});
+				// this.async(function() {
+				// 	this.set('appRouteSubdata.page', 'rules');
+				// 	this.set('route.path', '/virt/rules');
+				// 	// if (this.user) {
+				// 	// 	this.set('route.path', '/virt/messages');
+				// 	// } else {
+				// 	// 	this.set('route.path', '/virt/rules');
+				// 	// }
+				// });
 			}
 		});
 	})();
