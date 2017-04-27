@@ -10,7 +10,7 @@
     </style>
 
     <animated-lazy-pages attr-for-selected="data-route"
-                         selected="{{appRouteData.page}}"
+                         selected="{{app.appRouteData.page}}"
                          animate-initial-selection
                          loading="{{loading}}">
 
@@ -19,7 +19,7 @@
                         exit-animation="fade-out-animation"
                         animation-target>
 
-          <t-main-template user="[[user]]" route="{{route}}"></t-main-template>
+          <t-main-template></t-main-template>
 
         <neon-animatable>
       </template>
@@ -29,7 +29,7 @@
                         exit-animation="fade-out-animation"
                         animation-target>
 
-          <t-about-template app-route-subdata="{{appRouteSubdata}}"></t-about-template>
+          <t-about-template app-route-subdata="{{app.appRouteSubdata}}"></t-about-template>
 
       </template>
 
@@ -38,8 +38,7 @@
                         exit-animation="fade-out-animation"
                         animation-target>
 
-          <t-virt-template user="[[user]]"
-                           app-route-subdata="{{appRouteSubdata}}"></t-virt-template>
+          <t-virt-template></t-virt-template>
 
       </neon-animatable>
       </template>
@@ -49,7 +48,7 @@
                         exit-animation="fade-out-animation"
                         animation-target>
 
-          <t-plan-template user="[[user]]"></t-plan-template>
+          <t-plan-template></t-plan-template>
 
       </neon-animatable>
       </template>
@@ -219,7 +218,7 @@
                         exit-animation="fade-out-animation"
                         animation-target>
 
-          <t-login-template user="{{user}}" data-route="login"></t-login-template>
+          <t-login-template></t-login-template>
 
         </neon-animatable>
       </template> -->
@@ -241,22 +240,6 @@
     Polymer({
       is: 'x-app-pages',
       properties: {
-        user: {
-          type: Object,
-          notify: true
-        },
-        route: {
-          type: Object,
-          notify: true
-        },
-        appRouteData: {
-          type: Object,
-          notify: true
-        },
-        appRouteSubdata: {
-          type: Object,
-          notify: true
-        }
       },
       ready: function() {
       }

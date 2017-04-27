@@ -23,7 +23,7 @@
 		</style>
 
 		<animated-lazy-pages attr-for-selected="data-route"
-                         selected="{{appRouteSubdata.page}}"
+                         selected="{{app.appRouteSubdata.page}}"
                          animate-initial-selection
                          loading="{{loading}}">
 
@@ -42,7 +42,7 @@
                          exit-animation="fade-out-animation"
                          animation-target>
 
-          <x-virt-messages user="[[user]]"></x-virt-messages>
+          <x-virt-messages user="[[app.user]]"></x-virt-messages>
 
         <neon-animatable>
       </template>
@@ -64,32 +64,8 @@
 		Polymer({
 			is: 't-virt-template',
 			properties: {
-				user: {
-					type: Array
-				},
-				route: {
-					type: Object,
-					notify: true
-				},
-				appRouteData: {
-					type: Object,
-					notify: true
-				},
-				appRouteSubdata: {
-					type: Object,
-					notify: true
-				}
 			},
 			ready: function() {
-				// this.async(function() {
-				// 	this.set('appRouteSubdata.page', 'rules');
-				// 	this.set('route.path', '/virt/rules');
-				// 	// if (this.user) {
-				// 	// 	this.set('route.path', '/virt/messages');
-				// 	// } else {
-				// 	// 	this.set('route.path', '/virt/rules');
-				// 	// }
-				// });
 			}
 		});
 	})();

@@ -93,26 +93,24 @@
 
 		<paper-menu id="mainMenu"
 								attr-for-selected="data-route"
-								selected='{{appRouteData.page}}'>
+								selected='{{app.appRouteData.page}}'
+								on-iron-select="_menuItemSelected">
 
-			<paper-icon-item on-tap="_changePath"
-											 data-route="main">
+			<paper-icon-item data-route="main" data-args="/main">
 				<iron-icon icon="home" item-icon></iron-icon>
 				<paper-item-body>
 					Главная
 				</paper-item-body>
 			</paper-icon-item>
 
-			<paper-icon-item on-tap="_changePath"
-											 data-route="about">
+			<paper-icon-item data-route="about" data-args="/about">
 				<iron-icon icon="info" item-icon></iron-icon>
 				<paper-item-body>
 					Об управлении
 				</paper-item-body>
 			</paper-icon-item>
 
-			<paper-icon-item on-tap="_changePath"
-											 data-route="virt">
+			<paper-icon-item data-route="virt" data-args="/virt">
 				<iron-icon icon="mail"item-icon></iron-icon>
 				<paper-item-body>
 					Обращения граждан
@@ -129,7 +127,7 @@
 
 				<paper-menu class="menu-content"
 										attr-for-selected="data-route"
-										selected='{{appRouteData.page}}'>
+										selected='{{app.appRouteData.page}}'>
 
 					<paper-item class="submenu-items" data-route="inspect">
 						<span>Отдел инспектирования качества образования</span>
@@ -168,7 +166,7 @@
 
 				<paper-menu class="menu-content"
 										attr-for-selected="data-route"
-										selected='{{appRouteData.page}}'>
+										selected='{{app.appRouteData.page}}'>
 
 					<paper-item class="submenu-items" data-route="metod">
 						<paper-item-body>
@@ -249,27 +247,34 @@
 		Polymer({
 			is: 'x-drawer-menu',
 			properties: {
-				route: {
-					type: Object,
-					notify: true
-				},
-				appRouteData: {
-					type: Object,
-					notify: true,
-					observer: '_selectedIndexChanged'
-				}
 			},
 			ready: function() {
 			},
 			_selectedIndexChanged: function(newValue, oldValue) {
 				// console.log(oldValue, newValue);
 			},
-			_changePath: function(e) {
-				var dataArgs = e.target.getAttribute('data-args');
+			_menuItemSelected: function(e) {
+				var selected = e.target.selected;
 				this.async(function() {
-						app.set('route.path', dataArgs);
-						console.log(app.route.path);
+					switch(selected) {
+						case '':
+						case 'about':
+							app.set('route.path', '/about/boss');
+							break;
+						case 'virt':
+							if (app.user) {
+								app.set('route.path', '/virt/messages');
+							} else {
+								app.set('route.path', '/virt/rules');
+							};
+							break;
+						default:
+							app.set('route.path', '/'+selected);
+							console.log(app.route.path);
+							break;
+					}
 				});
+
 			}
 		});
 	})();

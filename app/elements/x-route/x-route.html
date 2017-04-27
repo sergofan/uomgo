@@ -13,9 +13,9 @@
 		<app-route route="{{route}}"
 									pattern="/:page"
 									data="{{appRouteData}}"
-									tail="{{tail}}"></app-route>
+									tail="{{_tail}}"></app-route>
 
-		<app-route route="{{tail}}"
+		<app-route route="{{_tail}}"
 							 pattern="/:page"
 							 data="{{appRouteSubdata}}"></app-route>
 	</template>
@@ -37,13 +37,12 @@
 					type: Object,
 					notify: true
 				},
-				tail: {
-					type: Object,
-					notify: true
-				},
 				appRouteSubdata: {
 					type: Object,
 					notify: true
+				},
+				_tail: {
+					type: Object
 				}
 			},
 			ready: function() {
@@ -54,7 +53,7 @@
 				// });
 			},
 			_pathChanged: function(route) {
-				// console.log('route -> ', this.route, 'appRouteSubdata -> ', this.appRouteSubdata, 'appRouteData -> ', this.appRouteData);
+				console.log('route -> ', this.route, 'appRouteSubdata -> ', this.appRouteSubdata, 'appRouteData -> ', this.appRouteData);
 				// this.async(function() {
 				// 	switch(route.path) {
 				// 		case '':

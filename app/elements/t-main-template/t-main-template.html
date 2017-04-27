@@ -56,9 +56,9 @@
 											 app-name="uomgo"></firebase-document>
 
 		<!-- <x-messages></x-messages> -->
-		<x-posts user="[[user]]"></x-posts>
+		<x-posts user="[[app.user]]"></x-posts>
 
-		<template is="dom-if" if="[[user]]">
+		<template is="dom-if" if="[[app.user]]">
 			<paper-fab id="add"
 								 icon="add"
 								 mini="true"
@@ -88,13 +88,6 @@
 				key: {
 					type: String,
 					value: ''
-				},
-				user: {
-					type: Object
-				},
-				route: {
-					type: Object,
-					notify: true
 				}
 			},
 			ready: function() {
@@ -148,11 +141,6 @@
 			},
 			_computePath: function(key) {
 				return "/posts/" + key;
-			},
-			_goToDocs: function() {
-				this.async(function() {
-					this.set('route.path', '/about/docs');
-				});
 			}
 		});
 	})();

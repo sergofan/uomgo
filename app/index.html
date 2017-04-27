@@ -128,6 +128,10 @@
 	<span id="browser-sync-binding"></span>
 	<template is="dom-bind" id="app">
 
+		<x-route route="{{route}}"
+						 app-route-data="{{appRouteData}}"
+						 app-route-subdata="{{appRouteSubdata}}"></x-route>
+
 		<firebase-app	api-key="AIzaSyAepf-iIF_1XRmDYWpKTDpXhelRAYt6Cfw"
 									auth-domain="uomgo-fab6c.firebaseapp.com"
 									database-url="https://uomgo-fab6c.firebaseio.com"
@@ -138,7 +142,7 @@
 			<!-- Drawer Scroll Header Panel -->
 
 			<paper-scroll-header-panel drawer>
-				<x-drawer-menu app-route-data="{{appRouteData}}" route"{{route}}"></x-driwer-menu>
+				<x-drawer-menu></x-driwer-menu>
 			</paper-scroll-header-panel>
 
 			<!-- Main Area -->
@@ -198,17 +202,13 @@
 				<!-- Main container -->
 				<div class="container" id="pagesContainer">
 
-					<x-route app-route-data="{{appRouteData}}"
-									 app-route-subdata="{{appRouteSubdata}}"
-									 route="{{route}}"></x-route>
-
 					<firebase-auth id="auth"
-												 user="{{user}}"
+												 user="{{app.user}}"
 												 provider="google"
 												 app-name="uomgo"
 												 on-error="showError"></firebase-auth>
 
-					<x-app-pages user="{{user}}"
+					<x-app-pages user="{{app.user}}"
 											 app-route-data="{{appRouteData}}"
 											 app-route-subdata="{{appRouteSubdata}}"
 											 route="{{route}}"></x-app-pages>

@@ -21,11 +21,9 @@
 			}
 		</style>
 
-		<x-route subdata="{{data}}"></x-route>
-
 		<paper-tabs id="tabs"
 								scrollable
-								selected="{{appRouteSubdata.page}}"
+								selected="{{app.appRouteSubdata.page}}"
 								attr-for-selected="data-route">
 
 			<paper-tab data-route="about">О нас</paper-tab>
@@ -38,10 +36,9 @@
 		</paper-tabs>
 
 		<animated-lazy-pages attr-for-selected="data-route"
-												 selected="{{appRouteSubdata.page}}"
+												 selected="{{app.appRouteSubdata.page}}"
 												 animate-initial-selection
-												 loading="{{loading}}"
-												 fallback-selection="boss">
+												 loading="{{loading}}">
 
 			<template  is="dom-if" if="[[loading]]">
 				<div class="layout horizontal center-center">
@@ -120,23 +117,8 @@
 		Polymer({
 			is: 't-about-template',
 			properties: {
-				route: {
-					type: Object,
-					notify: true
-				},
-				appRouteData: {
-					type: Object,
-					notify: true
-				},
-				appRouteSubdata: {
-					type: Object,
-					notify: true
-				}
 			},
 			ready: function() {
-				// this.async(function() {
-				// 	this.set('route.path', '/about/boss');
-				// });
 			}
 		});
 	})();
