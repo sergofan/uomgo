@@ -40,7 +40,8 @@
 		<animated-lazy-pages attr-for-selected="data-route"
 												 selected="{{appRouteSubdata.page}}"
 												 animate-initial-selection
-												 loading="{{loading}}">
+												 loading="{{loading}}"
+												 fallback-selection="boss">
 
 			<template  is="dom-if" if="[[loading]]">
 				<div class="layout horizontal center-center">

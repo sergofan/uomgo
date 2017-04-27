@@ -55,26 +55,26 @@
 			},
 			_pathChanged: function(route) {
 				// console.log('route -> ', this.route, 'appRouteSubdata -> ', this.appRouteSubdata, 'appRouteData -> ', this.appRouteData);
-				this.async(function() {
-					switch(route.path) {
-						case '':
-							this.set('route.path', '/main');
-							break;
-						// case '/':
-						// 	this.set('route.path', '/main');
-						// 	break;
-						case '/about':
-							this.set('route.path', '/about/boss');
-							break;
-						case '/virt':
-							if (app.user) {
-								this.set('route.path', '/virt/messages');
-							} else {
-								this.set('route.path', '/virt/rules');
-							};
-							break;
-					}
-				});
+				// this.async(function() {
+				// 	switch(route.path) {
+				// 		case '':
+				// 			this.set('route.path', '/main');
+				// 			break;
+				// 		// case '/':
+				// 		// 	this.set('route.path', '/main');
+				// 		// 	break;
+				// 		case '/about':
+				// 			this.set('route.path', '/about/boss');
+				// 			break;
+				// 		case '/virt':
+				// 			if (app.user) {
+				// 				this.set('route.path', '/virt/messages');
+				// 			} else {
+				// 				this.set('route.path', '/virt/rules');
+				// 			};
+				// 			break;
+				// 	}
+				// });
 			}
 		});
 	})();

@@ -5,6 +5,8 @@
 		<style is="custom-style" include="shared-styles">
 			:host {
 				display: block;
+				word-wrap: break-word;
+				/*word-break: break-all;*/
 			}
 
 			#head {
@@ -48,7 +50,7 @@
 			}
 
 			paper-icon-item {
-				padding: 4px 16px !important;
+				padding: 4px 8px !important;
 				--paper-item: {
 					cursor: pointer;
 				};
@@ -67,13 +69,31 @@
 			.submenu-items {
 				padding: 4px 16px 4px 40px;
 			}
+			img, iron-image {
+				width: 100%;
+				--iron-image-width: 100%;
+			}
+			paper-tooltip {
+				--paper-tooltip: {
+					text-align: center;
+				};
+			}
 		</style>
 
 		<div id="head" class="layout horizontal center-center fit">
-			<iron-image src="[[app.baseUrl]]images/logo.png"></iron-image>
+			<iron-image src="https://firebasestorage.googleapis.com/v0/b/uomgo-fab6c.appspot.com/o/logo1.png?alt=media&token=6f57274a-1993-4dfd-8638-a8d782a2121c"></iron-image>
 		</div>
 
-		<paper-menu attr-for-selected="data-route" selected='{{data.page}}'>
+		<paper-tooltip
+		  for="head"
+		  position="bottom"
+		  offset="0">
+		  Управление образованием Мысковского городского округа
+		</paper-tooltip>
+
+		<paper-menu id="mainMenu"
+								attr-for-selected="data-route"
+								selected='{{appRouteData.page}}'>
 
 			<paper-icon-item icon="home" label="Главная" data-route="main">
 				<iron-icon icon="home" item-icon></iron-icon>
@@ -92,7 +112,7 @@
 			<paper-icon-item data-route="virt">
 				<iron-icon icon="mail" item-icon></iron-icon>
 				<paper-item-body>
-					Виртуальная приемная
+					Обращения граждан
 				</paper-item-body>
 			</paper-icon-item>
 
@@ -106,7 +126,7 @@
 
 				<paper-menu class="menu-content"
 										attr-for-selected="data-route"
-										selected='{{data.page}}'>
+										selected='{{appRouteData.page}}'>
 
 					<paper-item class="submenu-items" data-route="inspect">
 						<span>Отдел инспектирования качества образования</span>
@@ -132,28 +152,54 @@
 						<span>Организационно - правовой отдел</span>
 					</paper-item>
 
-					<paper-item class="submenu-items" data-route="orgs">
-						<span>Образовательные организации</span>
-					</paper-item>
+				</paper-menu>
+			</paper-submenu>
+
+			<paper-submenu>
+				<paper-icon-item class="menu-trigger menu-items">
+					<iron-icon icon="folder" item-icon></iron-icon>
+					<paper-item-body>
+						Подведомственные организации
+					</paper-item-body>
+				</paper-icon-item>
+
+				<paper-menu class="menu-content"
+										attr-for-selected="data-route"
+										selected='{{appRouteData.page}}'>
 
 					<paper-item class="submenu-items" data-route="metod">
-						<span>Информационно - методический центр</span>
+						<paper-item-body>
+							Информационно - методический центр
+						</paper-item-body>
 					</paper-item>
 
 					<paper-item class="submenu-items" data-route="diet">
-						<span>Комбинат питания</span>
+						<paper-item-body>
+							Комбинат питания
+						</paper-item-body>
 					</paper-item>
 
 					<paper-item class="submenu-items" data-route="counting">
-						<span>Централизованная бухгалтерия</span>
+						<paper-item-body>
+							Централизованная бухгалтерия
+						</paper-item-body>
 					</paper-item>
 
 					<paper-item class="submenu-items" data-route="transport">
-						<span>Транспортно - хозяйственное учреждение</span>
+						<paper-item-body>
+							Транспортно - хозяйственное учреждение
+						</paper-item-body>
 					</paper-item>
 
-				</paper-menu>
+				<paper-menu>
 			</paper-submenu>
+
+			<paper-icon-item data-route="orgs">
+				<iron-icon icon="description" item-icon></iron-icon>
+				<paper-item-body>
+					Образовательные организации
+				</paper-item-body>
+			</paper-icon-item>
 
 			<paper-icon-item data-route="public">
 				<iron-icon icon="description" item-icon></iron-icon>
@@ -167,7 +213,7 @@
 				<paper-item-body>
 					Реестр индивидуальных предпринимателей
 				</paper-item-body>
-		</paper-icon-item>
+			</paper-icon-item>
 
 			<paper-icon-item data-route="museum">
 				<iron-icon icon="description" item-icon></iron-icon>
@@ -200,10 +246,20 @@
 		Polymer({
 			is: 'x-drawer-menu',
 			properties: {
-				data: {
+				route: {
 					type: Object,
 					notify: true
+				},
+				appRouteData: {
+					type: Object,
+					notify: true,
+					observer: '_selectedIndexChanged'
 				}
+			},
+			ready: function() {
+			},
+			_selectedIndexChanged: function(newValue, oldValue) {
+				// console.log(oldValue, newValue);
 			}
 		});
 	})();

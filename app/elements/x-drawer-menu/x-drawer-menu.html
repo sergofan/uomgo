@@ -95,22 +95,25 @@
 								attr-for-selected="data-route"
 								selected='{{appRouteData.page}}'>
 
-			<paper-icon-item icon="home" label="Главная" data-route="main">
+			<paper-icon-item on-tap="_changePath"
+											 data-route="main">
 				<iron-icon icon="home" item-icon></iron-icon>
 				<paper-item-body>
 					Главная
 				</paper-item-body>
 			</paper-icon-item>
 
-			<paper-icon-item data-route="about">
+			<paper-icon-item on-tap="_changePath"
+											 data-route="about">
 				<iron-icon icon="info" item-icon></iron-icon>
 				<paper-item-body>
 					Об управлении
 				</paper-item-body>
 			</paper-icon-item>
 
-			<paper-icon-item data-route="virt">
-				<iron-icon icon="mail" item-icon></iron-icon>
+			<paper-icon-item on-tap="_changePath"
+											 data-route="virt">
+				<iron-icon icon="mail"item-icon></iron-icon>
 				<paper-item-body>
 					Обращения граждан
 				</paper-item-body>
@@ -260,6 +263,13 @@
 			},
 			_selectedIndexChanged: function(newValue, oldValue) {
 				// console.log(oldValue, newValue);
+			},
+			_changePath: function(e) {
+				var dataArgs = e.target.getAttribute('data-args');
+				this.async(function() {
+						app.set('route.path', dataArgs);
+						console.log(app.route.path);
+				});
 			}
 		});
 	})();
