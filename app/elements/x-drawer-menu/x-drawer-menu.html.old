@@ -93,7 +93,7 @@
 
 		<paper-menu id="mainMenu"
 								attr-for-selected="data-route"
-								selected='{{appRouteData.page}}'>
+								selected='{{app.appRouteData.page}}'>
 
 			<paper-icon-item icon="home" label="Главная" data-route="main">
 				<iron-icon icon="home" item-icon></iron-icon>
@@ -126,7 +126,7 @@
 
 				<paper-menu class="menu-content"
 										attr-for-selected="data-route"
-										selected='{{appRouteData.page}}'>
+										selected='{{app.appRouteData.page}}'>
 
 					<paper-item class="submenu-items" data-route="inspect">
 						<span>Отдел инспектирования качества образования</span>
@@ -165,7 +165,7 @@
 
 				<paper-menu class="menu-content"
 										attr-for-selected="data-route"
-										selected='{{appRouteData.page}}'>
+										selected='{{app.appRouteData.page}}'>
 
 					<paper-item class="submenu-items" data-route="metod">
 						<paper-item-body>
@@ -245,21 +245,10 @@
 
 		Polymer({
 			is: 'x-drawer-menu',
+			
 			properties: {
-				route: {
-					type: Object,
-					notify: true
-				},
-				appRouteData: {
-					type: Object,
-					notify: true,
-					observer: '_selectedIndexChanged'
-				}
 			},
 			ready: function() {
-			},
-			_selectedIndexChanged: function(newValue, oldValue) {
-				// console.log(oldValue, newValue);
 			}
 		});
 	})();

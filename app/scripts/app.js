@@ -8,6 +8,9 @@
 
 	// Sets app default base URL
 	app.baseUrl = '/';
+	// app.route = {};
+	// app.appRouteData = {};
+	// app.appRouteSubdata = {};
 
 	// app.displayInstalledToast = function() {
 	// 	// Check to make sure caching is actually enabled—it won't be in the dev environment.

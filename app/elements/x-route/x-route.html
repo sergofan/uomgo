@@ -26,7 +26,9 @@
 		Polymer({
 			is: 'x-route',
 			observers: [
-				'_pathChanged(route)'
+				'_pathChanged(route)',
+				'_dataPageChanged(appRouteData)',
+				'_subdataPageChanged(appRouteSubdata)'
 			],
 			properties: {
 				route: {
@@ -53,7 +55,10 @@
 				// });
 			},
 			_pathChanged: function(route) {
-				console.log('route -> ', this.route, 'appRouteSubdata -> ', this.appRouteSubdata, 'appRouteData -> ', this.appRouteData);
+				// if (this.route && this.appRouteData && this.appRouteSubdata) {
+					console.log(route.path);
+				// }
+
 				// this.async(function() {
 				// 	switch(route.path) {
 				// 		case '':
@@ -74,6 +79,12 @@
 				// 			break;
 				// 	}
 				// });
+			},
+			_dataPageChanged: function(appRouteData) {
+				console.log(appRouteData.page);
+			},
+			_subdataPageChanged: function(appRouteSubdata) {
+				console.log(appRouteSubdata.page);
 			}
 		});
 	})();

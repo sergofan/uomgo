@@ -96,21 +96,21 @@
 								selected='{{app.appRouteData.page}}'
 								on-iron-select="_menuItemSelected">
 
-			<paper-icon-item data-route="main" data-args="/main">
+			<paper-icon-item data-route="main">
 				<iron-icon icon="home" item-icon></iron-icon>
 				<paper-item-body>
 					Главная
 				</paper-item-body>
 			</paper-icon-item>
 
-			<paper-icon-item data-route="about" data-args="/about">
+			<paper-icon-item data-route="about">
 				<iron-icon icon="info" item-icon></iron-icon>
 				<paper-item-body>
 					Об управлении
 				</paper-item-body>
 			</paper-icon-item>
 
-			<paper-icon-item data-route="virt" data-args="/virt">
+			<paper-icon-item data-route="virt">
 				<iron-icon icon="mail"item-icon></iron-icon>
 				<paper-item-body>
 					Обращения граждан
@@ -257,7 +257,7 @@
 				var selected = e.target.selected;
 				this.async(function() {
 					switch(selected) {
-						case '':
+						// case '':
 						case 'about':
 							app.set('route.path', '/about/boss');
 							break;
@@ -267,10 +267,10 @@
 							} else {
 								app.set('route.path', '/virt/rules');
 							};
+							console.log(app.route.path);
 							break;
 						default:
 							app.set('route.path', '/'+selected);
-							console.log(app.route.path);
 							break;
 					}
 				});
