@@ -128,26 +128,25 @@
 	<span id="browser-sync-binding"></span>
 	<template is="dom-bind" id="app">
 
-		<!-- <app-data key="user" data="{{user}}"></app-data>
-		<app-data key="route" data="{{route}}"></app-data>
-		<app-data key="app-route-data" data="{{appRouteData}}"></app-data>
-		<app-data key="app-route-subdata" data="{{appRouteSubdata}}"></app-data>
-
-		<x-route route="{{route}}"
-						 app-route-data="{{appRouteData}}"
-						 app-route-subdata="{{appRouteSubdata}}"></x-route> -->
-
-		<!-- <x-route></x-route> -->
-
 		<firebase-app	api-key="AIzaSyAepf-iIF_1XRmDYWpKTDpXhelRAYt6Cfw"
 									auth-domain="uomgo-fab6c.firebaseapp.com"
 									database-url="https://uomgo-fab6c.firebaseio.com"
 									name="uomgo"></firebase-app>
 
-		<!-- <paper-drawer-panel id="paperDrawerPanel"> -->
-		<paper-drawer-panel id="paperDrawerPanel" responsive-width="1280px">
-			<!-- Drawer Scroll Header Panel -->
+		<app-location route="{{route}}" use-hash-as-path></app-location>
 
+		<app-route route="{{route}}"
+									pattern="/:page"
+									data="{{data}}"
+									tail="{{_tail}}"></app-route>
+
+		<app-route route="{{_tail}}"
+							 pattern="/:page"
+							 data="{{subdata}}"></app-route>
+
+		<paper-drawer-panel id="paperDrawerPanel" responsive-width="1280px">
+
+			<!-- Drawer Scroll Header Panel -->
 			<paper-scroll-header-panel drawer>
 				<x-drawer-menu></x-driwer-menu>
 			</paper-scroll-header-panel>
@@ -181,15 +180,15 @@
 						<div class="spacer"></div>
 
 						<!-- Main tabs -->
-						<!-- <paper-tabs style="color: black"
+						<paper-tabs style="color: black"
 												id="main_tabs"
-												selected='{{appRouteData.page}}'
+												selected='{{data.page}}'
 												attr-for-selected='data-route'
 												scrollable>
 							<paper-tab data-route="main">Главная</paper-tab>
 							<paper-tab data-route="about">Об управлении</paper-tab>
 							<paper-tab data-route="virt">Обращения граждан</paper-tab>
-						</paper-tabs> -->
+						</paper-tabs>
 
 						<!-- Toolbar icons -->
 						<paper-icon-button icon="perm-identity"
@@ -206,7 +205,7 @@
 				<div class="container" id="pagesContainer">
 
 					<firebase-auth id="auth"
-												 user="{{app.user}}"
+												 user="{{user}}"
 												 provider="google"
 												 app-name="uomgo"
 												 on-error="showError"></firebase-auth>

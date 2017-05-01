@@ -8,7 +8,12 @@
 			}
 		</style>
 
-		<global-variable key="user" value="{{user}}"></global-variable>
+		<firebase-auth id="auth"
+									 user="{{user}}"
+									 provider="google"
+									 app-name="uomgo"
+									 on-error="showError"></firebase-auth>
+
 		<global-variable key="route" value="{{route}}"></global-variable>
 		<global-variable key="appRouteData" value="{{appRouteDataPage}}"></global-variable>
 		<global-variable key="appRouteSubdata" value="{{appRouteSubdataPage}}"></global-variable>
@@ -81,7 +86,7 @@
 				// 			this.set('newValue.path', '/about/boss');
 				// 			break;
 				// 		case '/virt':
-				// 			if (app.user) {
+				// 			if (user) {
 				// 				this.set('newValue.path', '/virt/messages');
 				// 			} else {
 				// 				this.set('newValue.path', '/virt/rules');

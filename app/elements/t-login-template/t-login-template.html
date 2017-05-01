@@ -28,7 +28,7 @@
 		</style>
 
 		<firebase-auth id="auth"
-									 user="{{app.user}}"
+									 user="{{user}}"
 									 provider="google"
 									 app-name="uomgo"
 									 on-error="showError"></firebase-auth>
@@ -50,18 +50,18 @@
 		<paper-material elevation="4">
 			<div class="block layout vertical start-justified">
 				<div class="error" hidden$="[[!error]]">[[error.code]]: [[error.message]]</div>
-				<div hidden$="[[!app.user]]">
+				<div hidden$="[[!user]]">
 					<h3>Вход выполнен.</h3>
-					<h3>Email: [[app.user.email]]</h3>
+					<h3>Email: [[user.email]]</h3>
 				</div>
 				<form is="iron-form" on-submit="sign">
 					<paper-button raised on-tap="sign">
 						<iron-icon icon="google:google"
 											 style="padding-right: 8px"></iron-icon>
-						<span hidden$="[[app.user]]">
+						<span hidden$="[[user]]">
 							Вход администратора
 						</span>
-						<span hidden$="[[!app.user]]">
+						<span hidden$="[[!user]]">
 							Выход администратора
 						</span>
 					</paper-button>
@@ -81,7 +81,7 @@
 
 			},
 			sign: function() {
-				if (app.user) {
+				if (user) {
 					this.signOut();
 				} else {
 					this.signIn();

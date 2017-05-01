@@ -80,8 +80,11 @@
 			}
 		</style>
 
-		<!-- <global-variable key="user" value="{{user}}"></global-variable>
-		<global-variable key="route" value="{{route}}"></global-variable> -->
+		<firebase-auth id="auth"
+									 user="{{user}}"
+									 provider="google"
+									 app-name="uomgo"
+									 on-error="showError"></firebase-auth>
 
 		<app-location route="{{route}}" use-hash-as-path></app-location>
 
@@ -266,7 +269,7 @@
 			},
 			_menuItemSelected: function(e) {
 				var selected = e.target.selected;
-				this.async(function() {
+				// this.async(function() {
 					// switch(selected) {
 					// 	case '':
 					// 	case 'about':
@@ -283,7 +286,7 @@
 					// 		this.set('route.path', '/'+selected);
 					// 		break;
 					// }
-				});
+				// });
 			}
 		});
 	})();

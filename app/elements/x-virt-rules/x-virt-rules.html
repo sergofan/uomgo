@@ -35,21 +35,10 @@
 			}
 		</style>
 
-		<app-location route="{{route}}" use-hash-as-path></app-location>
-
-		<app-route route="{{route}}"
-									pattern="/:page"
-									data="{{data}}"
-									tail="{{_tail}}"></app-route>
-
-		<app-route route="{{_tail}}"
-							 pattern="/:page"
-							 data="{{subdata}}"></app-route>
-
 		<firebase-document id="firebaseDocument"
-											 app-name="uomgo"
+											 data="{{docData}}"
 											 path="/virt/rules"
-											 data="{{docData}}"></firebase-document>
+											 app-name="uomgo"></firebase-document>
 
 		<paper-card image=""
 								elevation="4"
@@ -69,11 +58,6 @@
 									content$="[[docData.text]]"></template>
 			</div>
 
-			<!-- <div class="card-actions"> -->
-				<!-- <paper-button raised on-tap="changePage">
-					Я согласен с правилами электронного обращения
-				</paper-button> -->
-			<!-- </div> -->
 		</paper-card>
 
 	</template>
@@ -83,10 +67,16 @@
 
 		Polymer({
 			is: 'x-virt-rules',
+			properties: {
+				page: {
+					type: String,
+					notify: true
+				}
+			},
 			changePage: function() {
-				// this.set('subdata.page', 'messages');
-				this.set('route.path', '/virt/messages');
-				// app.scrollPageToTop();
+				this.async(function() {
+					this.set('page', 'messages');
+				});
 			}
 		});
 	})();

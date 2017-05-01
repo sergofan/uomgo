@@ -52,8 +52,13 @@
 			}
 		</style>
 
-		<content></content>
-<!-- 
+		<firebase-auth id="auth"
+									 user="{{user}}"
+									 provider="google"
+									 app-name="uomgo"
+									 on-error="showError"></firebase-auth>
+
+<!--
 		<paper-card heading="" elevation="4">
 			<div class="card-content">
 				<div class="element">
@@ -119,9 +124,6 @@
 		Polymer({
 			is: 'x-virt-message-item',
 			properties: {
-				user: {
-					type: Array
-				},
 				hide: {
 					type: Boolean,
 					value: false

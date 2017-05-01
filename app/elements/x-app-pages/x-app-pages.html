@@ -30,7 +30,8 @@
                         exit-animation="fade-out-animation"
                         animation-target>
 
-          <t-main-template></t-main-template>
+          <t-main-template route-path="{{route.path}}"
+                           subdata-page="{{subdata.page}}"></t-main-template>
 
         <neon-animatable>
       </template>

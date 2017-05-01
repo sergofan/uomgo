@@ -8,9 +8,6 @@
 
 	// Sets app default base URL
 	app.baseUrl = '/';
-	// app.route = {};
-	// app.appRouteData = {};
-	// app.appRouteSubdata = {};
 
 	// app.displayInstalledToast = function() {
 	// 	// Check to make sure caching is actually enabled—it won't be in the dev environment.
@@ -48,6 +45,13 @@
 				arrowUp.hidden = true;
 			}
 		});
+			switch(app.route.path) {
+				case '':
+					app.async(function() {
+						app.set('route.path', '/main');
+					});
+					break;
+			}
 	});
 
 	// Main area's paper-scroll-header-panel custom condensing transformation of

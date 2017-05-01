@@ -123,6 +123,11 @@
 			}
 		</style>
 
+		<firebase-auth id="auth"
+									 user="{{user}}"
+									 provider="google"
+									 app-name="uomgo"
+									 on-error="showError"></firebase-auth>
 
 		<paper-card class="data-item"
 								heading="[[post.name]]"
@@ -174,7 +179,7 @@
 					<div class="spacer">
 						<moment-js date="[[post.date]]" format="DD.MM.YYYYг."></moment-js>
 					</div>
-					<div hidden$="[[!app.user]]" style="padding:0 !important;">
+					<div hidden$="[[!user]]" style="padding:0 !important;">
 						<paper-icon-button class="edit"
 															 icon="image:edit"></paper-icon-button>
 						<paper-icon-button class="delete"

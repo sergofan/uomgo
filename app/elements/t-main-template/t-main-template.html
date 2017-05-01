@@ -40,6 +40,12 @@
 			}
 		</style>
 
+		<firebase-auth id="auth"
+									 user="{{user}}"
+									 provider="google"
+									 app-name="uomgo"
+									 on-error="showError"></firebase-auth>
+
 		<div id="collapsePanel" class="layout horizontal">
 			<div id="verticalText">
 				План работы УОМГО
@@ -58,7 +64,7 @@
 		<!-- <x-messages></x-messages> -->
 		<x-posts></x-posts>
 
-		<template is="dom-if" if="[[app.user]]">
+		<template is="dom-if" if="[[user]]">
 			<paper-fab id="add"
 								 icon="add"
 								 mini="true"
@@ -88,6 +94,14 @@
 				key: {
 					type: String,
 					value: ''
+				},
+				routePath: {
+					type: String,
+					notify: true
+				},
+				subdataPage: {
+					type: String,
+					notify: true
 				}
 			},
 			ready: function() {
@@ -141,6 +155,14 @@
 			},
 			_computePath: function(key) {
 				return "/posts/" + key;
+			},
+			_goToDocs: function() {
+				this.async(function() {
+					this.subdataPage = 'docs';
+					this.set('routePath', '/about');
+				});
+				this.async(function() {
+				});
 			}
 		});
 	})();

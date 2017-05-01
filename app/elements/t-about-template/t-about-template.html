@@ -32,9 +32,6 @@
 							 pattern="/:page"
 							 data="{{subdata}}"></app-route>
 
-		<app-route-converter path="/about/+{{subdata}}"
-											   route="{{route}}"></app-route-converter>
-
 		<paper-tabs id="tabs"
 								scrollable
 								selected="{{subdata.page}}"
@@ -134,12 +131,6 @@
 			properties: {
 			},
 			ready: function() {
-			},
-			_routeStateChange : function (e) {
-				console.log(e.detail);
-				// if(e.detail.path=="/login") {
-				// 	this.$.list.selected = 0;
-				// }
 			}
 		});
 	})();
