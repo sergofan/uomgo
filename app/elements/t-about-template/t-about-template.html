@@ -21,9 +21,23 @@
 			}
 		</style>
 
+		<app-location route="{{route}}" use-hash-as-path></app-location>
+
+		<app-route route="{{route}}"
+									pattern="/:page"
+									data="{{data}}"
+									tail="{{_tail}}"></app-route>
+
+		<app-route route="{{_tail}}"
+							 pattern="/:page"
+							 data="{{subdata}}"></app-route>
+
+		<app-route-converter path="/about/+{{subdata}}"
+											   route="{{route}}"></app-route-converter>
+
 		<paper-tabs id="tabs"
 								scrollable
-								selected="{{app.appRouteSubdata.page}}"
+								selected="{{subdata.page}}"
 								attr-for-selected="data-route">
 
 			<paper-tab data-route="about">О нас</paper-tab>
@@ -36,9 +50,10 @@
 		</paper-tabs>
 
 		<animated-lazy-pages attr-for-selected="data-route"
-												 selected="{{app.appRouteSubdata.page}}"
+												 selected="{{subdata.page}}"
 												 animate-initial-selection
-												 loading="{{loading}}">
+												 loading="{{loading}}"
+												 fallback-selection="boss">
 
 			<template  is="dom-if" if="[[loading]]">
 				<div class="layout horizontal center-center">
@@ -119,6 +134,12 @@
 			properties: {
 			},
 			ready: function() {
+			},
+			_routeStateChange : function (e) {
+				console.log(e.detail);
+				// if(e.detail.path=="/login") {
+				// 	this.$.list.selected = 0;
+				// }
 			}
 		});
 	})();

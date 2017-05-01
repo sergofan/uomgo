@@ -8,6 +8,11 @@
 			}
 		</style>
 
+		<global-variable key="user" value="{{user}}"></global-variable>
+		<global-variable key="route" value="{{route}}"></global-variable>
+		<global-variable key="appRouteData" value="{{appRouteDataPage}}"></global-variable>
+		<global-variable key="appRouteSubdata" value="{{appRouteSubdataPage}}"></global-variable>
+
 		<app-location route="{{route}}" use-hash-as-path></app-location>
 
 		<app-route route="{{route}}"
@@ -25,27 +30,31 @@
 
 		Polymer({
 			is: 'x-route',
-			observers: [
-				'_pathChanged(route)',
-				'_dataPageChanged(appRouteData)',
-				'_subdataPageChanged(appRouteSubdata)'
-			],
 			properties: {
 				route: {
 					type: Object,
-					notify: true
+					// notify: true,
+					observer: '_routeChanged'
 				},
 				appRouteData: {
 					type: Object,
-					notify: true
+					// notify: true,
+					observer: '_routeDataChanged'
 				},
 				appRouteSubdata: {
 					type: Object,
-					notify: true
+					// notify: true,
+					observer: '_routeSubataChanged'
+				},
+				appRouteDataPage: {
+					observer: '_routeDataPageChanged'
+				},
+				appRouteSubdataPage: {
+					observer: '_routeSubataPageChanged'
 				},
 				_tail: {
 					type: Object
-				}
+				},
 			},
 			ready: function() {
 				// this.async(function() {
@@ -53,38 +62,48 @@
         //     this.set('route.path', '/main');
         //   }
 				// });
+				// this.appRouteData.page = 'about';
 			},
-			_pathChanged: function(route) {
+			_routeChanged: function(newValue, oldValue) {
 				// if (this.route && this.appRouteData && this.appRouteSubdata) {
-					console.log(route.path);
+				//	console.log(newValue.path);
 				// }
 
 				// this.async(function() {
-				// 	switch(route.path) {
+				// 	switch(newValue.path) {
 				// 		case '':
-				// 			this.set('route.path', '/main');
+				// 			this.set('newValue.path', '/main');
 				// 			break;
 				// 		// case '/':
-				// 		// 	this.set('route.path', '/main');
+				// 		// 	this.set('newValue.path', '/main');
 				// 		// 	break;
 				// 		case '/about':
-				// 			this.set('route.path', '/about/boss');
+				// 			this.set('newValue.path', '/about/boss');
 				// 			break;
 				// 		case '/virt':
 				// 			if (app.user) {
-				// 				this.set('route.path', '/virt/messages');
+				// 				this.set('newValue.path', '/virt/messages');
 				// 			} else {
-				// 				this.set('route.path', '/virt/rules');
+				// 				this.set('newValue.path', '/virt/rules');
 				// 			};
 				// 			break;
 				// 	}
 				// });
 			},
-			_dataPageChanged: function(appRouteData) {
-				console.log(appRouteData.page);
+			_routeDataChanged: function(newValue, oldValue) {
+				console.log(newValue);
 			},
-			_subdataPageChanged: function(appRouteSubdata) {
-				console.log(appRouteSubdata.page);
+			_routeSubataChanged: function(newValue, oldValue) {
+				// console.log(newValue.page);
+			},
+			_routeDataPageChanged: function(newValue, oldValue) {
+				console.log(oldValue, newValue);
+				// this.set('appRouteData.page', newValue);
+				this.appRouteData.page = newValue;
+			},
+			_routeSubataPageChanged: function(newValue, oldValue) {
+				// console.log(newValue);
+				// this.set('appRouteSubdata.page', newValue);
 			}
 		});
 	})();

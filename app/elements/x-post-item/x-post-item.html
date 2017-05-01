@@ -174,7 +174,7 @@
 					<div class="spacer">
 						<moment-js date="[[post.date]]" format="DD.MM.YYYYг."></moment-js>
 					</div>
-					<div hidden$="[[!user]]" style="padding:0 !important;">
+					<div hidden$="[[!app.user]]" style="padding:0 !important;">
 						<paper-icon-button class="edit"
 															 icon="image:edit"></paper-icon-button>
 						<paper-icon-button class="delete"
@@ -196,18 +196,13 @@
 				Polymer.NeonAnimationRunnerBehavior,
 			],
 			properties: {
-				user: {
-					type: Object
-				}
 			},
 			ready: function() {
-
 			},
 			editPostDialogOpen: function() {
 				editPostDialog.toggle();
 			},
 			deletePostDialogOpen: function() {
-
 			},
 			_youtubeBackground: function() {
 				return app.baseUrl+'images/youtube.png';

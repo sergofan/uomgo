@@ -80,6 +80,20 @@
 			}
 		</style>
 
+		<!-- <global-variable key="user" value="{{user}}"></global-variable>
+		<global-variable key="route" value="{{route}}"></global-variable> -->
+
+		<app-location route="{{route}}" use-hash-as-path></app-location>
+
+		<app-route route="{{route}}"
+									pattern="/:page"
+									data="{{data}}"
+									tail="{{_tail}}"></app-route>
+
+		<app-route route="{{_tail}}"
+							 pattern="/:page"
+							 data="{{subdata}}"></app-route>
+
 		<div id="head" class="layout horizontal center-center fit">
 			<iron-image src="https://firebasestorage.googleapis.com/v0/b/uomgo-fab6c.appspot.com/o/logo1.png?alt=media&token=6f57274a-1993-4dfd-8638-a8d782a2121c"></iron-image>
 		</div>
@@ -93,7 +107,8 @@
 
 		<paper-menu id="mainMenu"
 								attr-for-selected="data-route"
-								selected='{{app.appRouteData.page}}'
+								selected="{{data.page}}"
+								selectable="paper-icon-item"
 								on-iron-select="_menuItemSelected">
 
 			<paper-icon-item data-route="main">
@@ -111,7 +126,7 @@
 			</paper-icon-item>
 
 			<paper-icon-item data-route="virt">
-				<iron-icon icon="mail"item-icon></iron-icon>
+				<iron-icon icon="mail" item-icon></iron-icon>
 				<paper-item-body>
 					Обращения граждан
 				</paper-item-body>
@@ -127,7 +142,7 @@
 
 				<paper-menu class="menu-content"
 										attr-for-selected="data-route"
-										selected='{{app.appRouteData.page}}'>
+										selected='{{data.page}}'>
 
 					<paper-item class="submenu-items" data-route="inspect">
 						<span>Отдел инспектирования качества образования</span>
@@ -166,7 +181,7 @@
 
 				<paper-menu class="menu-content"
 										attr-for-selected="data-route"
-										selected='{{app.appRouteData.page}}'>
+										selected='{{data.page}}'>
 
 					<paper-item class="submenu-items" data-route="metod">
 						<paper-item-body>
@@ -222,14 +237,7 @@
 					Виртуальный музей
 				</paper-item-body>
 			</paper-icon-item>
-<!--
-			<paper-icon-item data-route="hotline">
-				<iron-icon icon="description" item-icon></iron-icon>
-				<paper-item-body>
-					Горячая линия
-				</paper-item-body>
-			</paper-icon-item>
- -->
+
 			<paper-icon-item data-route="jobs">
 				<iron-icon icon="description" item-icon></iron-icon>
 				<paper-item-body>
@@ -238,7 +246,6 @@
 			</paper-icon-item>
 
 		</paper-menu>
-
 	</template>
 	<script>
 	(function() {
@@ -247,34 +254,36 @@
 		Polymer({
 			is: 'x-drawer-menu',
 			properties: {
+				data: {
+					type: Object,
+					observer: '_dataChange'
+				}
 			},
 			ready: function() {
 			},
-			_selectedIndexChanged: function(newValue, oldValue) {
+			_dataChange: function(newValue, oldValue) {
 				// console.log(oldValue, newValue);
 			},
 			_menuItemSelected: function(e) {
 				var selected = e.target.selected;
 				this.async(function() {
-					switch(selected) {
-						// case '':
-						case 'about':
-							app.set('route.path', '/about/boss');
-							break;
-						case 'virt':
-							if (app.user) {
-								app.set('route.path', '/virt/messages');
-							} else {
-								app.set('route.path', '/virt/rules');
-							};
-							console.log(app.route.path);
-							break;
-						default:
-							app.set('route.path', '/'+selected);
-							break;
-					}
+					// switch(selected) {
+					// 	case '':
+					// 	case 'about':
+					// 		this.set('route.path', '/about/boss');
+					// 		break;
+					// 	case 'virt':
+					// 		if (this.user) {
+					// 			this.set('route.path', '/virt/messages');
+					// 		} else {
+					// 			this.set('route.path', '/virt/rules');
+					// 		};
+					// 		break;
+					// 	default:
+					// 		this.set('route.path', '/'+selected);
+					// 		break;
+					// }
 				});
-
 			}
 		});
 	})();

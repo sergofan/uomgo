@@ -128,9 +128,16 @@
 	<span id="browser-sync-binding"></span>
 	<template is="dom-bind" id="app">
 
+		<!-- <app-data key="user" data="{{user}}"></app-data>
+		<app-data key="route" data="{{route}}"></app-data>
+		<app-data key="app-route-data" data="{{appRouteData}}"></app-data>
+		<app-data key="app-route-subdata" data="{{appRouteSubdata}}"></app-data>
+
 		<x-route route="{{route}}"
 						 app-route-data="{{appRouteData}}"
-						 app-route-subdata="{{appRouteSubdata}}"></x-route>
+						 app-route-subdata="{{appRouteSubdata}}"></x-route> -->
+
+		<!-- <x-route></x-route> -->
 
 		<firebase-app	api-key="AIzaSyAepf-iIF_1XRmDYWpKTDpXhelRAYt6Cfw"
 									auth-domain="uomgo-fab6c.firebaseapp.com"
@@ -174,7 +181,7 @@
 						<div class="spacer"></div>
 
 						<!-- Main tabs -->
-						<paper-tabs style="color: black"
+						<!-- <paper-tabs style="color: black"
 												id="main_tabs"
 												selected='{{appRouteData.page}}'
 												attr-for-selected='data-route'
@@ -182,11 +189,7 @@
 							<paper-tab data-route="main">Главная</paper-tab>
 							<paper-tab data-route="about">Об управлении</paper-tab>
 							<paper-tab data-route="virt">Обращения граждан</paper-tab>
-							<!-- <paper-tab data-route="vision" disabled>Для слабовидящих</paper-tab> -->
-							<!-- <paper-tab data-route="form" disabled>Школьная форма</paper-tab> -->
-						</paper-tabs>
-
-						<!-- <div class="spacer"></div> -->
+						</paper-tabs> -->
 
 						<!-- Toolbar icons -->
 						<paper-icon-button icon="perm-identity"

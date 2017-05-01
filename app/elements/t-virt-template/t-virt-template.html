@@ -8,24 +8,24 @@
 				word-wrap: break-word;
 				/*word-break: break-all;*/
 			}
-			paper-card {
-				width: 100%;
-				border-radius: 8px;
-				--paper-card-header-text: {
-					text-align: center;
-				};
-				--paper-card-content: {
-				};
-				--paper-card-header-image: {
-					max-width: 100px;
-				}
-			}
 		</style>
 
+		<app-location route="{{route}}" use-hash-as-path></app-location>
+
+		<app-route route="{{route}}"
+									pattern="/:page"
+									data="{{data}}"
+									tail="{{_tail}}"></app-route>
+
+		<app-route route="{{_tail}}"
+							 pattern="/:page"
+							 data="{{subdata}}"></app-route>
+
 		<animated-lazy-pages attr-for-selected="data-route"
-                         selected="{{app.appRouteSubdata.page}}"
-                         animate-initial-selection
-                         loading="{{loading}}">
+                         selected="{{subdata.page}}"
+												 animate-initial-selection
+                         loading="{{loading}}"
+												 fallback-selection="rules">
 
 			<template is="animated-lazy-page" data-route="rules">
         <neon-animatable entry-animation="fade-in-animation"
@@ -42,7 +42,7 @@
                          exit-animation="fade-out-animation"
                          animation-target>
 
-          <x-virt-messages user="[[app.user]]"></x-virt-messages>
+          <x-virt-messages></x-virt-messages>
 
         <neon-animatable>
       </template>

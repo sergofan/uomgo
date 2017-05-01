@@ -9,8 +9,19 @@
       }
     </style>
 
+    <app-location route="{{route}}" use-hash-as-path></app-location>
+
+		<app-route route="{{route}}"
+									pattern="/:page"
+									data="{{data}}"
+									tail="{{_tail}}"></app-route>
+
+		<app-route route="{{_tail}}"
+							 pattern="/:page"
+							 data="{{subdata}}"></app-route>
+
     <animated-lazy-pages attr-for-selected="data-route"
-                         selected="{{app.appRouteData.page}}"
+                         selected="[[data.page]]"
                          animate-initial-selection
                          loading="{{loading}}">
 
@@ -225,7 +236,7 @@
 
     </animated-lazy-pages>
 
-    <template  is="dom-if" if="[[loading]]">
+    <template is="dom-if" if="[[loading]]">
       <div class="layout horizontal center-center">
         <paper-spinner-lite active="[[loading]]"
                             alt="Загрузка ..."></paper-spinner-lite>

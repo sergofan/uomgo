@@ -20,7 +20,8 @@
     "google-signin": "^1.3.7",
     "array-filter": "43081j/array-filter#^1.0.2",
     "iron-accordions": "^1.1.0",
-    "animated-lazy-pages": "paulvarache/animated-lazy-pages#^1.0.0"
+    "animated-lazy-pages": "paulvarache/animated-lazy-pages#^1.0.0",
+    "global-variable": "trofrigo/global-variable#^0.1.4"
   },
   "devDependencies": {
     "web-component-tester": "^5.0.0"

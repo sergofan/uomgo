@@ -121,14 +121,11 @@
 // End Polymerfire
 
 	app.loginTap = function(e) {
-		// this.set('data.page', 'login');
-
 		if (app.user) {
 			app.signOut();
 		} else {
 			app.signIn();
 		}
-
 	};
 
 	app.toggleAuthErrorToast = function() {

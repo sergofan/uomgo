@@ -63,7 +63,7 @@
 
 				<div class="postItem">
 					<template  is="dom-if" if="[[post.enabled]]">
-						<x-post-item post="[[post]]" user="[[user]]"></x-post-item>
+						<x-post-item post="[[post]]"></x-post-item>
 					</template>
 				</div>
 			</template>
@@ -97,9 +97,6 @@
 								}]
 							};
 						}
-					},
-					user: {
-						type: Object
 					},
 					// limitToLast: {
 					// 	type: Number,
