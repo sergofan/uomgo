@@ -450,7 +450,7 @@
 				this.$.domRepeat.render();
 			},
 			_formChanged: function(e) {
-				var element = e.srcElement.parentElement;
+				var element = e.target.parentElement;
 				var recaptcha = element.querySelector('#recaptcha');
 				var submit = element.querySelector('#submit');
 				var dropdownMenuInput = element.querySelector('#dropdownMenuInput');
