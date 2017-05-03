@@ -145,7 +145,7 @@
 		<template id="formDomIf" is="dom-if"
 							if="[[!user]]" restamp on-dom-change="_formChanged">
 
-			<form is="iron-form" id="form" on-iron-form-presubmit="_presubmit">
+			<form id="form" is="iron-form" on-iron-form-presubmit="_presubmit">
 				<paper-card heading="Форма обращения" elevation="4">
 					<div class="card-content">
 
@@ -240,15 +240,17 @@
 							<grid-element ga="16px" center>
 								<grid-col>
 
-									Дата: <moment-js date="[[val.date]]"
+									<strong>Дата:</strong><br><moment-js date="[[val.date]]"
 																	 format="DD.MM.YYYYг."></moment-js>
-
-								</grid-col>
-								<grid-col s="4">
-									Отправитель: [[val.name]]
 								</grid-col>
 								<grid-col>
-									Тема: [[val.theme]]
+									<strong>Отправитель:</strong><br>[[val.name]]
+								</grid-col>
+								<grid-col>
+									<strong>E-mail:</strong><br>[[val.email]]
+								</grid-col>
+								<grid-col>
+									<strong>Тема:</strong><br>[[val.theme]]
 								</grid-col>
 							</grid-element>
 							<grid-element ga="16px" center>
@@ -437,7 +439,10 @@
 				this.docData.theme = this.themes[formData.theme];
 				// fireDoc.path = "/virt/messages/"
 				// e.preventDefault();
-				fireDoc.saveValue('/virt/messages/');
+				// fireDoc.saveValue('/virt/messages/');
+				console.log(this.docData);
+				this.docData = {};
+				console.log(this.docData);
 			},
 			_submit: function() {
 				this.querySelector('#form').submit();
