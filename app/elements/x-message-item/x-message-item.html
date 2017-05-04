@@ -106,7 +106,12 @@
 
 						<template is="dom-if" if="[[message.logo]]">
 							<grid-col s="1" stretch class="shadow layout vertical center-center">
-								<iron-image src="[[message.logo]]" preventLoad preload placeholder="[[app.baseUrl]]images/loading.gif"></iron-image>
+								<iron-image src="[[message.logo]]"
+														width="100"
+														prevent-load
+														preload
+														placeholder="[[app.baseUrl]]images/loading.gif"
+														fade></iron-image>
 							</grid-col>
 						</template>
 
