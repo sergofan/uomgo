@@ -28,157 +28,62 @@
 			.links {
 				@apply(--layout-horizontal);
 				@apply(--layout-center-justified);
-				/*@apply(--layout-center-center);*/
 				@apply(--layout-wrap);
-				/*text-align: center;*/
 			}
 			a.divlink {
 				display: block;
-				/*max-height: 44px;*/
-				/*float:left;*/
 				margin: 4px;
 				text-align: center;
-
-				max-width: 78px;
-				max-height: 78px;
+				padding: 4px;
+				max-height: 76px;
 				position: relative;
+			}
+			a.divlink:hover {
+				border-radius: 8px;
+		    border: 0px solid #ddd;
+		    box-shadow: 0 8px 10px 1px rgba(0, 0, 0, 0.14), 0 3px 14px 2px rgba(0, 0, 0, 0.12), 0 5px 5px -3px rgba(0, 0, 0, 0.4);
+		    transition: 0.5s;
+			}
+			img, iron-image {
+				height: 76px;
+				--iron-image-height: 76px;
+			}
+			paper-tooltip {
+				--paper-tooltip-background: var(--paper-light-blue-700);
+				--paper-tooltip: {
+					color: white;
+					opacity: 0.8;
+			    line-height: 22px;
+			    border-radius: 6px;
+					font-size: 12pt;
+				};
 			}
 		</style>
 
+		<firebase-query id="firebaseQuery"
+										path="/footer"
+										app-name="uomgo"
+										data="{{data}}"></firebase-query>
+
 		<footer class="content shadow-elevation-4dp">
 			<div class="links">
+				<template is="dom-repeat" items="[[data]]" as="val">
+					<a class="divlink"
+						 href=[[val.href]]
+						 tabindex="-1"
+						 target="_blank">
 
-				<a class="divlink"
-					 href="http://xn--80abucjiibhv9a.xn--p1ai/"
-					 tabindex="-1"
-					 target="_blank">
+						<iron-image src=[[val.image]]></iron-image>
 
-					<iron-image src="https://firebasestorage.googleapis.com/v0/b/uomgo-fab6c.appspot.com/o/footer%2F%D0%9C%D0%B8%D0%BD%D0%B8%D1%81%D1%82%D0%B5%D1%80%D1%81%D1%82%D0%B2%D0%BE%20%D0%BE%D0%B1%D1%80%D0%B0%D0%B7%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D1%8F%20%D0%B8%20%D0%BD%D0%B0%D1%83%D0%BA%D0%B8%20%D0%A0%D0%A4.png?alt=media&token=3bf39959-7cc1-447a-9256-ed66c7eb1661"
-											style="width:78px; height:78px;"
-											sizing="contain">
-					</iron-image>
-
-					<paper-tooltip position="top" offset="0">
-						Министерство образования и науки РФ
-					</paper-tooltip>
-
-					<!-- <iron-icon class="icon"
-										 src="https://firebasestorage.googleapis.com/v0/b/uomgo-fab6c.appspot.com/o/footer%2F%D0%9C%D0%B8%D0%BD%D0%B8%D1%81%D1%82%D0%B5%D1%80%D1%81%D1%82%D0%B2%D0%BE%20%D0%BE%D0%B1%D1%80%D0%B0%D0%B7%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D1%8F%20%D0%B8%20%D0%BD%D0%B0%D1%83%D0%BA%D0%B8%20%D0%A0%D0%A4.png?alt=media&token=3bf39959-7cc1-447a-9256-ed66c7eb1661"
-										 width="24"
-										 height="33"></iron-icon>
-					<span>Министерство образования и науки РФ</span> -->
-
-				</a>
-
-				<a class="divlink"
-					 href="http://xn--42-6kcadhwnl3cfdx.xn--p1ai/"
-					 tabindex="-1"
-					 target="_blank">
-
-					<iron-image src="https://firebasestorage.googleapis.com/v0/b/uomgo-fab6c.appspot.com/o/footer%2F%D0%94%D0%B5%D0%BF%D0%B0%D1%80%D1%82%D0%B0%D0%BC%D0%B5%D0%BD%D1%82%20%D0%BE%D0%B1%D1%80%D0%B0%D0%B7%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D1%8F%20%D0%B8%20%D0%BD%D0%B0%D1%83%D0%BA%D0%B8%20%D0%9A%D0%9E.svg?alt=media&token=c8b2137b-7fb8-473b-b83f-f7d6128e8d59"
- 											style="width:78px; height:78px;"
- 											sizing="contain">
- 					</iron-image>
-
- 					<paper-tooltip position="top" offset="0">
- 						Департамент образования и науки КО
- 					</paper-tooltip>
-
-					<!-- <iron-icon class="icon"
-										 src="https://firebasestorage.googleapis.com/v0/b/uomgo-fab6c.appspot.com/o/footer%2F%D0%94%D0%B5%D0%BF%D0%B0%D1%80%D1%82%D0%B0%D0%BC%D0%B5%D0%BD%D1%82%20%D0%BE%D0%B1%D1%80%D0%B0%D0%B7%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D1%8F%20%D0%B8%20%D0%BD%D0%B0%D1%83%D0%BA%D0%B8%20%D0%9A%D0%9E.svg?alt=media&token=c8b2137b-7fb8-473b-b83f-f7d6128e8d59"
-										 width="24"
-										 height="24"></iron-icon>
-					<span>Департамент образования и науки КО</span> -->
-
-				</a>
-
-				<a class="divlink"
-					 href="http://www.myskiadmin.ru/"
-					 tabindex="-1"
-					 target="_blank">
-
-					<iron-image src="https://firebasestorage.googleapis.com/v0/b/uomgo-fab6c.appspot.com/o/footer%2F%D0%90%D0%B4%D0%BC%D0%B8%D0%BD%D0%B8%D1%81%D1%82%D1%80%D0%B0%D1%86%D0%B8%D1%8F%20%D0%9C%D1%8B%D1%81%D0%BA%D0%BE%D0%B2%D1%81%D0%BA%D0%BE%D0%B3%D0%BE%20%D0%93%D0%9E.png?alt=media&token=8149a7e5-db43-4c94-a062-142d3f9f2be5"
- 											style="width:78px; height:78px;"
- 											sizing="contain">
- 					</iron-image>
-
- 					<paper-tooltip position="top" offset="0">
- 						Администрация Мысковского ГО
- 					</paper-tooltip>
-
-					<!-- <iron-icon class="icon"
-										 src="https://firebasestorage.googleapis.com/v0/b/uomgo-fab6c.appspot.com/o/footer%2F%D0%90%D0%B4%D0%BC%D0%B8%D0%BD%D0%B8%D1%81%D1%82%D1%80%D0%B0%D1%86%D0%B8%D1%8F%20%D0%9C%D1%8B%D1%81%D0%BA%D0%BE%D0%B2%D1%81%D0%BA%D0%BE%D0%B3%D0%BE%20%D0%93%D0%9E.png?alt=media&token=8149a7e5-db43-4c94-a062-142d3f9f2be5"
-										 width="24"
-										 height="30"></iron-icon>
-					<span>Администрация Мысковского ГО</span> -->
-
-				</a>
-
-				<a class="divlink"
-					 href="http://obrnadzor.gov.ru/"
-					 tabindex="-1"
-					 target="_blank">
-
-						<iron-image src="https://firebasestorage.googleapis.com/v0/b/uomgo-fab6c.appspot.com/o/footer%2F%D0%A0%D0%9E%D0%A1%D0%9E%D0%91%D0%A0%D0%9D%D0%90%D0%94%D0%97%D0%9E%D0%A0.png?alt=media&token=542ff518-fdbf-4040-b079-f3e860ad8f7d"
-  											style="width:78px; height:78px;"
-  											sizing="contain">
-  					</iron-image>
-
-  					<paper-tooltip position="top" offset="0">
-  						РОСОБРНАДЗОР
-  					</paper-tooltip>
-
-					<!-- <iron-icon class="icon"
-										 src="https://firebasestorage.googleapis.com/v0/b/uomgo-fab6c.appspot.com/o/footer%2F%D0%A0%D0%9E%D0%A1%D0%9E%D0%91%D0%A0%D0%9D%D0%90%D0%94%D0%97%D0%9E%D0%A0.png?alt=media&token=542ff518-fdbf-4040-b079-f3e860ad8f7d"
-										 width="24"
-										 height="22"></iron-icon>
-					<span>РОСОБРНАДЗОР</span> -->
-
-				</a>
-
-				<a class="divlink"
-					 href="http://myski-szn.ru/"
-					 tabindex="-1"
-					 target="_blank">
-
-					 <iron-image src="https://firebasestorage.googleapis.com/v0/b/uomgo-fab6c.appspot.com/o/footer%2F%D0%A3%D0%A1%D0%97%D0%9D%20%D0%B3.%20%D0%9C%D1%8B%D1%81%D0%BA%D0%B8.png?alt=media&token=d8626255-34f8-4c3b-8a7a-fc90a59bb80c"
-											 style="width:78px; height:78px;"
-											 sizing="contain">
-					 </iron-image>
-
-					 <paper-tooltip position="top" offset="0">
-						 УСЗН г. Мыски
-					 </paper-tooltip>
-
-					<!-- <iron-icon class="icon"
-										 src="https://firebasestorage.googleapis.com/v0/b/uomgo-fab6c.appspot.com/o/footer%2F%D0%A3%D0%A1%D0%97%D0%9D%20%D0%B3.%20%D0%9C%D1%8B%D1%81%D0%BA%D0%B8.png?alt=media&token=d8626255-34f8-4c3b-8a7a-fc90a59bb80c"
-										 width="24"
-										 height="30"></iron-icon>
-					<span>УСЗН г. Мыски</span> -->
-
-				</a>
-
-				<a class="divlink"
-					 href="https://github.com/sergofan"
-					 tabindex="-1"
-					 target="_blank">
-
-					<iron-image  sizing="contain"
-											 src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/PjxzdmcgZW5hYmxlLWJhY2tncm91bmQ9Im5ldyAwIDAgMzIgMzIiIHZlcnNpb249IjEuMSIgdmlld0JveD0iMCAwIDMyIDMyIiB4bWw6c3BhY2U9InByZXNlcnZlIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIj48ZyBpZD0iTGF5ZXJfNCI+PHBhdGggZD0iTTE2LDBDNy4xNzgsMCwwLDcuMTc4LDAsMTZjMCw4LjgyMiw3LjE3OCwxNiwxNiwxNnMxNi03LjE3OCwxNi0xNkMzMiw3LjE3OCwyNC44MjIsMCwxNiwwTDE2LDB6IiBmaWxsPSIjMDBEMDlDIi8+PHBhdGggZD0iTTE2LDEuNjI1QzguMDc0LDEuNjI1LDEuNjI1LDguMDc0LDEuNjI1LDE2YzAsNy45MjYsNi40NDksMTQuMzc1LDE0LjM3NSwxNC4zNzVTMzAuMzc1LDIzLjkyNiwzMC4zNzUsMTYgICBDMzAuMzc1LDguMDc0LDIzLjkyNiwxLjYyNSwxNiwxLjYyNUwxNiwxLjYyNXoiLz48cGF0aCBkPSJNMTYsMS42MjVMMTYsMS42MjVDOC4wNzQsMS42MjUsMS42MjUsOC4wNzQsMS42MjUsMTZjMCw3LjkyNiw2LjQ0OSwxNC4zNzUsMTQuMzc1LDE0LjM3NSAgIFYxLjYyNXoiIGZpbGw9IiNGRkZGRkYiIG9wYWNpdHk9IjAuMjIiLz48L2c+PGcgaWQ9Ik9mZmljaWFsIj48cGF0aCBkPSJNMTguNTIsMjQuNDkzaC0yLjI2M2gtMi4yNjVjMCwwLDAuMDA2LTEuMzQ0LDAtMi4yNjVjLTMuMDk5LDAuNjY3LTMuOTY0LTEuNjk5LTMuOTY0LTEuNjk5ICAgYy0wLjU2Ni0xLjEzMi0xLjEzMi0xLjY5OS0xLjEzMi0xLjY5OWMtMS4xMzItMC42NzMsMC0wLjU2NiwwLTAuNTY2YzEuMTMyLDAsMS42OTksMS4xMzIsMS42OTksMS4xMzIgICBjMC45OTQsMS42ODcsMi43NjIsMS40MTYsMy4zOTcsMS4xMzJjMC0wLjU2NiwwLjI0OC0xLjQyMiwwLjU2Ni0xLjY5OWMtMi40NzMtMC4yNzktNC41MzItMS42OTktNC41MzItNC41MyAgIHMwLjU2OC0zLjM5NywxLjEzNS0zLjk2NGMtMC4xMTQtMC4yNzktMC41ODgtMS4zMTEsMC4wMTgtMi44MzFjMCwwLDEuMTEzLDAsMi4yNDUsMS42OTljMC41NjEtMC41NjEsMi4yNjUtMC41NjYsMi44MzItMC41NjYgICBjMC41NjUsMCwyLjI2OSwwLjAwNSwyLjgzLDAuNTY2YzEuMTMyLTEuNjk5LDIuMjQ4LTEuNjk5LDIuMjQ4LTEuNjk5YzAuNjA1LDEuNTIsMC4xMzIsMi41NTIsMC4wMTcsMi44MzEgICBjMC41NjYsMC41NjYsMS4xMzIsMS4xMzIsMS4xMzIsMy45NjRzLTIuMDU2LDQuMjUxLTQuNTMsNC41M2MwLjMxOSwwLjI3NiwwLjU2NiwxLjI1MSwwLjU2NiwxLjY5OUwxOC41MiwyNC40OTNMMTguNTIsMjQuNDkzeiIgZmlsbD0iI0ZGRkZGRiIgaWQ9IkNhdF8xXyIvPjwvZz48L3N2Zz4="
-											 style="width:78px; height:78px;">
-					</iron-image>
-
-					<paper-tooltip position="top" offset="0">
-						Sergofan &copy; 2016
-					</paper-tooltip>
-
-					<!-- <iron-icon class="icon"
-										 src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/PjxzdmcgZW5hYmxlLWJhY2tncm91bmQ9Im5ldyAwIDAgMzIgMzIiIHZlcnNpb249IjEuMSIgdmlld0JveD0iMCAwIDMyIDMyIiB4bWw6c3BhY2U9InByZXNlcnZlIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIj48ZyBpZD0iTGF5ZXJfNCI+PHBhdGggZD0iTTE2LDBDNy4xNzgsMCwwLDcuMTc4LDAsMTZjMCw4LjgyMiw3LjE3OCwxNiwxNiwxNnMxNi03LjE3OCwxNi0xNkMzMiw3LjE3OCwyNC44MjIsMCwxNiwwTDE2LDB6IiBmaWxsPSIjMDBEMDlDIi8+PHBhdGggZD0iTTE2LDEuNjI1QzguMDc0LDEuNjI1LDEuNjI1LDguMDc0LDEuNjI1LDE2YzAsNy45MjYsNi40NDksMTQuMzc1LDE0LjM3NSwxNC4zNzVTMzAuMzc1LDIzLjkyNiwzMC4zNzUsMTYgICBDMzAuMzc1LDguMDc0LDIzLjkyNiwxLjYyNSwxNiwxLjYyNUwxNiwxLjYyNXoiLz48cGF0aCBkPSJNMTYsMS42MjVMMTYsMS42MjVDOC4wNzQsMS42MjUsMS42MjUsOC4wNzQsMS42MjUsMTZjMCw3LjkyNiw2LjQ0OSwxNC4zNzUsMTQuMzc1LDE0LjM3NSAgIFYxLjYyNXoiIGZpbGw9IiNGRkZGRkYiIG9wYWNpdHk9IjAuMjIiLz48L2c+PGcgaWQ9Ik9mZmljaWFsIj48cGF0aCBkPSJNMTguNTIsMjQuNDkzaC0yLjI2M2gtMi4yNjVjMCwwLDAuMDA2LTEuMzQ0LDAtMi4yNjVjLTMuMDk5LDAuNjY3LTMuOTY0LTEuNjk5LTMuOTY0LTEuNjk5ICAgYy0wLjU2Ni0xLjEzMi0xLjEzMi0xLjY5OS0xLjEzMi0xLjY5OWMtMS4xMzItMC42NzMsMC0wLjU2NiwwLTAuNTY2YzEuMTMyLDAsMS42OTksMS4xMzIsMS42OTksMS4xMzIgICBjMC45OTQsMS42ODcsMi43NjIsMS40MTYsMy4zOTcsMS4xMzJjMC0wLjU2NiwwLjI0OC0xLjQyMiwwLjU2Ni0xLjY5OWMtMi40NzMtMC4yNzktNC41MzItMS42OTktNC41MzItNC41MyAgIHMwLjU2OC0zLjM5NywxLjEzNS0zLjk2NGMtMC4xMTQtMC4yNzktMC41ODgtMS4zMTEsMC4wMTgtMi44MzFjMCwwLDEuMTEzLDAsMi4yNDUsMS42OTljMC41NjEtMC41NjEsMi4yNjUtMC41NjYsMi44MzItMC41NjYgICBjMC41NjUsMCwyLjI2OSwwLjAwNSwyLjgzLDAuNTY2YzEuMTMyLTEuNjk5LDIuMjQ4LTEuNjk5LDIuMjQ4LTEuNjk5YzAuNjA1LDEuNTIsMC4xMzIsMi41NTIsMC4wMTcsMi44MzEgICBjMC41NjYsMC41NjYsMS4xMzIsMS4xMzIsMS4xMzIsMy45NjRzLTIuMDU2LDQuMjUxLTQuNTMsNC41M2MwLjMxOSwwLjI3NiwwLjU2NiwxLjI1MSwwLjU2NiwxLjY5OUwxOC41MiwyNC40OTNMMTguNTIsMjQuNDkzeiIgZmlsbD0iI0ZGRkZGRiIgaWQ9IkNhdF8xXyIvPjwvZz48L3N2Zz4="
-										 width="24"
-										 height="30"></iron-icon>
-					<span>Sergofan &copy; 2016</span> -->
-
-				</a>
+						<paper-tooltip position="top" offset="6" animation-delay="250">
+							<!-- [[val.name]] -->
+							<div>
+								<template is="juicy-html"
+													content$="[[val.name]]"></template>
+							</div>
+						</paper-tooltip>
+					</a>
+				</template>
 			</div>
 		</footer>
 
