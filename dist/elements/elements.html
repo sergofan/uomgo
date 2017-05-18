@@ -13001,12 +13001,13 @@ this.fire('dom-change');
       this._lastVisibleIndexVal = null;
 
       // Random access.
-      if (Math.abs(delta) > this._physicalSize) {
+      if (Math.abs(delta) > this._physicalSize && this._physicalSize > 0) {
         delta = delta - this._scrollOffset;
         var idxAdjustment = Math.round(delta / this._physicalAverage) * this._itemsPerRow;
-        this._physicalTop = this._physicalTop + delta;
         this._virtualStart = this._virtualStart + idxAdjustment;
         this._physicalStart = this._physicalStart + idxAdjustment;
+        // Estimate new physical offset.
+        this._physicalTop = Math.floor(this._virtualStart / this._itemsPerRow) * this._physicalAverage;
         this._update();
       } else {
         var reusables = this._getReusables(isScrollingDown);
@@ -13986,7 +13987,7 @@ this.fire('dom-change');
       }
       var onScreenInstance = onScreenItem._templateInstance;
       var offScreenInstance = this._offscreenFocusedItem._templateInstance;
-      // Restores the physical item only when it has the same model 
+      // Restores the physical item only when it has the same model
       // as the offscreen one. Use key for comparison since users can set
       // a new item via set('items.idx').
       if (onScreenInstance.__key__ === offScreenInstance.__key__) {
@@ -17439,7 +17440,8 @@ Grammar of the `keys` attribute.
     arrow = "up" | "down" | "left" | "right" ;
     key = "tab" | "esc" | "space" | "*" | "pageup" | "pagedown" |
           "home" | "end" | arrow | ascii | fnkey;
-    keycombo = { modifier, "+" }, key ;
+    event = "keypress" | "keydown" | "keyup";
+    keycombo = { modifier, "+" }, key, [ ":", event ] ;
     keys = keycombo, { " ", keycombo } ;
 
 ### Example
@@ -17495,6 +17497,12 @@ value. `setMax` should move the slider to the maximum value.
         observer: '_targetChanged'
       },
 
+      /**
+       * Space delimited list of keys where each key follows the format:
+       * `[MODIFIER+]*KEY[:EVENT]`.
+       * e.g. `keys="space ctrl+shift+tab enter:keyup"`.
+       * More detail can be found in the "Grammar" section of the documentation
+       */
       keys: {
         type: String,
         reflectToAttribute: true,
@@ -42809,6 +42817,11 @@ Z(Q.prototype,"ref",Q.prototype.na);Ib.STATE_CHANGED="state_changed";P.RUNNING="
 			img, iron-image {
 				width: 28%;
 				--iron-image-width: 100%;
+				--iron-image-placeholder : {
+					background-repeat: no-repeat;
+					background-size: inherit;
+					background-position: center;
+				}
 			}
 			paper-material {
 				max-width: 100%;
@@ -42832,7 +42845,7 @@ Z(Q.prototype,"ref",Q.prototype.na);Ib.STATE_CHANGED="state_changed";P.RUNNING="
 					<p class="paper-font-headline">[[dataDB.boss.position]]</p>
 
 					<template is="dom-if" if="[[dataDB.boss.photo.enabled]]">
-						<iron-image src="[[dataDB.boss.photo.image]]" preload=""></iron-image>
+						<iron-image src="[[dataDB.boss.photo.image]]" placeholder="[[app.baseUrl]]images/loading.gif" prevent-load="" contain="" preload="" fade=""></iron-image>
 					</template>
 
 					<p>[[dataDB.boss.name]]</p>
@@ -42859,7 +42872,6 @@ Z(Q.prototype,"ref",Q.prototype.na);Ib.STATE_CHANGED="state_changed";P.RUNNING="
 				</grid-col>
 			</grid-element>
 		</paper-material>
-
 
 	</template>
 	<script>
@@ -43288,7 +43300,7 @@ Z(Q.prototype,"ref",Q.prototype.na);Ib.STATE_CHANGED="state_changed";P.RUNNING="
 						ret += 'https://i3.ytimg.com/vi/';
 						ret += post['video-id'];
 						ret += '/hqdefault.jpg';
-						ret += ') no-repeat;background-size: cover;max-width: 480px;max-height: 270px;';
+						ret += ') 50% 50% no-repeat; background-size: cover; max-width: 480px; max-height: 270px;';
 				return ret;
 			}
 		});
@@ -43745,6 +43757,7 @@ Z(Q.prototype,"ref",Q.prototype.na);Ib.STATE_CHANGED="state_changed";P.RUNNING="
 				position: relative;
 			}
 			a.divlink:hover {
+				cursor: pointer;
 				border-radius: 8px;
 		    border: 0px solid #ddd;
 		    box-shadow: 0 8px 10px 1px rgba(0, 0, 0, 0.14), 0 3px 14px 2px rgba(0, 0, 0, 0.12), 0 5px 5px -3px rgba(0, 0, 0, 0.4);
@@ -46359,10 +46372,11 @@ Z(Q.prototype,"ref",Q.prototype.na);Ib.STATE_CHANGED="state_changed";P.RUNNING="
 				this.docData.theme = this.themes[formData.theme];
 				// fireDoc.path = "/virt/messages/"
 				// e.preventDefault();
-				// fireDoc.saveValue('/virt/messages/');
-				console.log(this.docData);
-				this.docData = {};
-				console.log(this.docData);
+
+				fireDoc.saveValue('/virt/messages/');
+
+				// this.docData = {};
+				// console.log(this.docData);
 			},
 			_submit: function() {
 				this.querySelector('#form').submit();
