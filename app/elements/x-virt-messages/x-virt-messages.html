@@ -439,10 +439,11 @@
 				this.docData.theme = this.themes[formData.theme];
 				// fireDoc.path = "/virt/messages/"
 				// e.preventDefault();
-				// fireDoc.saveValue('/virt/messages/');
-				console.log(this.docData);
-				this.docData = {};
-				console.log(this.docData);
+
+				fireDoc.saveValue('/virt/messages/');
+
+				// this.docData = {};
+				// console.log(this.docData);
 			},
 			_submit: function() {
 				this.querySelector('#form').submit();

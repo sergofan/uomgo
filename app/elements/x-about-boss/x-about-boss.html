@@ -10,6 +10,11 @@
 			img, iron-image {
 				width: 28%;
 				--iron-image-width: 100%;
+				--iron-image-placeholder : {
+					background-repeat: no-repeat;
+					background-size: inherit;
+					background-position: center;
+				}
 			}
 			paper-material {
 				max-width: 100%;
@@ -36,7 +41,11 @@
 
 					<template is="dom-if" if="[[dataDB.boss.photo.enabled]]">
 						<iron-image src="[[dataDB.boss.photo.image]]"
-												preload></iron-image>
+												placeholder="[[app.baseUrl]]images/loading.gif"
+												prevent-load
+												contain
+												preload
+												fade></iron-image>
 					</template>
 
 					<p>[[dataDB.boss.name]]</p>
