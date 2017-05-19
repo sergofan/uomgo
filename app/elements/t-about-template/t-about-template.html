@@ -21,7 +21,7 @@
 			}
 		</style>
 
-		<app-location route="{{route}}" use-hash-as-path></app-location>
+		<app-location route="{{_tail}}" use-hash-as-path></app-location>
 
 		<app-route route="{{route}}"
 									pattern="/:page"
@@ -31,6 +31,23 @@
 		<app-route route="{{_tail}}"
 							 pattern="/:page"
 							 data="{{subdata}}"></app-route>
+
+		<!-- <app-localstorage-document key="route"
+		 													 data="{{route}}"
+															 session-only></app-localstorage-document>
+
+		<app-localstorage-document key="_tail"
+		 													 data="{{_tail}}"
+															 session-only></app-localstorage-document>
+
+		<app-localstorage-document key="data"
+		 													 data="{{data}}"
+															 session-only></app-localstorage-document>
+
+		<app-localstorage-document key="subdata"
+		 													 data="{{subdata}}"
+															 session-only></app-localstorage-document> -->
+
 
 		<paper-tabs id="tabs"
 								scrollable
@@ -47,7 +64,7 @@
 		</paper-tabs>
 
 		<animated-lazy-pages attr-for-selected="data-route"
-												 selected="{{subdata.page}}"
+												 selected="[[subdata.page]]"
 												 animate-initial-selection
 												 loading="{{loading}}"
 												 fallback-selection="boss">

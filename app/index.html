@@ -135,6 +135,7 @@
 
 		<app-location route="{{route}}" use-hash-as-path></app-location>
 
+
 		<app-route route="{{route}}"
 									pattern="/:page"
 									data="{{data}}"
@@ -143,6 +144,22 @@
 		<app-route route="{{_tail}}"
 							 pattern="/:page"
 							 data="{{subdata}}"></app-route>
+
+		<app-localstorage-document key="route"
+		 													 data="{{route}}"
+															 session-only></app-localstorage-document>
+
+		<app-localstorage-document key="_tail"
+		 													 data="{{_tail}}"
+															 session-only></app-localstorage-document>
+
+		<app-localstorage-document key="data"
+		 													 data="{{data}}"
+															 session-only></app-localstorage-document>
+
+		<app-localstorage-document key="subdata"
+		 													 data="{{subdata}}"
+															 session-only></app-localstorage-document>
 
 		<paper-drawer-panel id="paperDrawerPanel" responsive-width="1280px">
 

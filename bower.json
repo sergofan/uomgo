@@ -21,7 +21,8 @@
     "array-filter": "43081j/array-filter#^1.0.2",
     "iron-accordions": "^1.1.0",
     "animated-lazy-pages": "paulvarache/animated-lazy-pages#^1.0.0",
-    "global-variable": "trofrigo/global-variable#^0.1.4"
+    "global-variable": "trofrigo/global-variable#^0.1.4",
+    "app-storage": "^1.0.0"
   },
   "devDependencies": {
     "web-component-tester": "^5.0.1"
