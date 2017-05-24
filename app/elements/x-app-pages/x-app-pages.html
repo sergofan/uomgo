@@ -9,19 +9,8 @@
       }
     </style>
 
-    <app-location route="{{route}}" use-hash-as-path></app-location>
-
-		<app-route route="{{route}}"
-									pattern="/:page"
-									data="{{data}}"
-									tail="{{_tail}}"></app-route>
-
-		<app-route route="{{_tail}}"
-							 pattern="/:page"
-							 data="{{subdata}}"></app-route>
-
     <animated-lazy-pages attr-for-selected="data-route"
-                         selected="[[data.page]]"
+                         selected='{{data.page}}'
                          animate-initial-selection
                          loading="{{loading}}">
 
@@ -30,8 +19,7 @@
                         exit-animation="fade-out-animation"
                         animation-target>
 
-          <t-main-template route-path="{{route.path}}"
-                           subdata-page="{{subdata.page}}"></t-main-template>
+          <t-main-template data-page="{{data.page}}" sub-page="{{subPage}}"></t-main-template>
 
         <neon-animatable>
       </template>
@@ -41,7 +29,7 @@
                         exit-animation="fade-out-animation"
                         animation-target>
 
-          <t-about-template></t-about-template>
+          <t-about-template sub-page="{{subPage}}"></t-about-template>
 
       </template>
 
@@ -205,15 +193,15 @@
         </neon-animatable>
       </template>
 
-      <template is="animated-lazy-page"	data-route="hotline">
+      <!-- <template is="animated-lazy-page"	data-route="hotline">
         <neon-animatable entry-animation="fade-in-animation"
                         exit-animation="fade-out-animation"
                         animation-target>
 
-          <t-hotline-template></t-legal-template>
+          <t-hotline-template></t-hotline-template>
 
         </neon-animatable>
-      </template>
+      </template> -->
 
       <template is="animated-lazy-page"	data-route="jobs">
         <neon-animatable entry-animation="fade-in-animation"
@@ -252,8 +240,22 @@
     Polymer({
       is: 'x-app-pages',
       properties: {
-      },
-      ready: function() {
+        route: {
+          type: Object,
+          notify: true
+        },
+        data: {
+					type: Object,
+					notify: true
+				},
+				subData: {
+					type: Object,
+					notify: true
+				},
+				subPage: {
+					type: String,
+					notify: true
+				}
       }
     });
   })();

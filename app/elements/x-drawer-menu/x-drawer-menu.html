@@ -86,17 +86,6 @@
 									 app-name="uomgo"
 									 on-error="showError"></firebase-auth>
 
-		<app-location route="{{route}}" use-hash-as-path></app-location>
-
-		<app-route route="{{route}}"
-									pattern="/:page"
-									data="{{data}}"
-									tail="{{_tail}}"></app-route>
-
-		<app-route route="{{_tail}}"
-							 pattern="/:page"
-							 data="{{subdata}}"></app-route>
-
 		<div id="head" class="layout horizontal center-center fit">
 			<iron-image src="https://firebasestorage.googleapis.com/v0/b/uomgo-fab6c.appspot.com/o/logo1.png?alt=media&token=6f57274a-1993-4dfd-8638-a8d782a2121c"></iron-image>
 		</div>
@@ -111,8 +100,7 @@
 		<paper-menu id="mainMenu"
 								attr-for-selected="data-route"
 								selected="{{data.page}}"
-								selectable="paper-icon-item"
-								on-iron-select="_menuItemSelected">
+								selectable="paper-icon-item">
 
 			<paper-icon-item data-route="main">
 				<iron-icon icon="home" item-icon></iron-icon>
@@ -257,36 +245,18 @@
 		Polymer({
 			is: 'x-drawer-menu',
 			properties: {
-				data: {
+				route: {
+          type: Object,
+          notify: true
+        },
+        data: {
 					type: Object,
-					observer: '_dataChange'
+					notify: true
+				},
+				subData: {
+					type: Object,
+					notify: true
 				}
-			},
-			ready: function() {
-			},
-			_dataChange: function(newValue, oldValue) {
-				// console.log(oldValue, newValue);
-			},
-			_menuItemSelected: function(e) {
-				var selected = e.target.selected;
-				// this.async(function() {
-					// switch(selected) {
-					// 	case '':
-					// 	case 'about':
-					// 		this.set('route.path', '/about/boss');
-					// 		break;
-					// 	case 'virt':
-					// 		if (this.user) {
-					// 			this.set('route.path', '/virt/messages');
-					// 		} else {
-					// 			this.set('route.path', '/virt/rules');
-					// 		};
-					// 		break;
-					// 	default:
-					// 		this.set('route.path', '/'+selected);
-					// 		break;
-					// }
-				// });
 			}
 		});
 	})();

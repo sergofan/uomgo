@@ -52,7 +52,10 @@
 				</grid-col>
 
 				<grid-col s="1" class="shadow">
-					<div class="yellow-gradient content">
+					<div><template is="juicy-html"
+										content$="[[dataDB.boss.reception]]"></template></div>
+
+					<!-- <div class="yellow-gradient content">
 						<p><strong>Прием граждан<br>по личным вопросам</strong></p>
 					</div>
 					<div class="red-gradient content">
@@ -68,7 +71,8 @@
 					<div class="green-gradient content">
 						<p>Телефон предварительной записи</p>
 						<p><b>2-04-36</b></p>
-					</div>
+					</div> -->
+
 				</grid-col>
 			</grid-element>
 		</paper-material>

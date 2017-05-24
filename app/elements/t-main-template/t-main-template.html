@@ -82,6 +82,18 @@
 		Polymer({
 			is: 't-main-template',
 			properties: {
+				route: {
+					type: Object,
+					notify: true
+				},
+				dataPage: {
+					type: String,
+					notify: true
+				},
+				subPage: {
+					type: String,
+					notify: true
+				},
 				dataDB: {
 					type: Object,
 					observer: 'dataChanged',
@@ -90,18 +102,6 @@
 				postData: {
 					type: Object,
 					value: {}
-				},
-				key: {
-					type: String,
-					value: ''
-				},
-				routePath: {
-					type: String,
-					notify: true
-				},
-				subdataPage: {
-					type: String,
-					notify: true
 				}
 			},
 			ready: function() {
@@ -158,10 +158,8 @@
 			},
 			_goToDocs: function() {
 				this.async(function() {
-					this.subdataPage = 'docs';
-					this.set('routePath', '/about');
-				});
-				this.async(function() {
+					this.set('dataPage', 'about');
+					this.set('subPage', 'docs');
 				});
 			}
 		});

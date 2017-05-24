@@ -133,39 +133,13 @@
 									database-url="https://uomgo-fab6c.firebaseio.com"
 									name="uomgo"></firebase-app>
 
-		<app-location route="{{route}}" use-hash-as-path></app-location>
-
-
-		<app-route route="{{route}}"
-									pattern="/:page"
-									data="{{data}}"
-									tail="{{_tail}}"></app-route>
-
-		<app-route route="{{_tail}}"
-							 pattern="/:page"
-							 data="{{subdata}}"></app-route>
-
-		<app-localstorage-document key="route"
-		 													 data="{{route}}"
-															 session-only></app-localstorage-document>
-
-		<app-localstorage-document key="_tail"
-		 													 data="{{_tail}}"
-															 session-only></app-localstorage-document>
-
-		<app-localstorage-document key="data"
-		 													 data="{{data}}"
-															 session-only></app-localstorage-document>
-
-		<app-localstorage-document key="subdata"
-		 													 data="{{subdata}}"
-															 session-only></app-localstorage-document>
+		<x-route route="{{route}}" data="{{data}}" sub-data="{{subData}}"></x-route>
 
 		<paper-drawer-panel id="paperDrawerPanel" responsive-width="1280px">
 
 			<!-- Drawer Scroll Header Panel -->
 			<paper-scroll-header-panel drawer>
-				<x-drawer-menu></x-driwer-menu>
+				<x-drawer-menu route="{{route}}" data="{{data}}" sub-data="{{subData}}"></x-driwer-menu>
 			</paper-scroll-header-panel>
 
 			<!-- Main Area -->
@@ -227,7 +201,7 @@
 												 app-name="uomgo"
 												 on-error="showError"></firebase-auth>
 
-					<x-app-pages></x-app-pages>
+					<x-app-pages route="{{route}}" data="{{data}}" sub-data="{{subData}}"></x-app-pages>
 
 				</div>
 

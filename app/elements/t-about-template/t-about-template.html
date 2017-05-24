@@ -21,37 +21,9 @@
 			}
 		</style>
 
-		<app-location route="{{_tail}}" use-hash-as-path></app-location>
-
-		<app-route route="{{route}}"
-									pattern="/:page"
-									data="{{data}}"
-									tail="{{_tail}}"></app-route>
-
-		<app-route route="{{_tail}}"
-							 pattern="/:page"
-							 data="{{subdata}}"></app-route>
-
-		<!-- <app-localstorage-document key="route"
-		 													 data="{{route}}"
-															 session-only></app-localstorage-document>
-
-		<app-localstorage-document key="_tail"
-		 													 data="{{_tail}}"
-															 session-only></app-localstorage-document>
-
-		<app-localstorage-document key="data"
-		 													 data="{{data}}"
-															 session-only></app-localstorage-document>
-
-		<app-localstorage-document key="subdata"
-		 													 data="{{subdata}}"
-															 session-only></app-localstorage-document> -->
-
-
 		<paper-tabs id="tabs"
 								scrollable
-								selected="{{subdata.page}}"
+								selected="{{subPage}}"
 								attr-for-selected="data-route">
 
 			<paper-tab data-route="about">О нас</paper-tab>
@@ -64,17 +36,17 @@
 		</paper-tabs>
 
 		<animated-lazy-pages attr-for-selected="data-route"
-												 selected="[[subdata.page]]"
+												 selected="{{subPage}}"
 												 animate-initial-selection
-												 loading="{{loading}}"
-												 fallback-selection="boss">
+												 fallback-selection="boss"
+												 loading="{{loading}}">
 
-			<template  is="dom-if" if="[[loading]]">
+			<!-- <template  is="dom-if" if="[[loading]]">
 				<div class="layout horizontal center-center">
 					<paper-spinner-lite active="[[loading]]"
 															alt="Загрузка ..."></paper-spinner-lite>
 				</div>
-			</template>
+			</template> -->
 
 			<template is="animated-lazy-page" data-route="about">
 				<neon-animatable entry-animation="fade-in-animation"
@@ -146,8 +118,22 @@
 		Polymer({
 			is: 't-about-template',
 			properties: {
-			},
-			ready: function() {
+				route: {
+          type: Object,
+          notify: true
+        },
+        data: {
+					type: Object,
+					notify: true
+				},
+				subData: {
+					type: Object,
+					notify: true
+				},
+				subPage: {
+					type: String,
+					notify: true
+				}
 			}
 		});
 	})();

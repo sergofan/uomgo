@@ -14,20 +14,16 @@
 									 app-name="uomgo"
 									 on-error="showError"></firebase-auth>
 
-		<global-variable key="route" value="{{route}}"></global-variable>
-		<global-variable key="appRouteData" value="{{appRouteDataPage}}"></global-variable>
-		<global-variable key="appRouteSubdata" value="{{appRouteSubdataPage}}"></global-variable>
-
 		<app-location route="{{route}}" use-hash-as-path></app-location>
 
 		<app-route route="{{route}}"
 									pattern="/:page"
-									data="{{appRouteData}}"
+									data="{{data}}"
 									tail="{{_tail}}"></app-route>
 
 		<app-route route="{{_tail}}"
-							 pattern="/:page"
-							 data="{{appRouteSubdata}}"></app-route>
+							 pattern="/:subPage"
+							 data="{{subData}}"></app-route>
 	</template>
 	<script>
 	(function() {
@@ -38,77 +34,53 @@
 			properties: {
 				route: {
 					type: Object,
-					// notify: true,
-					observer: '_routeChanged'
+					observer: '_routeChanged',
+					notify: true
 				},
-				appRouteData: {
+				data: {
 					type: Object,
-					// notify: true,
-					observer: '_routeDataChanged'
+					notify: true
 				},
-				appRouteSubdata: {
+				subData: {
 					type: Object,
-					// notify: true,
-					observer: '_routeSubataChanged'
-				},
-				appRouteDataPage: {
-					observer: '_routeDataPageChanged'
-				},
-				appRouteSubdataPage: {
-					observer: '_routeSubataPageChanged'
+					notify: true
 				},
 				_tail: {
 					type: Object
-				},
+				}
 			},
 			ready: function() {
-				// this.async(function() {
-        //   if (this.route.path === "") {
-        //     this.set('route.path', '/main');
-        //   }
-				// });
-				// this.appRouteData.page = 'about';
 			},
 			_routeChanged: function(newValue, oldValue) {
-				// if (this.route && this.appRouteData && this.appRouteSubdata) {
-				//	console.log(newValue.path);
-				// }
-
-				// this.async(function() {
-				// 	switch(newValue.path) {
-				// 		case '':
-				// 			this.set('newValue.path', '/main');
-				// 			break;
-				// 		// case '/':
-				// 		// 	this.set('newValue.path', '/main');
-				// 		// 	break;
-				// 		case '/about':
-				// 			this.set('newValue.path', '/about/boss');
-				// 			break;
-				// 		case '/virt':
-				// 			if (user) {
-				// 				this.set('newValue.path', '/virt/messages');
-				// 			} else {
-				// 				this.set('newValue.path', '/virt/rules');
-				// 			};
-				// 			break;
-				// 	}
-				// });
-			},
-			_routeDataChanged: function(newValue, oldValue) {
-				console.log(newValue);
-			},
-			_routeSubataChanged: function(newValue, oldValue) {
-				// console.log(newValue.page);
-			},
-			_routeDataPageChanged: function(newValue, oldValue) {
-				console.log(oldValue, newValue);
-				// this.set('appRouteData.page', newValue);
-				this.appRouteData.page = newValue;
-			},
-			_routeSubataPageChanged: function(newValue, oldValue) {
-				// console.log(newValue);
-				// this.set('appRouteSubdata.page', newValue);
+				// console.log(oldValue, newValue);
+					switch(newValue.path) {
+						case '':
+							this.async(function() {
+								this.set('newValue.path', '/main');
+							});
+							break;
+						case '/':
+							this.async(function() {
+								this.set('newValue.path', '/main');
+							});
+							break;
+						// case '/about':
+						// 	this.async(function() {
+						// 		this.set('newValue.path', '/about/boss');
+						// 	});
+						// 	break;
+						// case '/virt':
+						// 	if (this.user) {
+						// 		this.async(function() {
+						// 			this.set('newValue.path', '/virt/messages');
+						// 		});
+						// 		} else {
+						// 		this.async(function() {
+						// 			this.set('newValue.path', '/virt/rules');
+						// 		});
+						// 	};
+						// 	break;
+					}
 			}
 		});
 	})();

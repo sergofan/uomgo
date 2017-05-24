@@ -68,14 +68,14 @@
 		Polymer({
 			is: 'x-virt-rules',
 			properties: {
-				page: {
-					type: String,
+				subPage: {
+					type: Object,
 					notify: true
 				}
 			},
 			changePage: function() {
 				this.async(function() {
-					this.set('page', 'messages');
+					this.set('subPage', 'messages');
 				});
 			}
 		});
