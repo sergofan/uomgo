@@ -45,13 +45,6 @@
 				arrowUp.hidden = true;
 			}
 		});
-			switch(app.route.path) {
-				case '':
-					app.async(function() {
-						app.set('route.path', '/main');
-					});
-					break;
-			}
 	});
 
 	// Main area's paper-scroll-header-panel custom condensing transformation of

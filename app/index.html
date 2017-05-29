@@ -128,12 +128,12 @@
 	<span id="browser-sync-binding"></span>
 	<template is="dom-bind" id="app">
 
+		<x-route route="{{route}}" data="{{data}}" sub-data="{{subData}}"></x-route>
+
 		<firebase-app	api-key="AIzaSyAepf-iIF_1XRmDYWpKTDpXhelRAYt6Cfw"
 									auth-domain="uomgo-fab6c.firebaseapp.com"
 									database-url="https://uomgo-fab6c.firebaseio.com"
 									name="uomgo"></firebase-app>
-
-		<x-route route="{{route}}" data="{{data}}" sub-data="{{subData}}"></x-route>
 
 		<paper-drawer-panel id="paperDrawerPanel" responsive-width="1280px">
 
