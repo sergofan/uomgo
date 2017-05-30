@@ -9,22 +9,30 @@
 		</style>
 
 		<firebase-auth id="auth"
-									 user="{{user}}"
-									 provider="google"
-									 app-name="uomgo"
-									 on-error="showError"></firebase-auth>
+			user="{{user}}"
+			provider="google"
+			app-name="uomgo"
+			on-error="showError">
+		</firebase-auth>
 
-		<app-location route="{{route}}" use-hash-as-path></app-location>
+		<app-location
+			route="{{route}}"
+			use-hash-as-path>
+		</app-location>
 
-		<app-route id="route"
-							 route="{{route}}"
-							 pattern="/:page"
-							 data="{{data}}"
-							 tail="{{_tail}}"></app-route>
+		<app-route
+			route="{{route}}"
+			pattern="/:page"
+			data="{{data}}"
+			tail="{{_tail}}">
+		</app-route>
 
-		<app-route route="{{_tail}}"
-							 pattern="/:subPage"
-							 data="{{subData}}"></app-route>
+		<app-route
+			route="{{_tail}}"
+			pattern="/:subPage"
+			data="{{subData}}">
+		</app-route>
+
 	</template>
 	<script>
 	(function() {
@@ -51,9 +59,18 @@
 				}
 			},
 			ready: function() {
-				this.async(function() {
-					this.set('route.path', '/main');
-				});
+				switch(this.route.path) {
+					case '':
+						this.async(function() {
+							this.set('route.path', '/main');
+						});
+						break;
+					case '/':
+						this.async(function() {
+							this.set('route.path', '/main');
+						});
+						break;
+				}
 			},
 			_routeChanged: function(newValue, oldValue) {
 				// console.log(oldValue, newValue);

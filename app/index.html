@@ -71,6 +71,7 @@
 	}
 	paper-tabs {
 		border-radius: 50px;
+		color: black;
 		/*background-color: var(--primary-color);*/
 		/*background-color: rgba(33,150,243,0.6);*/
 		background-color: rgba(33,150,243,0);
@@ -109,7 +110,11 @@
 		--paper-toast-background-color: red;
 		--paper-toast-color: white;
 	}
-
+	#arrowUp {
+		position: fixed;
+		bottom: 4px;
+		right: 16px;
+	}
 </style>
 
 <script type="text/javascript">
@@ -128,111 +133,146 @@
 	<span id="browser-sync-binding"></span>
 	<template is="dom-bind" id="app">
 
-		<x-route route="{{route}}" data="{{data}}" sub-data="{{subData}}"></x-route>
+		<x-route
+			route="{{route}}"
+			data="{{data}}"
+			sub-data="{{subData}}">
+		</x-route>
 
-		<firebase-app	api-key="AIzaSyAepf-iIF_1XRmDYWpKTDpXhelRAYt6Cfw"
-									auth-domain="uomgo-fab6c.firebaseapp.com"
-									database-url="https://uomgo-fab6c.firebaseio.com"
-									name="uomgo"></firebase-app>
+		<firebase-app
+			api-key="AIzaSyAepf-iIF_1XRmDYWpKTDpXhelRAYt6Cfw"
+			auth-domain="uomgo-fab6c.firebaseapp.com"
+			database-url="https://uomgo-fab6c.firebaseio.com"
+			name="uomgo">
+		</firebase-app>
 
-		<paper-drawer-panel id="paperDrawerPanel" responsive-width="1280px">
+		<paper-drawer-panel id="paperDrawerPanel"
+			responsive-width="1280px">
 
-			<!-- Drawer Scroll Header Panel -->
-			<paper-scroll-header-panel drawer>
-				<x-drawer-menu route="{{route}}" data="{{data}}" sub-data="{{subData}}"></x-driwer-menu>
-			</paper-scroll-header-panel>
+				<!-- Drawer Scroll Header Panel -->
+				<paper-scroll-header-panel drawer>
+					<x-drawer-menu
+						route="{{route}}"
+						data="{{data}}"
+						sub-data="{{subData}}">
+					</x-driwer-menu>
+				</paper-scroll-header-panel>
 
-			<!-- Main Area -->
-			<paper-scroll-header-panel id="headerPanelMain"
-																 main
-																 condenses
-																 header-height="256"
-																 condensed-header-height="64"
-																 noReveal="true">
+				<!-- Main Area -->
+				<paper-scroll-header-panel id="headerPanelMain"
+					main
+					condenses
+					header-height="256"
+					condensed-header-height="64"
+					noReveal="true">
 
-				<!-- Main Toolbar -->
-				<paper-toolbar id="mainToolbar" class="tall">
+					<!-- Main Toolbar -->
+					<paper-toolbar id="mainToolbar" class="tall">
 
 
-					<div class="app-name">
+						<div class="app-name"></div>
+
+						<!-- Application name -->
+						<div class="middle middle-container fit layout horizontal center-center">
+							<x-header-text></x-header-text>
+						</div>
+
+						<!-- Application sub title -->
+						<div class="bottom bottom-container self-end fit">
+
+							<paper-icon-button id="paperToggle"
+								icon="menu"
+								paper-drawer-toggle>
+							</paper-icon-button>
+
+							<div class="spacer"></div>
+
+							<!-- Main tabs -->
+							<paper-tabs
+								id="main_tabs"
+								selected='{{data.page}}'
+								attr-for-selected='data-route'
+								scrollable>
+
+								<paper-tab data-route="main">Главная</paper-tab>
+								<paper-tab data-route="about">Об управлении</paper-tab>
+								<paper-tab data-route="virt">Обращения граждан</paper-tab>
+
+							</paper-tabs>
+
+							<!-- Toolbar icons -->
+							<paper-icon-button
+								icon="perm-identity"
+								on-tap="loginTap">
+							</paper-icon-button>
+
+							<paper-icon-button
+								icon="search"
+								on-tap="openSearchDialog"
+								disabled>
+							</paper-icon-button>
+
+							<iron-icon class="bottom bookmark"
+								icon="bookmark">
+							</iron-icon>
+
+						</div>
+
+					</paper-toolbar>
+
+					<!-- Main container -->
+					<div class="container" id="pagesContainer">
+
+						<firebase-auth id="auth"
+							user="{{user}}"
+							provider="google"
+							app-name="uomgo"
+							on-error="showError">
+						</firebase-auth>
+
+						<x-app-pages
+							route="{{route}}"
+							data="{{data}}"
+							sub-data="{{subData}}">
+						</x-app-pages>
+
 					</div>
 
-					<!-- Application name -->
-					<div class="middle middle-container fit layout horizontal center-center">
-						<x-header-text></x-header-text>
-					</div>
+					<x-footer></x-footer>
 
-					<!-- Application sub title -->
-					<div class="bottom bottom-container self-end fit">
-						<paper-icon-button id="paperToggle"
-															 icon="menu"
-															 paper-drawer-toggle></paper-icon-button>
-
-						<div class="spacer"></div>
-
-						<!-- Main tabs -->
-						<paper-tabs style="color: black"
-												id="main_tabs"
-												selected='{{data.page}}'
-												attr-for-selected='data-route'
-												scrollable>
-							<paper-tab data-route="main">Главная</paper-tab>
-							<paper-tab data-route="about">Об управлении</paper-tab>
-							<paper-tab data-route="virt">Обращения граждан</paper-tab>
-						</paper-tabs>
-
-						<!-- Toolbar icons -->
-						<paper-icon-button icon="perm-identity"
-															 on-tap="loginTap"></paper-icon-button>
-						<paper-icon-button icon="search"
-															 on-tap="openSearchDialog"
-															 disabled></paper-icon-button>
-						<iron-icon class="bottom bookmark" icon="bookmark"></iron-icon>
-					</div>
-
-				</paper-toolbar>
-
-				<!-- Main container -->
-				<div class="container" id="pagesContainer">
-
-					<firebase-auth id="auth"
-												 user="{{user}}"
-												 provider="google"
-												 app-name="uomgo"
-												 on-error="showError"></firebase-auth>
-
-					<x-app-pages route="{{route}}" data="{{data}}" sub-data="{{subData}}"></x-app-pages>
-
-				</div>
-
-				<x-footer></x-footer>
-
-			</paper-scroll-header-panel>
+				</paper-scroll-header-panel>
 		</paper-drawer-panel>
 
-		<paper-fab id="arrowUp"
-							 icon="arrow-upward"
-							 mini="true"
-							 class="blue"
-							 on-tap="scrollPageToTop"
-							 style="position:fixed;bottom:4px;right:16px;"></paper-fab>
+		<paper-fab
+			id="arrowUp"
+			icon="arrow-upward"
+			mini="true"
+			class="blue"
+			on-tap="scrollPageToTop">
+		</paper-fab>
 
 
 		<paper-toast id="authErrorToast"
-								 style="max-width: 300px;"
-								 horizontal-align="right"
-								 vertical-align="top"
-								 duration="0"
-								 text="Ошибка входа. [[error.code]]: [[error.message]]">
+			style="max-width: 300px;"
+			horizontal-align="right"
+			vertical-align="top"
+			duration="0"
+			text="Ошибка входа. [[error.code]]: [[error.message]]">
 
-			<paper-icon-button icon="done" on-tap="toggleAuthErrorToast"></paper-icon-button>
+			<paper-icon-button
+				icon="done"
+				on-tap="toggleAuthErrorToast">
+			</paper-icon-button>
 
 		</paper-toast>
 
 <!--
 		<paper-toast id="toast">
-			<span class="toast-hide-button" role="button" tabindex="0" on-tap="app.$.toast.hide()">
-				Ok
+			<span class="toast-hide-button"
+				role="button"
+				tabindex="0"
+				on-tap="app.$.toast.hide()">
+					Ok
 			</span>
 		</paper-toast>
  -->
@@ -240,26 +280,29 @@
 		<!-- Uncomment next block to enable Service Worker support (1/2) -->
 		<!--
 		<paper-toast id="caching-complete"
-								 duration="6000"
-								 text="Caching complete! This app will work offline.">
+			duration="6000"
+			text="Caching complete! This app will work offline.">
 		</paper-toast>
 
-		<platinum-sw-register auto-register
-													clients-claim
-													skip-waiting
-													base-uri="bower_components/platinum-sw/bootstrap"
-													on-service-worker-installed="displayInstalledToast">
-			<platinum-sw-cache default-cache-strategy="fastest"
-												 cache-config-file="cache-config.json">
-			</platinum-sw-cache>
+		<platinum-sw-register
+			auto-register
+			clients-claim
+			skip-waiting
+			base-uri="bower_components/platinum-sw/bootstrap"
+			on-service-worker-installed="displayInstalledToast">
+				<platinum-sw-cache
+					default-cache-strategy="fastest"
+					cache-config-file="cache-config.json">
+				</platinum-sw-cache>
 		</platinum-sw-register>
 		-->
 
 		<iron-scroll-threshold id="scrollThreshold"
-													 upper-threshold="192"
-													 lower-threshold="500"
-													 on-lower-threshold="_loadMoreData"
-													 on-upper-threshold="showArrow"></iron-scroll-threshold>
+			upper-threshold="192"
+			lower-threshold="500"
+			on-lower-threshold="_loadMoreData"
+			on-upper-threshold="showArrow">
+		</iron-scroll-threshold>
 
 	</template>
 

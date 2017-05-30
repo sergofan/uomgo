@@ -75,79 +75,70 @@
 
 
 		<firebase-document id="firebaseDocument"
-											 app-name="uomgo"
-											 path="/business"
-											 data="{{docData}}"></firebase-document>
+			app-name="uomgo"
+			path="/business"
+			data="{{docData}}">
+		</firebase-document>
 
-		<paper-card heading="Реестр индивидуальных предпринимателей оказывающих образовательные услуги для детей дошкольного возраста на территории Мысковского городского округа"
-								image=""
-								elevation="4"
-								animated-shadow="false">
+		<paper-card
+			heading="Реестр индивидуальных предпринимателей оказывающих образовательные услуги для детей дошкольного возраста на территории Мысковского городского округа"
+			image=""
+			elevation="4"
+			animated-shadow="false">
+				<div class="card-content">
+					<div class="content">
 
-			<div class="card-content">
+						<template is="juicy-html"	content$="[[docData.text]]"></template>
 
-				<div class="content">
-<!--
-					<template is="juicy-html"
-										content$="[[docData.text]]"></template>
- -->
+						<iron-data-table id="table"
+							items="[[docData.table]]"
+							selection-enabled
+							multi-selection>
 
-				<iron-data-table id="table"
-												 items="[[docData.table]]"
-												 selection-enabled
-												 multi-selection>
+								<data-table-column
+									name="№"
+									width="20px"
+									flex="0">
+										<template>[[index]]</template>
+								</data-table-column>
 
-					<data-table-column name="№"
-														 width="20px"
-														 flex="0">
+								<data-table-column
+									name="Ф.И.О."
+									width="150px"
+									sort-by="name">
+										<template>[[item.name]]</template>
+								</data-table-column>
 
-						<template>[[index]]</template>
+								<data-table-column
+									name="Свидетельство о регистрации"
+									width="130px"
+									sort-by="certificate">
+										<template>[[item.certificate]]</template>
+								</data-table-column>
 
-					</data-table-column>
+								<data-table-column
+									name="ОКВЭД"
+									sort-by="OKVED">
+										<template>[[item.OKVED]]</template>
+								</data-table-column>
 
-					<data-table-column name="Ф.И.О."
-														 width="150px"
-														 sort-by="name">
+								<data-table-column
+									name="Телефон, e-mail"
+									width="180px"
+									sort-by="phone">
+										<template>[[item.phone]]</template>
+								</data-table-column>
 
-						<template>[[item.name]]</template>
+								<data-table-column
+									name="Виды услуг"
+									width="180px">
+										<template>[[item.services]]</template>
+								</data-table-column>
 
-					</data-table-column>
+						</iron-data-table>
 
-					<data-table-column name="Свидетельство о регистрации"
-														 width="130px"
-														 sort-by="certificate">
-
-						<template>[[item.certificate]]</template>
-
-					</data-table-column>
-
-					<data-table-column name="ОКВЭД"
-														 sort-by="OKVED">
-
-						<template>[[item.OKVED]]</template>
-
-					</data-table-column>
-
-					<data-table-column name="Телефон, e-mail"
-														 width="180px"
-														 sort-by="phone">
-
-						<template>[[item.phone]]</template>
-
-					</data-table-column>
-
-					<data-table-column name="Виды услуг"
-														 width="180px">
-
-						<template>[[item.services]]</template>
-
-					</data-table-column>
-
-				</iron-data-table>
-
-
+					</div>
 				</div>
-			</div>
 		</paper-card>
 
 	</template>

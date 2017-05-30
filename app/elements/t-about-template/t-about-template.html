@@ -22,9 +22,9 @@
 		</style>
 
 		<paper-tabs id="tabs"
-								scrollable
-								selected="{{subPage}}"
-								attr-for-selected="data-route">
+			scrollable
+			selected="{{subPage}}"
+			attr-for-selected="data-route">
 
 			<paper-tab data-route="about">О нас</paper-tab>
 			<paper-tab data-route="boss">Руководство</paper-tab>
@@ -35,76 +35,73 @@
 
 		</paper-tabs>
 
-		<animated-lazy-pages attr-for-selected="data-route"
-												 selected="{{subPage}}"
-												 animate-initial-selection
-												 fallback-selection="boss"
-												 loading="{{loading}}">
+		<animated-lazy-pages
+			attr-for-selected="data-route"
+			selected="{{subPage}}"
+			animate-initial-selection
+			fallback-selection="boss"
+			loading="{{loading}}">
 
 			<!-- <template  is="dom-if" if="[[loading]]">
 				<div class="layout horizontal center-center">
-					<paper-spinner-lite active="[[loading]]"
-															alt="Загрузка ..."></paper-spinner-lite>
+					<paper-spinner-lite
+						active="[[loading]]"
+						alt="Загрузка ...">
+					</paper-spinner-lite>
 				</div>
 			</template> -->
 
 			<template is="animated-lazy-page" data-route="about">
-				<neon-animatable entry-animation="fade-in-animation"
-												 exit-animation="fade-out-animation"
-												 animation-target>
-
-					<x-about-about></x-about-about>
-
+				<neon-animatable
+					entry-animation="fade-in-animation"
+					exit-animation="fade-out-animation"
+					animation-target>
+						<x-about-about></x-about-about>
 				</neon-animatable>
 			</template>
 
 			<template is="animated-lazy-page" data-route="boss">
-				<neon-animatable entry-animation="fade-in-animation"
-												 exit-animation="fade-out-animation"
-												 animation-target>
-
-					<x-about-boss></x-about-boss>
-
+				<neon-animatable
+					entry-animation="fade-in-animation"
+					exit-animation="fade-out-animation"
+					animation-target>
+						<x-about-boss></x-about-boss>
 				</neon-animatable>
 			</template>
 
 			<template is="animated-lazy-page" data-route="struct">
-				<neon-animatable entry-animation="fade-in-animation"
-												 exit-animation="fade-out-animation"
-												 animation-target>
-
-					<x-about-struct></x-about-struct>
-
+				<neon-animatable
+					entry-animation="fade-in-animation"
+					exit-animation="fade-out-animation"
+					animation-target>
+						<x-about-struct></x-about-struct>
 				</neon-animatable>
 			</template>
 
 			<template is="animated-lazy-page" data-route="slave">
-				<neon-animatable entry-animation="fade-in-animation"
-												 exit-animation="fade-out-animation"
-												 animation-target>
-
-					<x-about-slave></x-about-slave>
-
+				<neon-animatable
+					entry-animation="fade-in-animation"
+					exit-animation="fade-out-animation"
+					animation-target>
+						<x-about-slave></x-about-slave>
 				</neon-animatable>
 			</template>
 
 			<template is="animated-lazy-page" data-route="docs">
-				<neon-animatable entry-animation="fade-in-animation"
-												 exit-animation="fade-out-animation"
-												 animation-target>
-
-					<x-about-docs></x-about-docs>
-
+				<neon-animatable
+					entry-animation="fade-in-animation"
+					exit-animation="fade-out-animation"
+					animation-target>
+						<x-about-docs></x-about-docs>
 				</neon-animatable>
 			</template>
 
 			<template is="animated-lazy-page" data-route="localGov">
-				<neon-animatable entry-animation="fade-in-animation"
-												 exit-animation="fade-out-animation"
-												 animation-target>
-
-					<x-about-local-gov></x-about-local-gov>
-
+				<neon-animatable
+					entry-animation="fade-in-animation"
+					exit-animation="fade-out-animation"
+					animation-target>
+						<x-about-local-gov></x-about-local-gov>
 				</neon-animatable>
 			</template>
 
