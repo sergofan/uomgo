@@ -17,15 +17,6 @@
 				--paper-card-content: {
 				};
 			}
-			/*iron-accordion {
-				background-color: var(--paper-blue-grey-50);
-			}
-			.paper-font-headline {
-				padding: 8px;
-			}
-			.accordionContent {
-				background-color: white;
-			}*/
 			iron-collapse:focus {
 				outline: none;
 			}
@@ -45,107 +36,81 @@
 
 
 		<firebase-document id="firebaseDocument"
-											 app-name="uomgo"
-											 path="/museum"
-											 data="{{docData}}"></firebase-document>
+			app-name="uomgo"
+			path="/museum"
+			data="{{docData}}">
+		</firebase-document>
 
 		<paper-card heading="Виртуальный музей"
-								image=""
-								elevation="4"
-								animated-shadow="false">
+			image=""
+			elevation="4"
+			animated-shadow="false">
 
-			<div class="card-content">
+				<div class="card-content">
 
-<!--
-					<template is="juicy-html"
-										content$="[[docData.text]]"></template>
- -->
+					<template
+						is="juicy-html"
+						content$="[[docData.text]]">
+					</template>
 
-				<div class="accordeonBox">
-				 <div class="accordeonHeader paper-font-headline"
+					<div class="accordeonBox">
+						<div class="accordeonHeader paper-font-headline"
 							aria-expanded$="[[isExpanded(openedHistory)]]"
 							aria-controls="history"
 							on-tap="toggle" data-args="#history">
-						История развития муниципальной системы образования МГО
-				 </div>
-				 <iron-collapse id="history"
-												tabindex="0"
-												opened="{{openedHistory}}">
-					 <div class="collapse-content shadow">
-						 <template is="juicy-html"
-											 content$="[[docData.history.text]]"></template>
-					 </div>
-				 </iron-collapse>
-				</div>
+								История развития муниципальной системы образования МГО
+						</div>
+						<iron-collapse id="history"
+							tabindex="0"
+							opened="{{openedHistory}}">
+								<div class="collapse-content shadow">
+									<template
+										is="juicy-html"
+										content$="[[docData.history.text]]">
+									</template>
+								</div>
+						</iron-collapse>
+					</div>
 
-				<div class="accordeonBox">
-				 <div class="accordeonHeader paper-font-headline"
+					<div class="accordeonBox">
+						<div class="accordeonHeader paper-font-headline"
 							aria-expanded$="[[isExpanded(openedHistoryOrgs)]]"
 							aria-controls="historyOrgs"
 							on-tap="toggle" data-args="#historyOrgs">
-						История образовательных организаций города
-				 </div>
-				 <iron-collapse id="historyOrgs"
-												tabindex="0"
-												opened="{{openedHistoryOrgs}}">
-					 <div class="collapse-content shadow">
-						 <template is="juicy-html"
-											 content$="[[docData.historyOrgs.text]]"></template>
-					 </div>
-				 </iron-collapse>
-				</div>
+								История образовательных организаций города
+						</div>
+						<iron-collapse id="historyOrgs"
+							tabindex="0"
+							opened="{{openedHistoryOrgs}}">
+								<div class="collapse-content shadow">
+									<template
+										is="juicy-html"
+										content$="[[docData.historyOrgs.text]]">
+									</template>
+								</div>
+						</iron-collapse>
+					</div>
 
-				<div class="accordeonBox">
-				 <div class="accordeonHeader paper-font-headline"
+					<div class="accordeonBox">
+						<div class="accordeonHeader paper-font-headline"
 							aria-expanded$="[[isExpanded(openedHistoryFame)]]"
 							aria-controls="fame"
 							on-tap="toggle" data-args="#fame">
-						Доска почёта
-				 </div>
-				 <iron-collapse id="fame"
-												tabindex="0"
-												opened="{{openedHistoryFame}}">
-					 <div class="collapse-content shadow">
-						 <template is="juicy-html"
-											 content$="[[docData.fame.text]]"></template>
-					 </div>
-				 </iron-collapse>
-				</div>
-
-					<!-- <iron-accordions>
-						<iron-accordion>
-							<div header class="paper-font-headline">
-								История развития муниципальной системы образования МГО
-							</div>
-							<div class="accordionContent shadow">
-								<p>История развития муниципальной системы образования МГО</p>
-							</div>
-						</iron-accordion>
-						<iron-accordion>
-							<div header class="paper-font-headline">
-								История образовательных организаций города
-							</div>
-							<div class="accordionContent shadow">
-								<p>История образовательных организаций города</p>
-							</div>
-						</iron-accordion>
-						<iron-accordion>
-							<div header class="paper-font-headline">
 								Доска почёта
-							</div>
-							<div class="accordionContent shadow">
-								<div>
-									<ul>
-										<li>Заслуженные работники образования</li>
-										<li>Победители конкурсов профессионального мастерства</li>
-										<li>Наша гордость</li>
-									</ul>
+						</div>
+						<iron-collapse id="fame"
+							tabindex="0"
+							opened="{{openedHistoryFame}}">
+								<div class="collapse-content shadow">
+									 <template
+									 	is="juicy-html"
+										content$="[[docData.fame.text]]">
+									</template>
 								</div>
-							</div>
-						</iron-accordion>
-					<iron-accordions> -->
+						</iron-collapse>
+					</div>
 
-			</div>
+				</div>
 		</paper-card>
 
 	</template>
@@ -155,21 +120,6 @@
 
 		Polymer({
 			is: 't-museum-template',
-			// ready: function() {
-			// 	var ironAccordions = this.querySelector('iron-accordions');
-			// 	ironAccordions.addEventListener('transitionend', function() {
-			// 		var headerPanelMain = app.$.headerPanelMain;
-			// 		var scrollTop = headerPanelMain.scroller.scrollTop;
-			// 		var top = this._selection.selection[0].getBoundingClientRect().top;
-			// 		if ( this._selection.selection[0].opened ) {
-			// 			if ( top > 0 ) {
-			// 				headerPanelMain.scroll(top + scrollTop, true);
-			// 			} else if ( top < 0 ) {
-			// 				headerPanelMain.scroll( top + scrollTop - 64, true);
-			// 			};
-			// 		};
-			// 	});
-			// }
 			toggle: function(e) {
 		    document.querySelector( e.target.getAttribute('data-args') ).toggle();
 		  },

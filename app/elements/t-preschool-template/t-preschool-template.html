@@ -20,20 +20,22 @@
 		</style>
 
 		<firebase-document id="firebaseDocument"
-											 app-name="uomgo"
-											 path="/sections/preschool"
-											 data="{{preschoolData}}"></firebase-document>
+			app-name="uomgo"
+			path="/sections/preschool"
+			data="{{preschoolData}}">
+		</firebase-document>
 
-		<paper-card heading="Отдел дошкольного образования"
-								image=""
-								elevation="4"
-								animated-shadow="false">
-
-			<div class="card-content">
-				<template is="juicy-html"
-									content$="[[preschoolData.text]]"></template>
- 			</div>
-
+		<paper-card
+			heading="Отдел дошкольного образования"
+			image=""
+			elevation="4"
+			animated-shadow="false">
+				<div class="card-content">
+					<template
+						is="juicy-html"
+						content$="[[preschoolData.text]]">
+					</template>
+	 			</div>
 		</paper-card>
 
 	</template>
@@ -42,10 +44,7 @@
 		'use strict';
 
 		Polymer({
-			is: 't-preschool-template',
-			properties: {
-
-			}
+			is: 't-preschool-template'
 		});
 	})();
 	</script>

@@ -35,174 +35,160 @@
 		</style>
 
 		<firebase-document id="firebaseDocument"
-											 app-name="uomgo"
-											 path="/sections/metod"
-											 data="{{docData}}"></firebase-document>
+			app-name="uomgo"
+			path="/sections/metod"
+			data="{{docData}}">
+		</firebase-document>
 
-		<paper-card heading="МБУ Информационно-методический центр УО МГО"
-								image=""
-								elevation="4"
-								animated-shadow="false">
+		<paper-card
+			heading="МБУ Информационно-методический центр УО МГО"
+			image=""
+			elevation="4"
+			animated-shadow="false">
 
-			<div class="card-content">
+				<div class="card-content">
 
-					<template is="juicy-html"
-										content$="[[docData.text]]"></template>
+						<template
+							is="juicy-html"
+							content$="[[docData.text]]">
+						</template>
 
-					<!-- <div class="accordeonBox">
-						<div class="accordeonHeader paper-font-headline"
-								 aria-expanded$="[[isExpanded(openedNews)]]"
-								 aria-controls="news"
-								 on-tap="toggle" data-args="#news">
-							Новости
-						</div>
-						<iron-collapse id="news"
-													 tabindex="0"
-													 opened="{{openedNews}}">
-							<div class="collapse-content shadow">
-								<template is="juicy-html"
-													content$="[[docData.news.text]]"></template>
+
+						<div class="accordeonBox">
+							<div class="accordeonHeader paper-font-headline"
+								aria-expanded$="[[isExpanded(openedValidation)]]"
+								aria-controls="validation"
+								on-tap="toggle"
+								data-args="#validation">
+									Аттестация
 							</div>
-						</iron-collapse>
-					</div> -->
-
-					<div class="accordeonBox">
-						<div class="accordeonHeader paper-font-headline"
-								 aria-expanded$="[[isExpanded(openedValidation)]]"
-								 aria-controls="validation"
-								 on-tap="toggle" data-args="#validation">
-							Аттестация
+							<iron-collapse id="validation"
+								tabindex="0"
+								opened="{{openedValidation}}">
+									<div class="collapse-content shadow">
+										<template
+											is="juicy-html"
+											content$="[[docData.validation.text]]">
+										</template>
+									</div>
+							</iron-collapse>
 						</div>
-						<iron-collapse id="validation"
-													 tabindex="0"
-													 opened="{{openedValidation}}">
-							<div class="collapse-content shadow">
-								<template is="juicy-html"
-													content$="[[docData.validation.text]]"></template>
-							</div>
-						</iron-collapse>
-					</div>
 
-					<div class="accordeonBox">
-						<div class="accordeonHeader paper-font-headline"
-								 aria-expanded$="[[isExpanded(openedStandards)]]"
-								 aria-controls="standards"
-								 on-tap="toggle" data-args="#standards">
-							Профессиональные стандарты
+						<div class="accordeonBox">
+							<div class="accordeonHeader paper-font-headline"
+								aria-expanded$="[[isExpanded(openedStandards)]]"
+								aria-controls="standards"
+								on-tap="toggle" data-args="#standards">
+									Профессиональные стандарты
+							</div>
+							<iron-collapse id="standards"
+								tabindex="0"
+								opened="{{openedStandards}}">
+									<div class="collapse-content shadow">
+										<template
+											is="juicy-html"
+											content$="[[docData.standards.text]]">
+										</template>
+									</div>
+							</iron-collapse>
 						</div>
-						<iron-collapse id="standards"
-													 tabindex="0"
-													 opened="{{openedStandards}}">
-							<div class="collapse-content shadow">
-								<template is="juicy-html"
-													content$="[[docData.standards.text]]"></template>
-							</div>
-						</iron-collapse>
-					</div>
 
-					<div class="accordeonBox">
-						<div class="accordeonHeader paper-font-headline"
-								 aria-expanded$="[[isExpanded(openedPlan)]]"
-								 aria-controls="plan"
-								 on-tap="toggle" data-args="#plan">
-							План работы
+						<div class="accordeonBox">
+							<div class="accordeonHeader paper-font-headline"
+								aria-expanded$="[[isExpanded(openedPlan)]]"
+								aria-controls="plan"
+								on-tap="toggle" data-args="#plan">
+									План работы
+							</div>
+							<iron-collapse id="plan"
+								tabindex="0"
+								opened="{{openedPlan}}">
+									<div class="collapse-content shadow">
+										<template
+											is="juicy-html"
+											content$="[[docData.plan.text]]">
+										</template>
+									</div>
+							</iron-collapse>
 						</div>
-						<iron-collapse id="plan"
-													 tabindex="0"
-													 opened="{{openedPlan}}">
-							<div class="collapse-content shadow">
-								<template is="juicy-html"
-													content$="[[docData.plan.text]]"></template>
-							</div>
-						</iron-collapse>
-					</div>
 
-					<div class="accordeonBox">
-						<div class="accordeonHeader paper-font-headline"
-								 aria-expanded$="[[isExpanded(openedUnions)]]"
-								 aria-controls="unions"
-								 on-tap="toggle" data-args="#unions">
-							Муниципальные методические объединения
+						<div class="accordeonBox">
+							<div class="accordeonHeader paper-font-headline"
+								aria-expanded$="[[isExpanded(openedUnions)]]"
+								aria-controls="unions"
+								on-tap="toggle" data-args="#unions">
+									Муниципальные методические объединения
+							</div>
+							<iron-collapse id="unions"
+								tabindex="0"
+								opened="{{openedUnions}}">
+									<div class="collapse-content shadow">
+										<template
+											is="juicy-html"
+											content$="[[docData.unions.text]]">
+										</template>
+									</div>
+							</iron-collapse>
 						</div>
-						<iron-collapse id="unions"
-													 tabindex="0"
-													 opened="{{openedUnions}}">
-							<div class="collapse-content shadow">
-								<template is="juicy-html"
-													content$="[[docData.unions.text]]"></template>
-							</div>
-						</iron-collapse>
-					</div>
 
-					<div class="accordeonBox">
-						<div class="accordeonHeader paper-font-headline"
-								 aria-expanded$="[[isExpanded(openedBasePlaces)]]"
-								 aria-controls="basePlaces"
-								 on-tap="toggle" data-args="#basePlaces">
-							Муниципальные базовые методические площадки
+						<div class="accordeonBox">
+							<div class="accordeonHeader paper-font-headline"
+								aria-expanded$="[[isExpanded(openedBasePlaces)]]"
+								aria-controls="basePlaces"
+								on-tap="toggle" data-args="#basePlaces">
+									Муниципальные базовые методические площадки
+							</div>
+							<iron-collapse id="basePlaces"
+								tabindex="0"
+								opened="{{openedBasePlaces}}">
+									<div class="collapse-content shadow">
+										<template
+											is="juicy-html"
+											content$="[[docData.basePlaces.text]]">
+										</template>
+									</div>
+							</iron-collapse>
 						</div>
-						<iron-collapse id="basePlaces"
-													 tabindex="0"
-													 opened="{{openedBasePlaces}}">
-							<div class="collapse-content shadow">
-								<template is="juicy-html"
-													content$="[[docData.basePlaces.text]]"></template>
-							</div>
-						</iron-collapse>
-					</div>
 
-					<!-- <div class="accordeonBox">
-						<div class="accordeonHeader paper-font-headline"
-								 aria-expanded$="[[isExpanded(openedTraining)]]"
-								 aria-controls="training"
-								 on-tap="toggle" data-args="#training">
-							Повышение квалификации
+						<div class="accordeonBox">
+							<div class="accordeonHeader paper-font-headline"
+								aria-expanded$="[[isExpanded(openedYoungTeachers)]]"
+								aria-controls="youngTeachers"
+								on-tap="toggle" data-args="#youngTeachers">
+									Школа Молодого педагога
+							</div>
+							<iron-collapse id="youngTeachers"
+								tabindex="0"
+								opened="{{openedYoungTeachers}}">
+									<div class="collapse-content shadow">
+										<template
+											is="juicy-html"
+											content$="[[docData.youngTeachers.text]]">
+										</template>
+									</div>
+							</iron-collapse>
 						</div>
-						<iron-collapse id="training"
-													 tabindex="0"
-													 opened="{{openedTraining}}">
-							<div class="collapse-content shadow">
-								<template is="juicy-html"
-													content$="[[docData.training.text]]"></template>
-							</div>
-						</iron-collapse>
-					</div> -->
 
-					<div class="accordeonBox">
-						<div class="accordeonHeader paper-font-headline"
-								 aria-expanded$="[[isExpanded(openedYoungTeachers)]]"
-								 aria-controls="youngTeachers"
-								 on-tap="toggle" data-args="#youngTeachers">
-							Школа Молодого педагога
+						<div class="accordeonBox">
+							<div class="accordeonHeader paper-font-headline"
+								aria-expanded$="[[isExpanded(openedMovement)]]"
+								aria-controls="movement"
+								on-tap="toggle" data-args="#movement">
+									Конкурсное движение
+							</div>
+							<iron-collapse id="movement"
+								tabindex="0"
+								opened="{{openedMovement}}">
+									<div class="collapse-content shadow">
+										<template
+											is="juicy-html"
+											content$="[[docData.movement.text]]">
+										</template>
+									</div>
+							</iron-collapse>
 						</div>
-						<iron-collapse id="youngTeachers"
-													 tabindex="0"
-													 opened="{{openedYoungTeachers}}">
-							<div class="collapse-content shadow">
-								<template is="juicy-html"
-													content$="[[docData.youngTeachers.text]]"></template>
-							</div>
-						</iron-collapse>
-					</div>
 
-					<div class="accordeonBox">
-						<div class="accordeonHeader paper-font-headline"
-								 aria-expanded$="[[isExpanded(openedMovement)]]"
-								 aria-controls="movement"
-								 on-tap="toggle" data-args="#movement">
-							Конкурсное движение
-						</div>
-						<iron-collapse id="movement"
-													 tabindex="0"
-													 opened="{{openedMovement}}">
-							<div class="collapse-content shadow">
-								<template is="juicy-html"
-													content$="[[docData.movement.text]]"></template>
-							</div>
-						</iron-collapse>
-					</div>
-
-			</div>
+				</div>
 		</paper-card>
 
 	</template>
@@ -212,21 +198,6 @@
 
 		Polymer({
 			is: 't-metod-template',
-			ready: function() {
-				// var ironAccordions = this.querySelector('iron-accordions');
-				// ironAccordions.addEventListener('transitionend', function() {
-				// 	var headerPanelMain = app.$.headerPanelMain;
-				// 	var scrollTop = headerPanelMain.scroller.scrollTop;
-				// 	var top = this._selection.selection[0].getBoundingClientRect().top;
-				// 	if ( this._selection.selection[0].opened ) {
-				// 		if ( top > 0 ) {
-				// 			headerPanelMain.scroll(top + scrollTop, true);
-				// 		} else if ( top < 0 ) {
-				// 			headerPanelMain.scroll( top + scrollTop - 64, true);
-				// 		};
-				// 	};
-				// });
-			},
 			toggle: function(e) {
 		    document.querySelector( e.target.getAttribute('data-args') ).toggle();
 		  },

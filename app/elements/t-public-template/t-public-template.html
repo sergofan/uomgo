@@ -17,15 +17,6 @@
 				--paper-card-content: {
 				};
 			}
-			/*iron-accordion {
-				background-color: var(--paper-blue-grey-50);
-			}
-			.paper-font-headline {
-				padding: 8px;
-			}
-			.accordionContent {
-				background-color: white;
-			}*/
 			iron-collapse:focus {
 				outline: none;
 			}
@@ -45,77 +36,59 @@
 
 
 		<firebase-document id="firebaseDocument"
-											 app-name="uomgo"
-											 path="/public"
-											 data="{{docData}}"></firebase-document>
+			app-name="uomgo"
+			path="/public"
+			data="{{docData}}">
+		</firebase-document>
 
-		<paper-card heading="Общественные организации"
-								image=""
-								elevation="4"
-								animated-shadow="false">
+		<paper-card
+			heading="Общественные организации"
+			image=""
+			elevation="4"
+			animated-shadow="false">
 
-			<div class="card-content">
+				<div class="card-content">
 
-				<div class="accordeonBox">
-					<div class="accordeonHeader paper-font-headline"
-							 aria-expanded$="[[isExpanded(openedVeterans)]]"
-							 aria-controls="veterans"
-							 on-tap="toggle" data-args="#veterans">
-						Совет ветеранов
-					</div>
-					<iron-collapse id="veterans"
-												 tabindex="0"
-												 opened="{{openedVeterans}}">
-						<div class="collapse-content shadow">
-							<template is="juicy-html"
-												content$="[[docData.veterans.text]]"></template>
-						</div>
-					</iron-collapse>
-				</div>
-
-				<div class="accordeonBox">
-					<div class="accordeonHeader paper-font-headline"
-							 aria-expanded$="[[isExpanded(openedTradeUnion)]]"
-							 aria-controls="tradeUnion"
-							 on-tap="toggle" data-args="#tradeUnion">
-						Профсоюз работников образования
-					</div>
-					<iron-collapse id="tradeUnion"
-												 tabindex="0"
-												 opened="{{openedTradeUnion}}">
-						<div class="collapse-content shadow">
-							<template is="juicy-html"
-												content$="[[docData.tradeUnion.text]]"></template>
-						</div>
-					</iron-collapse>
-				</div>
-
-				<!-- <div class="content">
-
-					<iron-accordions>
-						<iron-accordion>
-							<div header class="paper-font-headline">
+					<div class="accordeonBox">
+						<div class="accordeonHeader paper-font-headline"
+							aria-expanded$="[[isExpanded(openedVeterans)]]"
+							aria-controls="veterans"
+							on-tap="toggle" data-args="#veterans">
 								Совет ветеранов
-							</div>
-							<div class="accordionContent shadow">
-								<p>Совет ветеранов</p>
-							</div>
-						</iron-accordion>
-						<iron-accordion>
-							<div header class="paper-font-headline">
+						</div>
+						<iron-collapse id="veterans"
+							tabindex="0"
+							opened="{{openedVeterans}}">
+								<div class="collapse-content shadow">
+									<template
+										is="juicy-html"
+										content$="[[docData.veterans.text]]">
+									</template>
+								</div>
+						</iron-collapse>
+					</div>
+
+					<div class="accordeonBox">
+						<div class="accordeonHeader paper-font-headline"
+							aria-expanded$="[[isExpanded(openedTradeUnion)]]"
+							aria-controls="tradeUnion"
+							on-tap="toggle" data-args="#tradeUnion">
 								Профсоюз работников образования
-							</div>
-							<div class="accordionContent shadow">
+						</div>
+						<iron-collapse id="tradeUnion"
+							tabindex="0"
+							opened="{{openedTradeUnion}}">
+								<div class="collapse-content shadow">
+									<template
+										is="juicy-html"
+										content$="[[docData.tradeUnion.text]]">
+									</template>
+								</div>
+						</iron-collapse>
+					</div>
 
-								<template is="juicy-html"
-													content$="[[docData.tradeUnion.text]]"></template>
+				</div>
 
-							</div>
-						</iron-accordion>
-					<iron-accordions>
-
-				</div> -->
-			</div>
 		</paper-card>
 
 	</template>
@@ -125,21 +98,6 @@
 
 		Polymer({
 			is: 't-public-template',
-			// ready: function() {
-			// 	var ironAccordions = this.querySelector('iron-accordions');
-			// 	ironAccordions.addEventListener('transitionend', function() {
-			// 		var headerPanelMain = app.$.headerPanelMain;
-			// 		var scrollTop = headerPanelMain.scroller.scrollTop;
-			// 		var top = this._selection.selection[0].getBoundingClientRect().top;
-			// 		if ( this._selection.selection[0].opened ) {
-			// 			if ( top > 0 ) {
-			// 				headerPanelMain.scroll(top + scrollTop, true);
-			// 			} else if ( top < 0 ) {
-			// 				headerPanelMain.scroll( top + scrollTop - 64, true);
-			// 			};
-			// 		};
-			// 	});
-			// }
 			toggle: function(e) {
 		    document.querySelector( e.target.getAttribute('data-args') ).toggle();
 		  },

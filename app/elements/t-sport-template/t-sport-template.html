@@ -17,15 +17,6 @@
 				--paper-card-content: {
 				};
 			}
-			/*iron-accordion {
-				background-color: var(--paper-blue-grey-50);
-			}
-			.paper-font-headline {
-				padding: 8px;
-			}
-			.accordionContent {
-				background-color: white;
-			}*/
 			iron-collapse:focus {
 				outline: none;
 			}
@@ -44,191 +35,156 @@
 		</style>
 
 		<firebase-document id="firebaseDocument"
-											 app-name="uomgo"
-											 path="/sections/sport"
-											 data="{{docData}}"></firebase-document>
+			app-name="uomgo"
+			path="/sections/sport"
+			data="{{docData}}">
+		</firebase-document>
 
 		<paper-card id="card"
-								heading="Отдел по физкультурно-оздоровительной работе и обеспечению безопасности"
-								image=""
-								elevation="4"
-								animated-shadow="false">
+			heading="Отдел по физкультурно-оздоровительной работе и обеспечению безопасности"
+			image=""
+			elevation="4"
+			animated-shadow="false">
 
-			<div class="card-content"></div>
+				<div class="card-content"></div>
 				<div class="content">
-					<template is="juicy-html"
-										content$="[[docData.text]]"></template>
+					<template
+						is="juicy-html"
+						content$="[[docData.text]]">
+					</template>
 
 					<div class="accordeonBox">
 						<div class="accordeonHeader paper-font-headline"
-								 aria-expanded$="[[isExpanded(openedAntiTerror)]]"
-								 aria-controls="antiTerror"
-								 on-tap="toggle" data-args="#antiTerror">
-							Антитеррор
+							aria-expanded$="[[isExpanded(openedAntiTerror)]]"
+							aria-controls="antiTerror"
+							on-tap="toggle" data-args="#antiTerror">
+								Антитеррор
 						</div>
 						<iron-collapse id="antiTerror"
-													 tabindex="0"
-													 opened="{{openedAntiTerror}}">
-							<div class="collapse-content shadow">
-								<template is="juicy-html"
-													content$="[[docData.antiTerror.text]]"></template>
-							</div>
+							tabindex="0"
+							opened="{{openedAntiTerror}}">
+								<div class="collapse-content shadow">
+									<template
+										is="juicy-html"
+										content$="[[docData.antiTerror.text]]">
+									</template>
+								</div>
 						</iron-collapse>
 					</div>
 
 					<div class="accordeonBox">
 						<div class="accordeonHeader paper-font-headline"
-								 aria-expanded$="[[isExpanded(openedCivilDefense)]]"
-								 aria-controls="civilDefense"
-								 on-tap="toggle" data-args="#civilDefense">
-							ГО и ЧС
+							aria-expanded$="[[isExpanded(openedCivilDefense)]]"
+							aria-controls="civilDefense"
+							on-tap="toggle" data-args="#civilDefense">
+								ГО и ЧС
 						</div>
 						<iron-collapse id="civilDefense"
-													 tabindex="0"
-													 opened="{{openedCivilDefense}}">
-							<div class="collapse-content shadow">
-								<template is="juicy-html"
-													content$="[[docData.civilDefense.text]]"></template>
-							</div>
+							tabindex="0"
+							opened="{{openedCivilDefense}}">
+								<div class="collapse-content shadow">
+									<template
+										is="juicy-html"
+										content$="[[docData.civilDefense.text]]">
+									</template>
+								</div>
 						</iron-collapse>
 					</div>
 
 					<div class="accordeonBox">
 						<div class="accordeonHeader paper-font-headline"
-								 aria-expanded$="[[isExpanded(openedRoadSafety)]]"
-								 aria-controls="roadSafety"
-								 on-tap="toggle" data-args="#roadSafety">
-							Дорожная безопасность
+							aria-expanded$="[[isExpanded(openedRoadSafety)]]"
+							aria-controls="roadSafety"
+							on-tap="toggle" data-args="#roadSafety">
+								Дорожная безопасность
 						</div>
 						<iron-collapse id="roadSafety"
-													 tabindex="0"
-													 opened="{{openedRoadSafety}}">
-							<div class="collapse-content shadow">
-								<template is="juicy-html"
-													content$="[[docData.roadSafety.text]]"></template>
-							</div>
+							tabindex="0"
+							opened="{{openedRoadSafety}}">
+								<div class="collapse-content shadow">
+									<template
+										is="juicy-html"
+										content$="[[docData.roadSafety.text]]">
+									</template>
+								</div>
 						</iron-collapse>
 					</div>
 
 					<div class="accordeonBox">
 						<div class="accordeonHeader paper-font-headline"
-								 aria-expanded$="[[isExpanded(openedHealth)]]"
-								 aria-controls="health"
-								 on-tap="toggle" data-args="#health">
-							Здоровье
+							aria-expanded$="[[isExpanded(openedHealth)]]"
+							aria-controls="health"
+							on-tap="toggle" data-args="#health">
+								Здоровье
 						</div>
 						<iron-collapse id="health"
-													 tabindex="0"
-													 opened="{{openedHealth}}">
-							<div class="collapse-content shadow">
-								<template is="juicy-html"
-													content$="[[docData.health.text]]"></template>
-							</div>
+							tabindex="0"
+							opened="{{openedHealth}}">
+								<div class="collapse-content shadow">
+									<template
+										is="juicy-html"
+										content$="[[docData.health.text]]">
+									</template>
+								</div>
 						</iron-collapse>
 					</div>
 
 					<div class="accordeonBox">
 						<div class="accordeonHeader paper-font-headline"
-								 aria-expanded$="[[isExpanded(openedFirstAid)]]"
-								 aria-controls="firstAid"
-								 on-tap="toggle" data-args="#firstAid">
-							Первая помощь
+							aria-expanded$="[[isExpanded(openedFirstAid)]]"
+							aria-controls="firstAid"
+							on-tap="toggle" data-args="#firstAid">
+								Первая помощь
 						</div>
 						<iron-collapse id="firstAid"
-													 tabindex="0"
-													 opened="{{openedFirstAid}}">
-							<div class="collapse-content shadow">
-								<template is="juicy-html"
-													content$="[[docData.firstAid.text]]"></template>
-							</div>
+							tabindex="0"
+							opened="{{openedFirstAid}}">
+								<div class="collapse-content shadow">
+									<template
+										is="juicy-html"
+										content$="[[docData.firstAid.text]]">
+									</template>
+								</div>
 						</iron-collapse>
 					</div>
 
 					<div class="accordeonBox">
 						<div class="accordeonHeader paper-font-headline"
-								 aria-expanded$="[[isExpanded(openedFireSafety)]]"
-								 aria-controls="fireSafety"
-								 on-tap="toggle" data-args="#fireSafety">
-							Пожарная безопасность
+							aria-expanded$="[[isExpanded(openedFireSafety)]]"
+							aria-controls="fireSafety"
+							on-tap="toggle" data-args="#fireSafety">
+								Пожарная безопасность
 						</div>
 						<iron-collapse id="fireSafety"
-													 tabindex="0"
-													 opened="{{openedFireSafety}}">
-							<div class="collapse-content shadow">
-								<template is="juicy-html"
-													content$="[[docData.fireSafety.text]]"></template>
-							</div>
+							tabindex="0"
+							opened="{{openedFireSafety}}">
+								<div class="collapse-content shadow">
+									<template
+										is="juicy-html"
+										content$="[[docData.fireSafety.text]]">
+									</template>
+								</div>
 						</iron-collapse>
 					</div>
 
 					<div class="accordeonBox">
 						<div class="accordeonHeader paper-font-headline"
-								 aria-expanded$="[[isExpanded(openedGTO)]]"
-								 aria-controls="GTO"
-								 on-tap="toggle" data-args="#GTO">
-							ГТО
+							aria-expanded$="[[isExpanded(openedGTO)]]"
+							aria-controls="GTO"
+							on-tap="toggle" data-args="#GTO">
+								ГТО
 						</div>
 						<iron-collapse id="GTO"
-													 tabindex="0"
-													 opened="{{openedGTO}}">
-							<div class="collapse-content shadow">
-								<template is="juicy-html"
-													content$="[[docData.GTO.text]]"></template>
-							</div>
+							tabindex="0"
+							opened="{{openedGTO}}">
+								<div class="collapse-content shadow">
+									<template
+										is="juicy-html"
+										content$="[[docData.GTO.text]]">
+									</template>
+								</div>
 						</iron-collapse>
 					</div>
-
-					<!-- <iron-accordions>
-						<iron-accordion>
-							<div header class="paper-font-headline">Антитеррор</div>
-							<div class="accordionContent shadow">
-								<template is="juicy-html"
-													content$="[[docData.antiTerror.text]]"></template>
-							</div>
-						</iron-accordion>
-						<iron-accordion>
-							<div header class="paper-font-headline">ГО и ЧС</div>
-							<div class="accordionContent shadow">
-								<template is="juicy-html"
-													content$="[[docData.civilDefense.text]]"></template>
-							</div>
-						</iron-accordion>
-						<iron-accordion>
-							<div header class="paper-font-headline">Дорожная безопасность</div>
-							<div class="accordionContent shadow">
-								<template is="juicy-html"
-													content$="[[docData.roadSafety.text]]"></template>
-							</div>
-						</iron-accordion>
-						<iron-accordion>
-							<div header class="paper-font-headline">Здоровье</div>
-							<div class="accordionContent shadow">
-								<template is="juicy-html"
-													content$="[[docData.health.text]]"></template>
-							</div>
-						</iron-accordion>
-						<iron-accordion>
-							<div header class="paper-font-headline">Первая помощь</div>
-							<div class="accordionContent shadow">
-								<template is="juicy-html"
-													content$="[[docData.firstAid.text]]"></template>
-							</div>
-						</iron-accordion>
-						<iron-accordion>
-							<div header class="paper-font-headline">Пожарная безопасность</div>
-							<div class="accordionContent shadow">
-								<template is="juicy-html"
-													content$="[[docData.fireSafety.text]]"></template>
-							</div>
-						</iron-accordion>
-						<iron-accordion>
-							<div header class="paper-font-headline">ГТО</div>
-							<div class="accordionContent shadow">
-								<template is="juicy-html"
-													content$="[[docData.GTO.text]]"></template>
-							</div>
-						</iron-accordion>
-					</iron-accordions> -->
 
 					<template is="juicy-html"
 										content$="[[docData.ADD.text]]"></template>
@@ -247,21 +203,6 @@
 			properties: {
 
 			},
-			// ready: function() {
-			// 	var ironAccordions = this.querySelector('iron-accordions');
-			// 	ironAccordions.addEventListener('transitionend', function() {
-			// 		var headerPanelMain = app.$.headerPanelMain;
-			// 		var scrollTop = headerPanelMain.scroller.scrollTop;
-			// 		var top = this._selection.selection[0].getBoundingClientRect().top;
-			// 		if ( this._selection.selection[0].opened ) {
-			// 			if ( top > 0 ) {
-			// 				headerPanelMain.scroll(top + scrollTop, true);
-			// 			} else if ( top < 0 ) {
-			// 				headerPanelMain.scroll( top + scrollTop - 64, true);
-			// 			};
-			// 		};
-			// 	});
-			// }
 			toggle: function(e) {
 		    document.querySelector( e.target.getAttribute('data-args') ).toggle();
 		  },
