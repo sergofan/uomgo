@@ -14,18 +14,6 @@
 				/*max-width: 514px;*/
 				width: 100%;
 			}
-/*
-			@media (max-width: 544px) {
-				.data-item {
-					width: calc(100vw - 32px);
-				}
-			}
-			@media (min-width: 545px) {
-				.data-item {
-					width: 514px;
-				}
-			}
-*/
 			paper-card {
 				--paper-card: {
 						text-align: center;
@@ -102,27 +90,33 @@
 
 			<div class="card-content green-gradient">
 				<div class="box">
+
 					<grid-element ga="16px">
 
 						<template is="dom-if" if="[[message.logo]]">
-							<grid-col s="1" stretch class="shadow layout vertical center-center">
-								<iron-image src="[[message.logo]]"
-														width="100"
-														prevent-load
-														preload
-														placeholder="[[app.baseUrl]]images/loading.gif"
-														fade></iron-image>
+							<grid-col class="shadow layout vertical center-center"
+								s="1"
+								stretch>
+									<iron-image src="[[message.logo]]"
+										width="100"
+										prevent-load
+										preload
+										placeholder="[[app.baseUrl]]images/loading.gif"
+										fade>
+									</iron-image>
 							</grid-col>
 						</template>
 
 						<grid-col s="100" stretch class="shadow">
 							<div>
-								<template is="juicy-html"
-													content$="[[message.text]]"></template>
+								<template
+									is="juicy-html"
+									content$="[[message.text]]">
+								</template>
 							</div>
 						</grid-col>
-
 					</grid-element>
+
 				</div>
 			</div>
 

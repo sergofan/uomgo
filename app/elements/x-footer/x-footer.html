@@ -62,26 +62,32 @@
 		</style>
 
 		<firebase-query id="firebaseQuery"
-										path="/footer"
-										app-name="uomgo"
-										data="{{data}}"></firebase-query>
+			path="/footer"
+			app-name="uomgo"
+			data="{{data}}">
+		</firebase-query>
 
 		<footer class="content shadow-elevation-4dp">
 			<div class="links">
 				<template is="dom-repeat" items="[[data]]" as="val">
 					<a class="divlink"
-						 href=[[val.href]]
-						 tabindex="-1"
-						 target="_blank">
-
-						<iron-image src=[[val.image]]></iron-image>
-
-						<paper-tooltip position="top" offset="6" animation-delay="250">
-							<div>
-								<template is="juicy-html"
-													content$="[[val.name]]"></template>
-							</div>
-						</paper-tooltip>
+						href=[[val.href]]
+						tabindex="-1"
+						target="_blank">
+							<iron-image
+								src=[[val.image]]>
+							</iron-image>
+							<paper-tooltip
+								position="top"
+								offset="6"
+								animation-delay="250">
+									<div>
+										<template
+											is="juicy-html"
+											content$="[[val.name]]">
+										</template>
+									</div>
+							</paper-tooltip>
 					</a>
 				</template>
 			</div>

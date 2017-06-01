@@ -20,34 +20,45 @@
 		</style>
 
 		<paper-dialog id="editPostDialog"
-									modal
-									entry-animation="scale-up-animation"
-									exit-animation="fade-out-animation"
-									style="width: 514px">
+			modal
+			entry-animation="scale-up-animation"
+			exit-animation="fade-out-animation"
+			style="width: 514px">
 
-			<h2 class="text-align-center">Редактирование</h2>
-			<div class="content text-align-center">
+				<h2 class="text-align-center">Редактирование</h2>
+				<div class="content text-align-center">
 
-				<paper-input id="name"
-										 value="{{postData.name}}"
-										 label="Название"></paper-input>
-				<paper-input id="videoId"
-										 value="{{postData.video-id}}"
-										 label="Идентификатор видео"></paper-input>
-				<iron-autogrow-textarea id="text"
-																value="{{postData.text}}"
-																placeholder="Текст"></iron-autogrow-textarea>
-				<paper-input id="date"
-										 value="{{postData.date}}"
-										 type="date"
-										 label="Дата"></paper-input>
-			</div>
-			<div class="buttons">
-				<paper-button dialog-dismiss>Отмена</paper-button>
-				<paper-button dialog-confirm autofocus on-tap="_savePost">Сохранить</paper-button>
-			</div>
+					<paper-input id="name"
+						value="{{postData.name}}"
+						label="Название">
+					</paper-input>
+					<paper-input id="videoId"
+						value="{{postData.video-id}}"
+						label="Идентификатор видео">
+					</paper-input>
+					<iron-autogrow-textarea id="text"
+						value="{{postData.text}}"
+						placeholder="Текст">
+					</iron-autogrow-textarea>
+					<paper-input id="date"
+						value="{{postData.date}}"
+						type="date"
+						label="Дата"></paper-input>
+				</div>
+				<div class="buttons">
+					<paper-button
+						dialog-dismiss>
+							Отмена
+					</paper-button>
+					<paper-button
+						dialog-confirm
+						autofocus
+						on-tap="_savePost">
+							Сохранить
+					</paper-button>
+				</div>
+
 		</paper-dialog>
-
 	</template>
 	<script>
 	(function() {
@@ -59,7 +70,6 @@
 			},
 			ready: function() {
 				this.$.date.addEventListener('change', function(e) {
-					// console.log('change', e.target.value);
 				});
 			}
 		});

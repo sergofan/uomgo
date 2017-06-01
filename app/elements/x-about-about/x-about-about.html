@@ -15,10 +15,14 @@
 				width: 100%;
 				--iron-image-width: 100%;
 			}
+			.content {
+				text-align: center;
+				width: 100%;
+			}
 		</style>
 		<paper-material elevation="4">
 			<div class="layout horizontal center-center wrap">
-				<div class="content" style="text-align:center;width:100%;">
+				<div class="content">
 					<div class="paper-font-headline">
 						Мунициапальное казенное учреждение<br>
 						Управление образованием «Мысковского городского округа»
@@ -52,8 +56,10 @@
 					</google-map>
 				</div>
 
-				<div class="shadow" style="text-align: center;" >
-					<iron-image src='[[app.baseUrl]]images/administraciaBIG.jpg'></iron-image>
+				<div class="shadow" style="text-align: center;">
+					<iron-image
+						src='[[app.baseUrl]]images/administraciaBIG.jpg'>
+					</iron-image>
 				</div>
 
 			</div>

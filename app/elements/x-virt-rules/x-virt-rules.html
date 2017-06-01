@@ -36,27 +36,32 @@
 		</style>
 
 		<firebase-document id="firebaseDocument"
-											 data="{{docData}}"
-											 path="/virt/rules"
-											 app-name="uomgo"></firebase-document>
+			data="{{docData}}"
+			path="/virt/rules"
+			app-name="uomgo">
+		</firebase-document>
 
 		<paper-card image=""
-								elevation="4"
-								animated-shadow="false">
+			elevation="4"
+			animated-shadow="false">
 
-			<div class="card-header">
-				<paper-button raised on-tap="changePage">
-					<div class="flex"></div>
-					Обратиться
-					<div class="flex"></div>
-					<iron-icon icon="check"></iron-icon>
-				</paper-button>
-			</div>
+				<div class="card-header">
+					<paper-button
+						raised
+						on-tap="changePage">
+							<div class="flex"></div>
+							Обратиться
+							<div class="flex"></div>
+							<iron-icon icon="check"></iron-icon>
+					</paper-button>
+				</div>
 
-			<div class="card-content">
-				<template is="juicy-html"
-									content$="[[docData.text]]"></template>
-			</div>
+				<div class="card-content">
+					<template
+						is="juicy-html"
+						content$="[[docData.text]]">
+					</template>
+				</div>
 
 		</paper-card>
 

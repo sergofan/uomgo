@@ -25,25 +25,29 @@
     </style>
 
 		<paper-dialog id="dialog"
-  								entry-animation="scale-up-animation"
-  								exit-animation="fade-out-animation"
-                  opened="{{showDialogVisible}}"
-									on-iron-overlay-closed="_dialogClosed"
-									with-backdrop
-                  always-on-top>
+	  	entry-animation="scale-up-animation"
+	  	exit-animation="fade-out-animation"
+	    opened="{{showDialogVisible}}"
+			on-iron-overlay-closed="_dialogClosed"
+			with-backdrop
+	    always-on-top>
 
-      <div class="header layout horizontal center-center">
-        <div class="paper-font-headline flex">[[postItem.name]]</div>
-        <paper-icon-button icon="close"
-                           title="Закрыть"
-                           on-tap="_close"></paper-icon-button>
-      </div>
+	      <div class="header layout horizontal center-center">
+	        <div class="paper-font-headline flex">
+						[[postItem.name]]
+					</div>
+	        <paper-icon-button icon="close"
+						title="Закрыть"
+						on-tap="_close">
+					</paper-icon-button>
+	      </div>
 
-      <paper-dialog-scrollable>
-        <div class="scrollable-box layout vertical center-center">
+	      <paper-dialog-scrollable>
+	        <div class="scrollable-box layout vertical center-center">
 
-        </div>
-      </paper-dialog-scrollable>
+	        </div>
+	      </paper-dialog-scrollable>
+
     </paper-dialog>
 
   </template>
@@ -52,16 +56,9 @@
     'use strict';
 
     Polymer({
-      is: 'x-post-dialog-add',
-
-      properties: {
-        foo: {
-          type: String,
-          value: 'x-post-dialog-add',
-          notify: true
-        }
-      }
+      is: 'x-post-dialog-add'
     });
+
   })();
   </script>
 </dom-module>

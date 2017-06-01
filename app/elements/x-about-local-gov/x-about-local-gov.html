@@ -11,15 +11,6 @@
 				background-color: white;
 				border-radius: 0 0 8px 8px;
 			}
-			/*iron-accordion {
-				background-color: var(--paper-blue-grey-50);
-			}
-			.paper-font-headline {
-				padding: 8px;
-			}
-			.accordionContent {
-				background-color: white;
-			}*/
 			iron-collapse:focus {
 				outline: none;
 			}
@@ -37,94 +28,75 @@
 			}
 		</style>
 		<firebase-document id="firebaseDocument"
-											 app-name="uomgo"
-											 path="/about/localGov"
-											 data="{{docData}}"></firebase-document>
+			app-name="uomgo"
+			path="/about/localGov"
+			data="{{docData}}">
+		</firebase-document>
 
 		<paper-material elevation="4">
 			<div class="content">
-
-				<!-- <template is="juicy-html"
-									content$="[[docData.text]]"></template> -->
-
+<!--
+				<template
+					is="juicy-html"
+					content$="[[docData.text]]">
+				</template>
+ -->
 				<div class="accordeonBox">
 					<div class="accordeonHeader paper-font-headline"
-							 aria-expanded$="[[isExpanded(openedCollegium)]]"
-							 aria-controls="collegium"
-							 on-tap="toggle" data-args="#collegium">
-						Коллегия МКУ УО МГО
+						aria-expanded$="[[isExpanded(openedCollegium)]]"
+						aria-controls="collegium"
+						on-tap="toggle" data-args="#collegium">
+							Коллегия МКУ УО МГО
 					</div>
 					<iron-collapse id="collegium"
-												 tabindex="0"
-												 opened="{{openedCollegium}}">
+						tabindex="0"
+						opened="{{openedCollegium}}">
 						<div class="collapse-content shadow">
-							<template is="juicy-html"
-												content$="[[docData.collegium.text]]"></template>
+							<template
+								is="juicy-html"
+								content$="[[docData.collegium.text]]">
+							</template>
 						</div>
 					</iron-collapse>
 				</div>
 
 				<div class="accordeonBox">
 					<div class="accordeonHeader paper-font-headline"
-							 aria-expanded$="[[isExpanded(openedConucil)]]"
-							 aria-controls="council"
-							 on-tap="toggle" data-args="#council">
-						Муниципальный управляющий совет
+						aria-expanded$="[[isExpanded(openedConucil)]]"
+						aria-controls="council"
+						on-tap="toggle" data-args="#council">
+							Муниципальный управляющий совет
 					</div>
 					<iron-collapse id="council"
-												 tabindex="0"
-												 opened="{{openedConucil}}">
-						<div class="collapse-content shadow">
-							<template is="juicy-html"
-												content$="[[docData.council.text]]"></template>
-						</div>
+						tabindex="0"
+						opened="{{openedConucil}}">
+							<div class="collapse-content shadow">
+								<template
+									is="juicy-html"
+									content$="[[docData.council.text]]">
+								</template>
+							</div>
 					</iron-collapse>
 				</div>
 
 				<div class="accordeonBox">
 					<div class="accordeonHeader paper-font-headline"
-							 aria-expanded$="[[isExpanded(openedCommission)]]"
-							 aria-controls="commission"
-							 on-tap="toggle" data-args="#commission">
-						Комиссия
+						aria-expanded$="[[isExpanded(openedCommission)]]"
+						aria-controls="commission"
+						on-tap="toggle" data-args="#commission">
+							Комиссия
 					</div>
 					<iron-collapse id="commission"
-												 tabindex="0"
-												 opened="{{openedCommission}}">
-						<div class="collapse-content shadow">
-							<template is="juicy-html"
-												content$="[[docData.commission.text]]"></template>
-						</div>
+						tabindex="0"
+						opened="{{openedCommission}}">
+							<div class="collapse-content shadow">
+								<template
+									is="juicy-html"
+									content$="[[docData.commission.text]]">
+								</template>
+							</div>
 					</iron-collapse>
 				</div>
-
-				<!-- <iron-accordions>
-					<iron-accordion>
-						<div header class="paper-font-headline">
-							Коллегия МКУ УО МГО
-						</div>
-						<div class="accordionContent shadow">
-							Коллегия МКУ УО МГО
-						</div>
-					</iron-accordion>
-					<iron-accordion>
-						<div header class="paper-font-headline">
-							Муниципальный управляющий совет
-						</div>
-						<div class="accordionContent shadow">
-							<template is="juicy-html"
-												content$="[[docData.municipalGoverningCouncil.text]]"></template>
-						</div>
-					</iron-accordion>
-					<iron-accordion>
-						<div header class="paper-font-headline">
-							Комиссия
-						</div>
-						<div class="accordionContent shadow">
-							Комиссия
-						</div>
-					</iron-accordion>
-				<iron-accordions> -->
 
 			</div>
 		</paper-material>
@@ -139,21 +111,6 @@
 			properties: {
 
 			},
-			// ready: function() {
-			// 	var ironAccordions = this.querySelector('iron-accordions');
-			// 	ironAccordions.addEventListener('transitionend', function() {
-			// 		var headerPanelMain = app.$.headerPanelMain;
-			// 		var scrollTop = headerPanelMain.scroller.scrollTop;
-			// 		var top = this._selection.selection[0].getBoundingClientRect().top;
-			// 		if ( this._selection.selection[0].opened ) {
-			// 			if ( top > 0 ) {
-			// 				headerPanelMain.scroll(top + scrollTop, true);
-			// 			} else if ( top < 0 ) {
-			// 				headerPanelMain.scroll( top + scrollTop - 64, true);
-			// 			};
-			// 		};
-			// 	});
-			// },
 			toggle: function(e) {
 		    document.querySelector( e.target.getAttribute('data-args') ).toggle();
 		  },

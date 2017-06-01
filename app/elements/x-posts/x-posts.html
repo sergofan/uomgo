@@ -26,50 +26,39 @@
 			}
 		</style>
 
-		<!-- <firebase-query id="firebaseQueryPosts"
-										path="/posts"
-										app-name="uomgo"
-										order-by-child="date"
-										start-at="{{startAt}}"
-										end-at="{{endAt}}"
-										limit-to-first="[[limitToFirst]]"
-										limit-to-last="[[limitToLast]]"
-										order-by-child="date"
-										data="{{dataDB}}"></firebase-query> -->
 		<firebase-query id="firebaseQueryPosts"
-										path="/posts"
-										app-name="uomgo"
-										order-by-child="date"
-										start-at="{{startAt}}"
-										end-at="{{endAt}}"
-										limit-to-first="[[limitToFirst]]"
-										limit-to-last="[[limitToLast]]"
-										order-by-child="date"
-										data="{{dataDB}}"></firebase-query>
+			path="/posts"
+			app-name="uomgo"
+			order-by-child="date"
+			start-at="{{startAt}}"
+			end-at="{{endAt}}"
+			limit-to-first="[[limitToFirst]]"
+			limit-to-last="[[limitToLast]]"
+			order-by-child="date"
+			data="{{dataDB}}">
+		</firebase-query>
 
 		<array-filter
-				items="[[dataDB]]"
-				filtered="{{filtered}}"
-				sort="_computeSort"
-				filter="_filter"></array-filter>
+			items="[[dataDB]]"
+			filtered="{{filtered}}"
+			sort="_computeSort"
+			filter="_filter">
+		</array-filter>
 
 		<div id="grid">
 			<template id="domRepeat"
-								is="dom-repeat"
-								items="[[filtered]]"
-								as="post"
-								target-framerate="60"
-								on-dom-change="_renderRepeat">
-
-				<div class="postItem">
-					<template  is="dom-if" if="[[post.enabled]]">
-						<x-post-item post="[[post]]"></x-post-item>
-					</template>
-				</div>
+				is="dom-repeat"
+				items="[[filtered]]"
+				as="post"
+				target-framerate="60"
+				on-dom-change="_renderRepeat">
+					<div class="postItem">
+						<template  is="dom-if" if="[[post.enabled]]">
+							<x-post-item post="[[post]]"></x-post-item>
+						</template>
+					</div>
 			</template>
-
 		</div>
-
 
 	</template>
 	<script>

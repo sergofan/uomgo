@@ -124,14 +124,15 @@
 		</style>
 
 		<firebase-auth id="auth"
-									 user="{{user}}"
-									 provider="google"
-									 app-name="uomgo"
-									 on-error="showError"></firebase-auth>
+			user="{{user}}"
+			provider="google"
+			app-name="uomgo"
+			on-error="showError">
+		</firebase-auth>
 
 		<paper-card class="data-item"
-								heading="[[post.name]]"
-								elevation="4">
+			heading="[[post.name]]"
+			elevation="4">
 
 			<div class="card-content">
 				<template  is="dom-if" if="[[post.video-id]]">
@@ -149,26 +150,30 @@
 				<template  is="dom-if" if="[[post.iframe]]">
 
 					<iframe class="imageFrame"
-									src="[[post.iframe]]"
-									frameborder="0"
-									height="360" width="480"></iframe>
+						src="[[post.iframe]]"
+						frameborder="0"
+						height="360" width="480">
+					</iframe>
 
 				</template>
 
 				<template  is="dom-if" if="[[post.image]]">
 					<iron-image class="postImage"
-											src="[[post.image]]"
-											on-tap="_openView"
-											contain
-											preload
-											align="center"></iron-image>
+						src="[[post.image]]"
+						on-tap="_openView"
+						contain
+						preload
+						align="center">
+					</iron-image>
 				</template>
 
 				<template  is="dom-if" if="[[post.text]]">
 					<div class="yellow-gradient" style="margin-top:16px;width:100%;">
 						<div class="post-text">
-							<template is="juicy-html"
-												content$="[[post.text]]"></template>
+							<template
+								is="juicy-html"
+								content$="[[post.text]]">
+							</template>
 						</div>
 					</div>
 				</template>
@@ -177,13 +182,18 @@
 			<div class="content actions-container">
 				<div class="card-actions">
 					<div class="spacer">
-						<moment-js date="[[post.date]]" format="DD.MM.YYYYг."></moment-js>
+						<moment-js
+							date="[[post.date]]"
+							format="DD.MM.YYYYг.">
+						</moment-js>
 					</div>
 					<div hidden$="[[!user]]" style="padding:0 !important;">
 						<paper-icon-button class="edit"
-															 icon="image:edit"></paper-icon-button>
+							icon="image:edit">
+						</paper-icon-button>
 						<paper-icon-button class="delete"
-															 icon="delete"></paper-icon-button>
+							icon="delete">
+						</paper-icon-button>
 					</div>
 				</div>
 			</div>

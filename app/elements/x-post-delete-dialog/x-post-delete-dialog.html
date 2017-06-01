@@ -19,19 +19,25 @@
 			}
 		</style>
 		<paper-dialog id="deletePostDialog"
-									modal
-									entry-animation="scale-up-animation"
-									exit-animation="fade-out-animation">
+			modal
+			entry-animation="scale-up-animation"
+			exit-animation="fade-out-animation">
 
-			<h2 class="text-align-center">Удаление</h2>
-			<div class="content text-align-center">
-				<h3>Запись будет безвозвратно удалена.</h3>
-				<h2 style="color: red;">Уверены?</h2>
-			</div>
-			<div class="buttons">
-				<paper-button dialog-dismiss>Отмена</paper-button>
-				<paper-button dialog-confirm autofocus on-tap="_deletePost">Да</paper-button>
-			</div>
+				<h2 class="text-align-center">Удаление</h2>
+				<div class="content text-align-center">
+					<h3>Запись будет безвозвратно удалена.</h3>
+					<h2 style="color: red;">Уверены?</h2>
+				</div>
+				<div class="buttons">
+					<paper-button dialog-dismiss>
+						Отмена
+					</paper-button>
+					<paper-button
+						dialog-confirm
+						autofocus on-tap="_deletePost">
+							Да
+					</paper-button>
+				</div>
 
 		</paper-dialog>
 	</template>
@@ -40,11 +46,7 @@
 		'use strict';
 
 		Polymer({
-			is: 'x-post-delete-dialog',
-			properties: {
-			},
-			ready: function() {
-			}
+			is: 'x-post-delete-dialog'
 		});
 	})();
 	</script>

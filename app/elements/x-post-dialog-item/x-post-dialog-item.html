@@ -42,74 +42,79 @@
     </style>
 
     <paper-dialog id="dialog"
-  								entry-animation="scale-up-animation"
-  								exit-animation="fade-out-animation"
-                  opened="{{showDialogVisible}}"
-									on-iron-overlay-closed="_dialogClosed"
-									with-backdrop
-                  always-on-top>
+			entry-animation="scale-up-animation"
+			exit-animation="fade-out-animation"
+			opened="{{showDialogVisible}}"
+			on-iron-overlay-closed="_dialogClosed"
+			with-backdrop
+			always-on-top>
 
-      <div class="header layout horizontal center-center">
-        <div class="paper-font-headline flex">[[postItem.name]]</div>
-        <paper-icon-button icon="close"
-                           title="Закрыть"
-                           on-tap="_close"></paper-icon-button>
-      </div>
+	      <div class="header layout horizontal center-center">
+	        <div class="paper-font-headline flex">
+						[[postItem.name]]
+					</div>
+	        <paper-icon-button icon="close"
+						title="Закрыть"
+						on-tap="_close">
+					</paper-icon-button>
+	      </div>
 
-      <paper-dialog-scrollable>
-        <div class="scrollable-box layout vertical center-center">
+	      <paper-dialog-scrollable>
+	        <div class="scrollable-box layout vertical center-center">
 
-					<template is="dom-if"
-      							if="[[postItem.image]]">
-						<div class="image-box">
-	      			<iron-image class="postImage"
-	      									src="[[postItem.image]]"
-	      									sizing="contain"
-	      									preload></iron-image>
-						</div>
-      		</template>
+						<template is="dom-if" if="[[postItem.image]]">
+							<div class="image-box">
+		      			<iron-image class="postImage"
+		      				src="[[postItem.image]]"
+		      				sizing="contain"
+		      				preload>
+								</iron-image>
+							</div>
+	      		</template>
 
-					<template  is="dom-if" if="[[postItem.video_id]]">
-						<div class="video-box layout vertical center-center">
-							<google-youtube
-                id="youtube"
-								video-id="[[postItem.video_id]]"
-                width="704px"
-                height="396px"
-								rel="0"
-								start="0"
-								autoplay="0"
-								style="max-width: 704px; max-height: 396px; width: 100%; height: 100%;">
-							</google-youtube>
-						</div>
-					</template>
+						<template  is="dom-if" if="[[postItem.video_id]]">
+							<div class="video-box layout vertical center-center">
+								<google-youtube
+	                id="youtube"
+									video-id="[[postItem.video_id]]"
+	                width="704px"
+	                height="396px"
+									rel="0"
+									start="0"
+									autoplay="0"
+									style="max-width: 704px; max-height: 396px; width: 100%; height: 100%;">
+								</google-youtube>
+							</div>
+						</template>
 
-          <template is="dom-if"
-                    if="[[postItem.images]]">
-            <template is="dom-repeat"
-                      items="[[postItem.images]]"
-                      as="image">
-              <div class="image-box" style="margin-top: 16px;">
-                <iron-image class="postImage"
-                            sizing="contain"
-                            src="[[image]]"
-  	      									preload></iron-image>
-              </div>
-            </template>
-          </template>
+	          <template is="dom-if" if="[[postItem.images]]">
+	            <template
+								is="dom-repeat"
+	              items="[[postItem.images]]"
+	              as="image">
+		              <div class="image-box" style="margin-top: 16px;">
+		                <iron-image class="postImage"
+											sizing="contain"
+											src="[[image]]"
+											preload>
+										</iron-image>
+		              </div>
+	            </template>
+	          </template>
 
-          <template is="dom-if"
-      							if="[[postItem.text]]">
-            <div class="post-text">
-							<template is="juicy-html"
-												content$="[[postItem.text]]"></template>
-						</div>
-      		</template>
+	          <template is="dom-if" if="[[postItem.text]]">
+	            <div class="post-text">
+								<template
+									is="juicy-html"
+									content$="[[postItem.text]]">
+								</template>
+							</div>
+	      		</template>
 
-        </div>
-      </paper-dialog-scrollable>
-    </paper-dialog>
+	        </div>
+	      </paper-dialog-scrollable>
 
+		</paper-dialog>
   </template>
   <script>
   (function() {

@@ -8,9 +8,6 @@
 			}
 			x-message-item {
 				margin: 0 16px 16px;
-				/*margin-bottom: 16px;*/
-				/*margin-left: 16px;*/
-				/*margin-right: 16px;*/
 			}
 			@media (max-width: 600px) {
 				x-message-item {
@@ -20,22 +17,23 @@
 			}
 		</style>
 		<firebase-query id="firebaseQueryMessages"
-										path="/messages"
-										app-name="uomgo"
-										order-by-child="date"
-										data="{{dataDB}}"></firebase-query>
+			path="/messages"
+			app-name="uomgo"
+			order-by-child="date"
+			data="{{dataDB}}">
+		</firebase-query>
 
 		<template is="dom-repeat"
-							items="[[dataDB]]"
-							as="message"
-							sort="_computeSort"
-							target-framerate="60">
+			items="[[dataDB]]"
+			as="message"
+			sort="_computeSort"
+			target-framerate="60">
 
-			<div>
-				<template is="dom-if" if="[[message.visible]]">
-					<x-message-item message="[[message]]"></x-message-item>
-				</template>
-			</div>
+				<div>
+					<template is="dom-if" if="[[message.visible]]">
+						<x-message-item message="[[message]]"></x-message-item>
+					</template>
+				</div>
 
 		</template>
 
