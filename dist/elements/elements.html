@@ -852,7 +852,7 @@ default:
 return value != null ? value : undefined;
 }
 }
-});Polymer.version = "1.9.1";Polymer.Base._addFeature({
+});Polymer.version = "1.9.2";Polymer.Base._addFeature({
 _registerFeatures: function () {
 this._prepIs();
 this._prepBehaviors();
@@ -976,6 +976,7 @@ return dom;
 }
 });(function () {
 var baseAttachedCallback = Polymer.Base.attachedCallback;
+var baseDetachedCallback = Polymer.Base.detachedCallback;
 Polymer.Base._addFeature({
 _hostStack: [],
 ready: function () {
@@ -1055,6 +1056,13 @@ this._beforeAttached();
 baseAttachedCallback.call(this);
 } else {
 this._attachedPending = true;
+}
+},
+detachedCallback: function () {
+if (this._readied) {
+baseDetachedCallback.call(this);
+} else {
+this._attachedPending = false;
 }
 }
 });
@@ -41984,9 +41992,15 @@ Z(Q.prototype,"ref",Q.prototype.na);Ib.STATE_CHANGED="state_changed";P.RUNNING="
 				align-self: center;
 				text-align: center;
 			}
+			#add {
+				position: fixed;
+				bottom: 48px;
+				right: 16px;
+			}
 		</style>
 
-		<firebase-auth id="auth" user="{{user}}" provider="google" app-name="uomgo" on-error="showError"></firebase-auth>
+		<firebase-auth id="auth" user="{{user}}" provider="google" app-name="uomgo" on-error="showError">
+		</firebase-auth>
 
 		<div id="collapsePanel" class="layout horizontal">
 			<div id="verticalText">
@@ -41995,17 +42009,20 @@ Z(Q.prototype,"ref",Q.prototype.na);Ib.STATE_CHANGED="state_changed";P.RUNNING="
 			<div class="content layout vertical center-center">
 				<paper-button on-tap="_goToDocs" raised="" style="margin-left: 32px; text-align: center;">
 					Перейти в раздел документы
-					<iron-icon icon="arrow-forward"></iron-icon></paper-button>
+					<iron-icon icon="arrow-forward"></iron-icon>
+				</paper-button>
 			</div>
 		</div>
 
-		<firebase-document id="firebaseDocument" app-name="uomgo"></firebase-document>
+		<firebase-document id="firebaseDocument" app-name="uomgo">
+		</firebase-document>
 
 		<x-messages></x-messages>
 		<x-posts></x-posts>
 
 		<template is="dom-if" if="[[user]]">
-			<paper-fab id="add" icon="add" mini="true" class="green" style="position:fixed;bottom:48px;right:16px;"></paper-fab>
+			<paper-fab id="add" icon="add" mini="true" class="green">
+			</paper-fab>
 		</template>
 
 		<x-post-edit-dialog></x-post-edit-dialog>
@@ -42140,49 +42157,37 @@ Z(Q.prototype,"ref",Q.prototype.na);Ib.STATE_CHANGED="state_changed";P.RUNNING="
 
 			<template is="animated-lazy-page" data-route="about">
 				<neon-animatable entry-animation="fade-in-animation" exit-animation="fade-out-animation" animation-target="">
-
-					<x-about-about></x-about-about>
-
+						<x-about-about></x-about-about>
 				</neon-animatable>
 			</template>
 
 			<template is="animated-lazy-page" data-route="boss">
 				<neon-animatable entry-animation="fade-in-animation" exit-animation="fade-out-animation" animation-target="">
-
-					<x-about-boss></x-about-boss>
-
+						<x-about-boss></x-about-boss>
 				</neon-animatable>
 			</template>
 
 			<template is="animated-lazy-page" data-route="struct">
 				<neon-animatable entry-animation="fade-in-animation" exit-animation="fade-out-animation" animation-target="">
-
-					<x-about-struct></x-about-struct>
-
+						<x-about-struct></x-about-struct>
 				</neon-animatable>
 			</template>
 
 			<template is="animated-lazy-page" data-route="slave">
 				<neon-animatable entry-animation="fade-in-animation" exit-animation="fade-out-animation" animation-target="">
-
-					<x-about-slave></x-about-slave>
-
+						<x-about-slave></x-about-slave>
 				</neon-animatable>
 			</template>
 
 			<template is="animated-lazy-page" data-route="docs">
 				<neon-animatable entry-animation="fade-in-animation" exit-animation="fade-out-animation" animation-target="">
-
-					<x-about-docs></x-about-docs>
-
+						<x-about-docs></x-about-docs>
 				</neon-animatable>
 			</template>
 
 			<template is="animated-lazy-page" data-route="localGov">
 				<neon-animatable entry-animation="fade-in-animation" exit-animation="fade-out-animation" animation-target="">
-
-					<x-about-local-gov></x-about-local-gov>
-
+						<x-about-local-gov></x-about-local-gov>
 				</neon-animatable>
 			</template>
 
@@ -42234,15 +42239,6 @@ Z(Q.prototype,"ref",Q.prototype.na);Ib.STATE_CHANGED="state_changed";P.RUNNING="
 					text-align: center;
 				};
 			}
-			/*iron-accordion {
-				background-color: var(--paper-blue-grey-50);
-			}
-			.paper-font-headline {
-				padding: 8px;
-			}
-			.accordionContent {
-				background-color: white;
-			}*/
 			iron-collapse:focus {
 				outline: none;
 			}
@@ -42260,116 +42256,123 @@ Z(Q.prototype,"ref",Q.prototype.na);Ib.STATE_CHANGED="state_changed";P.RUNNING="
 			}
 		</style>
 
-		<firebase-document id="firebaseDocument" app-name="uomgo" path="/sections/inspect" data="{{docData}}"></firebase-document>
+		<firebase-document id="firebaseDocument" app-name="uomgo" path="/sections/inspect" data="{{docData}}">
+		</firebase-document>
 
 		<paper-card id="card" heading="Отдел инспектирования качества образования" image="" elevation="4" animated-shadow="false">
-			<div class="content">
 
-				<template is="juicy-html" content$="[[docData.text]]"></template>
+				<div class="content">
 
-				<div class="accordeonBox">
-					<div class="accordeonHeader paper-font-headline" aria-expanded$="[[isExpanded(openedFGOS)]]" aria-controls="FGOS" on-tap="toggle" data-args="#FGOS">
-						ФГОС
-					</div>
-					<iron-collapse id="FGOS" tabindex="0" opened="{{openedFGOS}}">
-						<div class="collapse-content shadow">
-							<template is="juicy-html" content$="[[docData.FGOS.text]]"></template>
+					<template is="juicy-html" content$="[[docData.text]]"></template>
+
+					<div class="accordeonBox">
+						<div class="accordeonHeader paper-font-headline" aria-expanded$="[[isExpanded(openedFGOS)]]" aria-controls="FGOS" on-tap="toggle" data-args="#FGOS">
+								ФГОС
 						</div>
-					</iron-collapse>
-				</div>
-
-				<div class="accordeonBox">
-					<div class="accordeonHeader paper-font-headline" aria-expanded$="[[isExpanded(openedQualityControl)]]" aria-controls="qualityControl" on-tap="toggle" data-args="#qualityControl">
-						Оценка качества образования в ОО
+						<iron-collapse id="FGOS" tabindex="0" opened="{{openedFGOS}}">
+								<div class="collapse-content shadow">
+									<template is="juicy-html" content$="[[docData.FGOS.text]]">
+									</template>
+								</div>
+						</iron-collapse>
 					</div>
-					<iron-collapse id="qualityControl" tabindex="0" opened="{{openedQualityControl}}">
-						<div class="collapse-content shadow">
-							<template is="juicy-html" content$="[[docData.qualityControl.text]]"></template>
-						</div>
-					</iron-collapse>
-				</div>
 
-				<div class="accordeonBox">
-					<div class="accordeonHeader paper-font-headline" aria-expanded$="[[isExpanded(openedGIA)]]" aria-controls="GIA" on-tap="toggle" data-args="#GIA">
-						Государственная итоговая аттестация
+					<div class="accordeonBox">
+						<div class="accordeonHeader paper-font-headline" aria-expanded$="[[isExpanded(openedQualityControl)]]" aria-controls="qualityControl" on-tap="toggle" data-args="#qualityControl">
+								Оценка качества образования в ОО
+						</div>
+						<iron-collapse id="qualityControl" tabindex="0" opened="{{openedQualityControl}}">
+								<div class="collapse-content shadow">
+									<template is="juicy-html" content$="[[docData.qualityControl.text]]">
+									</template>
+								</div>
+						</iron-collapse>
 					</div>
-					<iron-collapse id="GIA" tabindex="0" opened="{{openedGIA}}">
-						<div class="collapse-content shadow">
-							<x-inspect-gia doc-data="[[docData]]"></x-inspect-gia>
-						</div>
-					</iron-collapse>
-				</div>
 
-				<div class="accordeonBox">
-					<div class="accordeonHeader paper-font-headline" aria-expanded$="[[isExpanded(openedInclusive)]]" aria-controls="inclusive" on-tap="toggle" data-args="#inclusive">
-						Инклюзивное образование
+					<div class="accordeonBox">
+						<div class="accordeonHeader paper-font-headline" aria-expanded$="[[isExpanded(openedGIA)]]" aria-controls="GIA" on-tap="toggle" data-args="#GIA">
+								Государственная итоговая аттестация
+						</div>
+						<iron-collapse id="GIA" tabindex="0" opened="{{openedGIA}}">
+								<div class="collapse-content shadow">
+									<x-inspect-gia doc-data="[[docData]]"></x-inspect-gia>
+								</div>
+						</iron-collapse>
 					</div>
-					<iron-collapse id="inclusive" tabindex="0" opened="{{openedInclusive}}">
-						<div class="collapse-content shadow">
-							<template is="juicy-html" content$="[[docData.inclusive.text]]"></template>
-						</div>
-					</iron-collapse>
-				</div>
 
-				<div class="accordeonBox">
-					<div class="accordeonHeader paper-font-headline" aria-expanded$="[[isExpanded(openedRemote)]]" aria-controls="remote" on-tap="toggle" data-args="#remote">
-						Дистанционное образование
+					<div class="accordeonBox">
+						<div class="accordeonHeader paper-font-headline" aria-expanded$="[[isExpanded(openedInclusive)]]" aria-controls="inclusive" on-tap="toggle" data-args="#inclusive">
+								Инклюзивное образование
+						</div>
+						<iron-collapse id="inclusive" tabindex="0" opened="{{openedInclusive}}">
+								<div class="collapse-content shadow">
+									<template is="juicy-html" content$="[[docData.inclusive.text]]">
+									</template>
+								</div>
+						</iron-collapse>
 					</div>
-					<iron-collapse id="remote" tabindex="0" opened="{{openedRemote}}">
-						<div class="collapse-content shadow">
-							<template is="juicy-html" content$="[[docData.remote.text]]"></template>
-						</div>
-					</iron-collapse>
-				</div>
 
-				<div class="accordeonBox">
-					<div class="accordeonHeader paper-font-headline" aria-expanded$="[[isExpanded(openedORKSE)]]" aria-controls="ORKSE" on-tap="toggle" data-args="#ORKSE">
-						ОРКСЭ
+					<div class="accordeonBox">
+						<div class="accordeonHeader paper-font-headline" aria-expanded$="[[isExpanded(openedRemote)]]" aria-controls="remote" on-tap="toggle" data-args="#remote">
+								Дистанционное образование
+						</div>
+						<iron-collapse id="remote" tabindex="0" opened="{{openedRemote}}">
+								<div class="collapse-content shadow">
+									<template is="juicy-html" content$="[[docData.remote.text]]">
+									</template>
+								</div>
+						</iron-collapse>
 					</div>
-					<iron-collapse id="ORKSE" tabindex="0" opened="{{openedORKSE}}">
-						<div class="collapse-content shadow">
-							<template is="juicy-html" content$="[[docData.ORKSE.text]]"></template>
-						</div>
-					</iron-collapse>
-				</div>
 
-				<div class="accordeonBox">
-					<div class="accordeonHeader paper-font-headline" aria-expanded$="[[isExpanded(openedVideo)]]" aria-controls="video" on-tap="toggle" data-args="#video">
-						Видеоконференцсвязь
+					<div class="accordeonBox">
+						<div class="accordeonHeader paper-font-headline" aria-expanded$="[[isExpanded(openedORKSE)]]" aria-controls="ORKSE" on-tap="toggle" data-args="#ORKSE">
+								ОРКСЭ
+						</div>
+						<iron-collapse id="ORKSE" tabindex="0" opened="{{openedORKSE}}">
+								<div class="collapse-content shadow">
+									<template is="juicy-html" content$="[[docData.ORKSE.text]]">
+									</template>
+								</div>
+						</iron-collapse>
 					</div>
-					<iron-collapse id="video" tabindex="0" opened="{{openedVideo}}">
-						<div class="collapse-content shadow">
-							<template is="juicy-html" content$="[[docData.video.text]]"></template>
-						</div>
-					</iron-collapse>
-				</div>
 
-				<div class="accordeonBox">
-					<div class="accordeonHeader paper-font-headline" aria-expanded$="[[isExpanded(openedOlympiad)]]" aria-controls="olympiad" on-tap="toggle" data-args="#olympiad">
-						Олимпиады
+					<div class="accordeonBox">
+						<div class="accordeonHeader paper-font-headline" aria-expanded$="[[isExpanded(openedVideo)]]" aria-controls="video" on-tap="toggle" data-args="#video">
+								Видеоконференцсвязь
+						</div>
+						<iron-collapse id="video" tabindex="0" opened="{{openedVideo}}">
+								<div class="collapse-content shadow">
+									<template is="juicy-html" content$="[[docData.video.text]]">
+									</template>
+								</div>
+						</iron-collapse>
 					</div>
-					<iron-collapse id="olympiad" tabindex="0" opened="{{openedOlympiad}}">
-						<div class="collapse-content shadow">
-							<template is="juicy-html" content$="[[docData.olympiad.text]]"></template>
-						</div>
-					</iron-collapse>
-				</div>
 
-				<div class="accordeonBox">
-					<div class="accordeonHeader paper-font-headline" aria-expanded$="[[isExpanded(openedMunicipal)]]" aria-controls="municipal" on-tap="toggle" data-args="#municipal">
-						Муниципальный обменный фонд
+					<div class="accordeonBox">
+						<div class="accordeonHeader paper-font-headline" aria-expanded$="[[isExpanded(openedOlympiad)]]" aria-controls="olympiad" on-tap="toggle" data-args="#olympiad">
+								Олимпиады
+						</div>
+						<iron-collapse id="olympiad" tabindex="0" opened="{{openedOlympiad}}">
+								<div class="collapse-content shadow">
+									<template is="juicy-html" content$="[[docData.olympiad.text]]">
+									</template>
+								</div>
+						</iron-collapse>
 					</div>
-					<iron-collapse id="municipal" tabindex="0" opened="{{openedMunicipal}}">
-						<div class="collapse-content shadow">
-							<template is="juicy-html" content$="[[docData.municipal.text]]"></template>
+
+					<div class="accordeonBox">
+						<div class="accordeonHeader paper-font-headline" aria-expanded$="[[isExpanded(openedMunicipal)]]" aria-controls="municipal" on-tap="toggle" data-args="#municipal">
+								Муниципальный обменный фонд
 						</div>
-					</iron-collapse>
+						<iron-collapse id="municipal" tabindex="0" opened="{{openedMunicipal}}">
+								<div class="collapse-content shadow">
+									<template is="juicy-html" content$="[[docData.municipal.text]]">
+									</template>
+								</div>
+						</iron-collapse>
+					</div>
+
 				</div>
-
-				
-
-			</div>
-
 		</paper-card>
 
 	</template>
@@ -42379,136 +42382,11 @@ Z(Q.prototype,"ref",Q.prototype.na);Ib.STATE_CHANGED="state_changed";P.RUNNING="
 
 		Polymer({
 			is: 't-inspect-template',
-			// ready: function() {
-			// 	var ironAccordions = this.querySelector('iron-accordions');
-			// 	ironAccordions.addEventListener('transitionend', function() {
-			// 		var headerPanelMain = app.$.headerPanelMain;
-			// 		var scrollTop = headerPanelMain.scroller.scrollTop;
-			// 		var top = this._selection.selection[0].getBoundingClientRect().top;
-			// 		if ( this._selection.selection[0].opened ) {
-			// 			if ( top > 0 ) {
-			// 				headerPanelMain.scroll(top + scrollTop, true);
-			// 			} else if ( top < 0 ) {
-			// 				headerPanelMain.scroll( top + scrollTop - 64, true);
-			// 			};
-			// 		};
-			// 	});
-			// }
 			toggle: function(e) {
 		    document.querySelector( e.target.getAttribute('data-args') ).toggle();
 		  },
 			isExpanded: function(opened) {
 				return String(opened);
-			}
-		});
-	})();
-	</script>
-</dom-module>
-<dom-module id="t-login-template" assetpath="t-login-template/">
-	<template>
-		<style is="custom-style" include="shared-styles">
-			:host {
-				display: block;
-			}
-			.block {
-				/*height: 100vh;*/
-				padding: 64px;
-			}
-			paper-material {
-				background-color: white;
-				border-radius: 8px;
-			}
-			.centerText {
-				text-align: center;
-			}
-			.error {
-				background: #f44336;
-				color: white;
-				padding: 8px;
-				font-size: 14px;
-				border-radius: 3px;
-				margin: 16px auto;
-			}
-		</style>
-
-		<firebase-auth id="auth" user="{{user}}" provider="google" app-name="uomgo" on-error="showError"></firebase-auth>
-
-		<iron-iconset-svg name="google" size="24">
-			<svg>
-				<defs>
-					<g id="google">
-						<path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"></path>
-						<path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"></path>
-						<path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"></path>
-						<path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"></path>
-						<path fill="none" d="M1 1h22v22H1z"></path>
-					</g>
-				</defs>
-			</svg>
-		</iron-iconset-svg>
-
-		<paper-material elevation="4">
-			<div class="block layout vertical start-justified">
-				<div class="error" hidden$="[[!error]]">[[error.code]]: [[error.message]]</div>
-				<div hidden$="[[!user]]">
-					<h3>Вход выполнен.</h3>
-					<h3>Email: [[user.email]]</h3>
-				</div>
-				<form is="iron-form" on-submit="sign">
-					<paper-button raised="" on-tap="sign">
-						<iron-icon icon="google:google" style="padding-right: 8px"></iron-icon>
-						<span hidden$="[[user]]">
-							Вход администратора
-						</span>
-						<span hidden$="[[!user]]">
-							Выход администратора
-						</span>
-					</paper-button>
-				</form>
-
-			</div>
-		</paper-material>
-
-	</template>
-	<script>
-	(function() {
-		'use strict';
-
-		Polymer({
-			is: 't-login-template',
-			ready: function() {
-
-			},
-			sign: function() {
-				if (user) {
-					this.signOut();
-				} else {
-					this.signIn();
-				}
-			},
-			signIn: function() {
-				// this.error = null;
-				this.$.auth.signInWithPopup();
-
-					// .then(function(response) {
-					// 	console.log(response);
-					// })
-					// .catch(function(e) {
-					// 	console.log(e);
-					// });
-			},
-			signOut: function() {
-				// this.error = null;
-				this.$.auth.signOut();
-			},
-			showError: function(e) {
-					this.error = e.detail;
-			},
-			properties: {
-				error: {
-					type: Object,
-					value: null
-				}
 			}
 		});
 	})();
@@ -42543,7 +42421,8 @@ Z(Q.prototype,"ref",Q.prototype.na);Ib.STATE_CHANGED="state_changed";P.RUNNING="
 
 		<div id="drawio">
 
-			<iron-image src="https://firebasestorage.googleapis.com/v0/b/uomgo-fab6c.appspot.com/o/about%2Fstruct%2FDiagram.png?alt=media&amp;token=6be16e9c-fa6a-4184-a9e8-56a08115d3b1" fade="" preload="" width="100%"></iron-image>
+			<iron-image src="https://firebasestorage.googleapis.com/v0/b/uomgo-fab6c.appspot.com/o/about%2Fstruct%2FDiagram.png?alt=media&amp;token=6be16e9c-fa6a-4184-a9e8-56a08115d3b1" fade="" preload="" width="100%">
+			</iron-image>
 
 
 
@@ -42575,40 +42454,12 @@ Z(Q.prototype,"ref",Q.prototype.na);Ib.STATE_CHANGED="state_changed";P.RUNNING="
 			_resizeHandler: function(e) {
 				this.width = e.target.clientWidth;
 				if ( this.width < 824) {
-					// -=this.height;
-					// this.height = e.target.clientHeight;
 				}
 			},
 			ready: function() {
 				var that = this;
 				this.iframe = this.getElementsByTagName('iframe')[0];
-				// this.height = this.clientHeight
-
-				// iframe.onload = function() {
-					// console.log( iframe );
-
-					// var iframeDoc = iframe.contentWindow.document;
-					// console.log(iframeDoc.querySelector('.drive-viewer'));
-					// iframe.body.style.backgroundColor = 'orange';
-					// driveViewer.style.backgroundColor = 'white'
-				// }
-
-				// var script = document.createElement( "script" );
-				// script.async = true;
-				// script.type = "text/javascript";
-
-				// var useSSL = "https:" == document.location.protocol;
-				// script.src = (useSSL ? "https:" : "http:") + "//www.draw.io/js/embed-static.min.js";
-				// script.src = (useSSL ? "https:" : "http:") + app.baseUrl+"scripts/embed-static.min.js";
-				// var node = document.getElementsByTagName("script")[0];
-				// node.parentNode.insertBefore(script, node);
-
-				// script.src = "https://www.draw.io/js/embed-static.min.js";
-				// script.src = app.baseUrl+"scripts/embed-static.min.js";
-				// this.insertBefore( script, this.firstChild );
-				// this.appendChild( script );
 			}
-
 		});
 	})();
 	</script>
@@ -42693,147 +42544,150 @@ Z(Q.prototype,"ref",Q.prototype.na);Ib.STATE_CHANGED="state_changed";P.RUNNING="
 			}
 		</style>
 
-		<firebase-auth id="auth" user="{{user}}" provider="google" app-name="uomgo" on-error="showError"></firebase-auth>
+		<firebase-auth id="auth" user="{{user}}" provider="google" app-name="uomgo" on-error="showError">
+		</firebase-auth>
 
 		<div id="head" class="layout horizontal center-center fit">
-			<iron-image src="https://firebasestorage.googleapis.com/v0/b/uomgo-fab6c.appspot.com/o/logo1.png?alt=media&amp;token=6f57274a-1993-4dfd-8638-a8d782a2121c"></iron-image>
+			<iron-image src="https://firebasestorage.googleapis.com/v0/b/uomgo-fab6c.appspot.com/o/logo1.png?alt=media&amp;token=6f57274a-1993-4dfd-8638-a8d782a2121c">
+			</iron-image>
 		</div>
 
 		<paper-tooltip for="head" position="bottom" offset="0">
-		  Управление образованием Мысковского городского округа
+			  Управление образованием Мысковского городского округа
 		</paper-tooltip>
 
 		<paper-menu id="mainMenu" attr-for-selected="data-route" selected="{{data.page}}" selectable="paper-icon-item">
 
-			<paper-icon-item data-route="main">
-				<iron-icon icon="home" item-icon=""></iron-icon>
-				<paper-item-body>
-					Главная
-				</paper-item-body>
-			</paper-icon-item>
-
-			<paper-icon-item data-route="about">
-				<iron-icon icon="info" item-icon=""></iron-icon>
-				<paper-item-body>
-					Об управлении
-				</paper-item-body>
-			</paper-icon-item>
-
-			<paper-icon-item data-route="virt">
-				<iron-icon icon="mail" item-icon=""></iron-icon>
-				<paper-item-body>
-					Обращения граждан
-				</paper-item-body>
-			</paper-icon-item>
-
-			<paper-submenu>
-				<paper-icon-item class="menu-trigger menu-items">
-					<iron-icon icon="folder" item-icon=""></iron-icon>
+				<paper-icon-item data-route="main">
+					<iron-icon icon="home" item-icon=""></iron-icon>
 					<paper-item-body>
-						Отделы
+						Главная
 					</paper-item-body>
 				</paper-icon-item>
 
-				<paper-menu class="menu-content" attr-for-selected="data-route" selected="{{data.page}}">
-
-					<paper-item class="submenu-items" data-route="inspect">
-						<span>Отдел инспектирования качества образования</span>
-					</paper-item>
-
-					<paper-item class="submenu-items" data-route="preschool">
-						<span>Отдел дошкольного образования</span>
-					</paper-item>
-
-					<paper-item class="submenu-items" data-route="sport">
-						<span>Физкультурно - оздоровительный отдел</span>
-					</paper-item>
-
-					<paper-item class="submenu-items" data-route="upbringe">
-						<span>Отдел воспитательной работы</span>
-					</paper-item>
-
-					<paper-item class="submenu-items" data-route="tutelage">
-						<span>Отдел опеки и попечительства</span>
-					</paper-item>
-
-					<paper-item class="submenu-items" data-route="legal">
-						<span>Организационно - правовой отдел</span>
-					</paper-item>
-
-				</paper-menu>
-			</paper-submenu>
-
-			<paper-submenu>
-				<paper-icon-item class="menu-trigger menu-items">
-					<iron-icon icon="folder" item-icon=""></iron-icon>
+				<paper-icon-item data-route="about">
+					<iron-icon icon="info" item-icon=""></iron-icon>
 					<paper-item-body>
-						Подведомственные организации
+						Об управлении
 					</paper-item-body>
 				</paper-icon-item>
 
-				<paper-menu class="menu-content" attr-for-selected="data-route" selected="{{data.page}}">
+				<paper-icon-item data-route="virt">
+					<iron-icon icon="mail" item-icon=""></iron-icon>
+					<paper-item-body>
+						Обращения граждан
+					</paper-item-body>
+				</paper-icon-item>
 
-					<paper-item class="submenu-items" data-route="metod">
+				<paper-submenu>
+					<paper-icon-item class="menu-trigger menu-items">
+						<iron-icon icon="folder" item-icon=""></iron-icon>
 						<paper-item-body>
-							Информационно - методический центр
+							Отделы
 						</paper-item-body>
-					</paper-item>
+					</paper-icon-item>
 
-					<paper-item class="submenu-items" data-route="diet">
+					<paper-menu class="menu-content" attr-for-selected="data-route" selected="{{data.page}}">
+
+						<paper-item class="submenu-items" data-route="inspect">
+							<span>Отдел инспектирования качества образования</span>
+						</paper-item>
+
+						<paper-item class="submenu-items" data-route="preschool">
+							<span>Отдел дошкольного образования</span>
+						</paper-item>
+
+						<paper-item class="submenu-items" data-route="sport">
+							<span>Физкультурно - оздоровительный отдел</span>
+						</paper-item>
+
+						<paper-item class="submenu-items" data-route="upbringe">
+							<span>Отдел воспитательной работы</span>
+						</paper-item>
+
+						<paper-item class="submenu-items" data-route="tutelage">
+							<span>Отдел опеки и попечительства</span>
+						</paper-item>
+
+						<paper-item class="submenu-items" data-route="legal">
+							<span>Организационно - правовой отдел</span>
+						</paper-item>
+
+					</paper-menu>
+				</paper-submenu>
+
+				<paper-submenu>
+					<paper-icon-item class="menu-trigger menu-items">
+						<iron-icon icon="folder" item-icon=""></iron-icon>
 						<paper-item-body>
-							Комбинат питания
+							Подведомственные организации
 						</paper-item-body>
-					</paper-item>
+					</paper-icon-item>
 
-					<paper-item class="submenu-items" data-route="counting">
-						<paper-item-body>
-							Централизованная бухгалтерия
-						</paper-item-body>
-					</paper-item>
+					<paper-menu class="menu-content" attr-for-selected="data-route" selected="{{data.page}}">
 
-					<paper-item class="submenu-items" data-route="transport">
-						<paper-item-body>
-							Транспортно - хозяйственное учреждение
-						</paper-item-body>
-					</paper-item>
+							<paper-item class="submenu-items" data-route="metod">
+								<paper-item-body>
+									Информационно - методический центр
+								</paper-item-body>
+							</paper-item>
 
-				<paper-menu>
-			</paper-menu></paper-menu></paper-submenu>
+							<paper-item class="submenu-items" data-route="diet">
+								<paper-item-body>
+									Комбинат питания
+								</paper-item-body>
+							</paper-item>
 
-			<paper-icon-item data-route="orgs">
-				<iron-icon icon="description" item-icon=""></iron-icon>
-				<paper-item-body>
-					Образовательные организации
-				</paper-item-body>
-			</paper-icon-item>
+							<paper-item class="submenu-items" data-route="counting">
+								<paper-item-body>
+									Централизованная бухгалтерия
+								</paper-item-body>
+							</paper-item>
 
-			<paper-icon-item data-route="public">
-				<iron-icon icon="description" item-icon=""></iron-icon>
-				<paper-item-body>
-					Общественные организации
-				</paper-item-body>
-			</paper-icon-item>
+							<paper-item class="submenu-items" data-route="transport">
+								<paper-item-body>
+									Транспортно - хозяйственное учреждение
+								</paper-item-body>
+							</paper-item>
 
-			<paper-icon-item data-route="business">
-				<iron-icon icon="description" item-icon=""></iron-icon>
-				<paper-item-body>
-					Реестр индивидуальных предпринимателей
-				</paper-item-body>
-			</paper-icon-item>
+					</paper-menu>
 
-			<paper-icon-item data-route="museum">
-				<iron-icon icon="description" item-icon=""></iron-icon>
-				<paper-item-body>
-					Виртуальный музей
-				</paper-item-body>
-			</paper-icon-item>
+				</paper-submenu>
 
-			<paper-icon-item data-route="jobs">
-				<iron-icon icon="description" item-icon=""></iron-icon>
-				<paper-item-body>
-					Вакансии
-				</paper-item-body>
-			</paper-icon-item>
+				<paper-icon-item data-route="orgs">
+					<iron-icon icon="description" item-icon=""></iron-icon>
+					<paper-item-body>
+						Образовательные организации
+					</paper-item-body>
+				</paper-icon-item>
+
+				<paper-icon-item data-route="public">
+					<iron-icon icon="description" item-icon=""></iron-icon>
+					<paper-item-body>
+						Общественные организации
+					</paper-item-body>
+				</paper-icon-item>
+
+				<paper-icon-item data-route="business">
+					<iron-icon icon="description" item-icon=""></iron-icon>
+					<paper-item-body>
+						Реестр индивидуальных предпринимателей
+					</paper-item-body>
+				</paper-icon-item>
+
+				<paper-icon-item data-route="museum">
+					<iron-icon icon="description" item-icon=""></iron-icon>
+					<paper-item-body>
+						Виртуальный музей
+					</paper-item-body>
+				</paper-icon-item>
+
+				<paper-icon-item data-route="jobs">
+					<iron-icon icon="description" item-icon=""></iron-icon>
+					<paper-item-body>
+						Вакансии
+					</paper-item-body>
+				</paper-icon-item>
 
 		</paper-menu>
 	</template>
@@ -42945,10 +42799,14 @@ Z(Q.prototype,"ref",Q.prototype.na);Ib.STATE_CHANGED="state_changed";P.RUNNING="
 				width: 100%;
 				--iron-image-width: 100%;
 			}
+			.content {
+				text-align: center;
+				width: 100%;
+			}
 		</style>
 		<paper-material elevation="4">
 			<div class="layout horizontal center-center wrap">
-				<div class="content" style="text-align:center;width:100%;">
+				<div class="content">
 					<div class="paper-font-headline">
 						Мунициапальное казенное учреждение<br>
 						Управление образованием «Мысковского городского округа»
@@ -42974,7 +42832,8 @@ Z(Q.prototype,"ref",Q.prototype.na);Ib.STATE_CHANGED="state_changed";P.RUNNING="
 				</div>
 
 				<div class="shadow" style="text-align: center;">
-					<iron-image src="[[app.baseUrl]]images/administraciaBIG.jpg"></iron-image>
+					<iron-image src="[[app.baseUrl]]images/administraciaBIG.jpg">
+					</iron-image>
 				</div>
 
 			</div>
@@ -43019,30 +42878,36 @@ Z(Q.prototype,"ref",Q.prototype.na);Ib.STATE_CHANGED="state_changed";P.RUNNING="
 			}
 		</style>
 
-		<firebase-document path="/about" app-name="uomgo" data="{{dataDB}}"></firebase-document>
+		<firebase-document path="/about" app-name="uomgo" data="{{dataDB}}">
+		</firebase-document>
 
-		<paper-material elevation="4" class="layout horizontal center-center">
-			<grid-element ga="16px" center="">
+		<paper-material class="layout horizontal center-center" elevation="4">
 
-				<grid-col s="2" class="shadow">
-					<p class="paper-font-headline">[[dataDB.boss.position]]</p>
+				<grid-element ga="16px" center="">
+					<grid-col class="shadow" s="2">
 
-					<template is="dom-if" if="[[dataDB.boss.photo.enabled]]">
-						<iron-image src="[[dataDB.boss.photo.image]]" placeholder="[[app.baseUrl]]images/loading.gif" prevent-load="" contain="" preload="" fade=""></iron-image>
-					</template>
+						<p class="paper-font-headline">
+							[[dataDB.boss.position]]
+						</p>
 
-					<p>[[dataDB.boss.name]]</p>
-				</grid-col>
+						<template is="dom-if" if="[[dataDB.boss.photo.enabled]]">
+							<iron-image src="[[dataDB.boss.photo.image]]" placeholder="[[app.baseUrl]]images/loading.gif" prevent-load="" contain="" preload="" fade="">
+							</iron-image>
+						</template>
 
-				<grid-col s="1" class="shadow">
-					<div><template is="juicy-html" content$="[[dataDB.boss.reception]]"></template></div>
+						<p>[[dataDB.boss.name]]</p>
+					</grid-col>
 
-					
+					<grid-col s="1" class="shadow">
+						<div>
+							<template is="juicy-html" content$="[[dataDB.boss.reception]]">
+							</template>
+						</div>
+					</grid-col>
 
-				</grid-col>
-			</grid-element>
+				</grid-element>
+
 		</paper-material>
-
 	</template>
 	<script>
 	(function() {
@@ -43171,15 +43036,6 @@ Z(Q.prototype,"ref",Q.prototype.na);Ib.STATE_CHANGED="state_changed";P.RUNNING="
 				background-color: white;
 				border-radius: 0 0 8px 8px;
 			}
-			/*iron-accordion {
-				background-color: var(--paper-blue-grey-50);
-			}
-			.paper-font-headline {
-				padding: 8px;
-			}
-			.accordionContent {
-				background-color: white;
-			}*/
 			iron-collapse:focus {
 				outline: none;
 			}
@@ -43196,51 +43052,53 @@ Z(Q.prototype,"ref",Q.prototype.na);Ib.STATE_CHANGED="state_changed";P.RUNNING="
 				background-color: var(--paper-blue-grey-50);
 			}
 		</style>
-		<firebase-document id="firebaseDocument" app-name="uomgo" path="/about/docs" data="{{docData}}"></firebase-document>
+		<firebase-document id="firebaseDocument" app-name="uomgo" path="/about/docs" data="{{docData}}">
+		</firebase-document>
 
 		<paper-material elevation="4">
 			<div class="content">
 
-				<template is="juicy-html" content$="[[docData.text]]"></template>
+				<template is="juicy-html" content$="[[docData.text]]">
+				</template>
 
 				<div class="accordeonBox">
 					<div class="accordeonHeader paper-font-headline" aria-expanded$="[[isExpanded(openedDOIN)]]" aria-controls="DOIN" on-tap="toggle" data-args="#DOIN">
-						Приказы департамента образования и науки Кемеровской области
+							Приказы департамента образования и науки Кемеровской области
 					</div>
 					<iron-collapse id="DOIN" tabindex="0" opened="{{openedDOIN}}">
-						<div class="collapse-content shadow">
-							<template is="juicy-html" content$="[[docData.DOIN.text]]"></template>
-						</div>
+							<div class="collapse-content shadow">
+								<template is="juicy-html" content$="[[docData.DOIN.text]]">
+								</template>
+							</div>
 					</iron-collapse>
 				</div>
 
 				<div class="accordeonBox">
 					<div class="accordeonHeader paper-font-headline" aria-expanded$="[[isExpanded(openedAdminMGO)]]" aria-controls="adminMGO" on-tap="toggle" data-args="#adminMGO">
-						Постановления администрации МГО
+							Постановления администрации МГО
 					</div>
 					<iron-collapse id="adminMGO" tabindex="0" opened="{{openedAdminMGO}}">
-						<div class="collapse-content shadow">
-							<template is="juicy-html" content$="[[docData.adminMGO.text]]"></template>
-						</div>
+							<div class="collapse-content shadow">
+								<template is="juicy-html" content$="[[docData.adminMGO.text]]">
+								</template>
+							</div>
 					</iron-collapse>
 				</div>
 
 				<div class="accordeonBox">
 					<div class="accordeonHeader paper-font-headline" aria-expanded$="[[isExpanded(openedAdminPrograms)]]" aria-controls="programs" on-tap="toggle" data-args="#programs">
-						Программы
+							Программы
 					</div>
 					<iron-collapse id="programs" tabindex="0" opened="{{openedAdminPrograms}}">
-						<div class="collapse-content shadow">
-							<template is="juicy-html" content$="[[docData.programs.text]]"></template>
-						</div>
+							<div class="collapse-content shadow">
+								<template is="juicy-html" content$="[[docData.programs.text]]">
+								</template>
+							</div>
 					</iron-collapse>
 				</div>
 
-				
-
 			</div>
 		</paper-material>
-
 	</template>
 	<script>
 	(function() {
@@ -43251,22 +43109,6 @@ Z(Q.prototype,"ref",Q.prototype.na);Ib.STATE_CHANGED="state_changed";P.RUNNING="
 			properties: {
 
 			},
-			// ready: function() {
-			// 	var firebaseDocument = this.$.firebaseDocument;
-			// 	var ironAccordions = this.querySelector('iron-accordions');
-			// 	ironAccordions.addEventListener('transitionend', function() {
-			// 		var headerPanelMain = app.$.headerPanelMain;
-			// 		var scrollTop = headerPanelMain.scroller.scrollTop;
-			// 		var top = this._selection.selection[0].getBoundingClientRect().top;
-			// 		if ( this._selection.selection[0].opened ) {
-			// 			if ( top > 0 ) {
-			// 				headerPanelMain.scroll(top + scrollTop, true);
-			// 			} else if ( top < 0 ) {
-			// 				headerPanelMain.scroll( top + scrollTop - 64, true);
-			// 			};
-			// 		};
-			// 	});
-			// },
 			toggle: function(e) {
 		    document.querySelector( e.target.getAttribute('data-args') ).toggle();
 		  },
@@ -43285,13 +43127,18 @@ Z(Q.prototype,"ref",Q.prototype.na);Ib.STATE_CHANGED="state_changed";P.RUNNING="
 			}
 		</style>
 
-		<firebase-auth id="auth" user="{{user}}" provider="google" app-name="uomgo" on-error="showError"></firebase-auth>
+		<firebase-auth id="auth" user="{{user}}" provider="google" app-name="uomgo" on-error="showError">
+		</firebase-auth>
 
-		<app-location route="{{route}}" use-hash-as-path=""></app-location>
+		<app-location route="{{route}}" use-hash-as-path="">
+		</app-location>
 
-		<app-route route="{{route}}" pattern="/:page" data="{{data}}" tail="{{_tail}}"></app-route>
+		<app-route route="{{route}}" pattern="/:page" data="{{data}}" tail="{{_tail}}">
+		</app-route>
 
-		<app-route route="{{_tail}}" pattern="/:subPage" data="{{subData}}"></app-route>
+		<app-route route="{{_tail}}" pattern="/:subPage" data="{{subData}}">
+		</app-route>
+
 	</template>
 	<script>
 	(function() {
@@ -43318,37 +43165,52 @@ Z(Q.prototype,"ref",Q.prototype.na);Ib.STATE_CHANGED="state_changed";P.RUNNING="
 				}
 			},
 			ready: function() {
+				switch(this.route.path) {
+					case '':
+						this.async(function() {
+							this.set('route.path', '/main');
+						});
+						break;
+					case '/':
+						this.async(function() {
+							this.set('route.path', '/main');
+						});
+						break;
+				}
 			},
 			_routeChanged: function(newValue, oldValue) {
 				// console.log(oldValue, newValue);
-					switch(newValue.path) {
-						case '':
-							this.async(function() {
-								this.set('newValue.path', '/main');
-							});
-							break;
-						case '/':
-							this.async(function() {
-								this.set('newValue.path', '/main');
-							});
-							break;
-						// case '/about':
-						// 	this.async(function() {
-						// 		this.set('newValue.path', '/about/boss');
-						// 	});
-						// 	break;
-						// case '/virt':
-						// 	if (this.user) {
-						// 		this.async(function() {
-						// 			this.set('newValue.path', '/virt/messages');
-						// 		});
-						// 		} else {
-						// 		this.async(function() {
-						// 			this.set('newValue.path', '/virt/rules');
-						// 		});
-						// 	};
-						// 	break;
-					}
+				// this._switchRoutePath(newValue);
+			},
+			_switchRoutePath: function(newValue) {
+				switch(newValue.path) {
+					case '':
+						this.async(function() {
+							this.set('newValue.path', '/main');
+						});
+						break;
+					case '/':
+						this.async(function() {
+							this.set('newValue.path', '/main');
+						});
+						break;
+					// case '/about':
+					// 	this.async(function() {
+					// 		this.set('newValue.path', '/about/boss');
+					// 	});
+					// 	break;
+					// case '/virt':
+					// 	if (this.user) {
+					// 		this.async(function() {
+					// 			this.set('newValue.path', '/virt/messages');
+					// 		});
+					// 		} else {
+					// 		this.async(function() {
+					// 			this.set('newValue.path', '/virt/rules');
+					// 		});
+					// 	};
+					// 	break;
+				}
 			}
 		});
 	})();
@@ -43477,7 +43339,8 @@ Z(Q.prototype,"ref",Q.prototype.na);Ib.STATE_CHANGED="state_changed";P.RUNNING="
 			}
 		</style>
 
-		<firebase-auth id="auth" user="{{user}}" provider="google" app-name="uomgo" on-error="showError"></firebase-auth>
+		<firebase-auth id="auth" user="{{user}}" provider="google" app-name="uomgo" on-error="showError">
+		</firebase-auth>
 
 		<paper-card class="data-item" heading="[[post.name]]" elevation="4">
 
@@ -43489,18 +43352,21 @@ Z(Q.prototype,"ref",Q.prototype.na);Ib.STATE_CHANGED="state_changed";P.RUNNING="
 
 				<template is="dom-if" if="[[post.iframe]]">
 
-					<iframe class="imageFrame" src="[[post.iframe]]" frameborder="0" height="360" width="480"></iframe>
+					<iframe class="imageFrame" src="[[post.iframe]]" frameborder="0" height="360" width="480">
+					</iframe>
 
 				</template>
 
 				<template is="dom-if" if="[[post.image]]">
-					<iron-image class="postImage" src="[[post.image]]" on-tap="_openView" contain="" preload="" align="center"></iron-image>
+					<iron-image class="postImage" src="[[post.image]]" on-tap="_openView" contain="" preload="" align="center">
+					</iron-image>
 				</template>
 
 				<template is="dom-if" if="[[post.text]]">
 					<div class="yellow-gradient" style="margin-top:16px;width:100%;">
 						<div class="post-text">
-							<template is="juicy-html" content$="[[post.text]]"></template>
+							<template is="juicy-html" content$="[[post.text]]">
+							</template>
 						</div>
 					</div>
 				</template>
@@ -43509,11 +43375,14 @@ Z(Q.prototype,"ref",Q.prototype.na);Ib.STATE_CHANGED="state_changed";P.RUNNING="
 			<div class="content actions-container">
 				<div class="card-actions">
 					<div class="spacer">
-						<moment-js date="[[post.date]]" format="DD.MM.YYYYг."></moment-js>
+						<moment-js date="[[post.date]]" format="DD.MM.YYYYг.">
+						</moment-js>
 					</div>
 					<div hidden$="[[!user]]" style="padding:0 !important;">
-						<paper-icon-button class="edit" icon="image:edit"></paper-icon-button>
-						<paper-icon-button class="delete" icon="delete"></paper-icon-button>
+						<paper-icon-button class="edit" icon="image:edit">
+						</paper-icon-button>
+						<paper-icon-button class="delete" icon="delete">
+						</paper-icon-button>
 					</div>
 				</div>
 			</div>
@@ -43575,20 +43444,27 @@ Z(Q.prototype,"ref",Q.prototype.na);Ib.STATE_CHANGED="state_changed";P.RUNNING="
 
 		<paper-dialog id="editPostDialog" modal="" entry-animation="scale-up-animation" exit-animation="fade-out-animation" style="width: 514px">
 
-			<h2 class="text-align-center">Редактирование</h2>
-			<div class="content text-align-center">
+				<h2 class="text-align-center">Редактирование</h2>
+				<div class="content text-align-center">
 
-				<paper-input id="name" value="{{postData.name}}" label="Название"></paper-input>
-				<paper-input id="videoId" value="{{postData.video-id}}" label="Идентификатор видео"></paper-input>
-				<iron-autogrow-textarea id="text" value="{{postData.text}}" placeholder="Текст"></iron-autogrow-textarea>
-				<paper-input id="date" value="{{postData.date}}" type="date" label="Дата"></paper-input>
-			</div>
-			<div class="buttons">
-				<paper-button dialog-dismiss="">Отмена</paper-button>
-				<paper-button dialog-confirm="" autofocus="" on-tap="_savePost">Сохранить</paper-button>
-			</div>
+					<paper-input id="name" value="{{postData.name}}" label="Название">
+					</paper-input>
+					<paper-input id="videoId" value="{{postData.video-id}}" label="Идентификатор видео">
+					</paper-input>
+					<iron-autogrow-textarea id="text" value="{{postData.text}}" placeholder="Текст">
+					</iron-autogrow-textarea>
+					<paper-input id="date" value="{{postData.date}}" type="date" label="Дата"></paper-input>
+				</div>
+				<div class="buttons">
+					<paper-button dialog-dismiss="">
+							Отмена
+					</paper-button>
+					<paper-button dialog-confirm="" autofocus="" on-tap="_savePost">
+							Сохранить
+					</paper-button>
+				</div>
+
 		</paper-dialog>
-
 	</template>
 	<script>
 	(function() {
@@ -43600,7 +43476,6 @@ Z(Q.prototype,"ref",Q.prototype.na);Ib.STATE_CHANGED="state_changed";P.RUNNING="
 			},
 			ready: function() {
 				this.$.date.addEventListener('change', function(e) {
-					// console.log('change', e.target.value);
 				});
 			}
 		});
@@ -43627,15 +43502,19 @@ Z(Q.prototype,"ref",Q.prototype.na);Ib.STATE_CHANGED="state_changed";P.RUNNING="
 		</style>
 		<paper-dialog id="deletePostDialog" modal="" entry-animation="scale-up-animation" exit-animation="fade-out-animation">
 
-			<h2 class="text-align-center">Удаление</h2>
-			<div class="content text-align-center">
-				<h3>Запись будет безвозвратно удалена.</h3>
-				<h2 style="color: red;">Уверены?</h2>
-			</div>
-			<div class="buttons">
-				<paper-button dialog-dismiss="">Отмена</paper-button>
-				<paper-button dialog-confirm="" autofocus="" on-tap="_deletePost">Да</paper-button>
-			</div>
+				<h2 class="text-align-center">Удаление</h2>
+				<div class="content text-align-center">
+					<h3>Запись будет безвозвратно удалена.</h3>
+					<h2 style="color: red;">Уверены?</h2>
+				</div>
+				<div class="buttons">
+					<paper-button dialog-dismiss="">
+						Отмена
+					</paper-button>
+					<paper-button dialog-confirm="" autofocus="" on-tap="_deletePost">
+							Да
+					</paper-button>
+				</div>
 
 		</paper-dialog>
 	</template>
@@ -43644,11 +43523,7 @@ Z(Q.prototype,"ref",Q.prototype.na);Ib.STATE_CHANGED="state_changed";P.RUNNING="
 		'use strict';
 
 		Polymer({
-			is: 'x-post-delete-dialog',
-			properties: {
-			},
-			ready: function() {
-			}
+			is: 'x-post-delete-dialog'
 		});
 	})();
 	</script>
@@ -43667,18 +43542,6 @@ Z(Q.prototype,"ref",Q.prototype.na);Ib.STATE_CHANGED="state_changed";P.RUNNING="
 				/*max-width: 514px;*/
 				width: 100%;
 			}
-/*
-			@media (max-width: 544px) {
-				.data-item {
-					width: calc(100vw - 32px);
-				}
-			}
-			@media (min-width: 545px) {
-				.data-item {
-					width: 514px;
-				}
-			}
-*/
 			paper-card {
 				--paper-card: {
 						text-align: center;
@@ -43753,21 +43616,24 @@ Z(Q.prototype,"ref",Q.prototype.na);Ib.STATE_CHANGED="state_changed";P.RUNNING="
 
 			<div class="card-content green-gradient">
 				<div class="box">
+
 					<grid-element ga="16px">
 
 						<template is="dom-if" if="[[message.logo]]">
-							<grid-col s="1" stretch="" class="shadow layout vertical center-center">
-								<iron-image src="[[message.logo]]" width="100" prevent-load="" preload="" placeholder="[[app.baseUrl]]images/loading.gif" fade=""></iron-image>
+							<grid-col class="shadow layout vertical center-center" s="1" stretch="">
+									<iron-image src="[[message.logo]]" width="100" prevent-load="" preload="" placeholder="[[app.baseUrl]]images/loading.gif" fade="">
+									</iron-image>
 							</grid-col>
 						</template>
 
 						<grid-col s="100" stretch="" class="shadow">
 							<div>
-								<template is="juicy-html" content$="[[message.text]]"></template>
+								<template is="juicy-html" content$="[[message.text]]">
+								</template>
 							</div>
 						</grid-col>
-
 					</grid-element>
+
 				</div>
 			</div>
 
@@ -43793,9 +43659,6 @@ Z(Q.prototype,"ref",Q.prototype.na);Ib.STATE_CHANGED="state_changed";P.RUNNING="
 			}
 			x-message-item {
 				margin: 0 16px 16px;
-				/*margin-bottom: 16px;*/
-				/*margin-left: 16px;*/
-				/*margin-right: 16px;*/
 			}
 			@media (max-width: 600px) {
 				x-message-item {
@@ -43804,15 +43667,16 @@ Z(Q.prototype,"ref",Q.prototype.na);Ib.STATE_CHANGED="state_changed";P.RUNNING="
 				}
 			}
 		</style>
-		<firebase-query id="firebaseQueryMessages" path="/messages" app-name="uomgo" order-by-child="date" data="{{dataDB}}"></firebase-query>
+		<firebase-query id="firebaseQueryMessages" path="/messages" app-name="uomgo" order-by-child="date" data="{{dataDB}}">
+		</firebase-query>
 
 		<template is="dom-repeat" items="[[dataDB]]" as="message" sort="_computeSort" target-framerate="60">
 
-			<div>
-				<template is="dom-if" if="[[message.visible]]">
-					<x-message-item message="[[message]]"></x-message-item>
-				</template>
-			</div>
+				<div>
+					<template is="dom-if" if="[[message.visible]]">
+						<x-message-item message="[[message]]"></x-message-item>
+					</template>
+				</div>
 
 		</template>
 
@@ -43865,23 +43729,21 @@ Z(Q.prototype,"ref",Q.prototype.na);Ib.STATE_CHANGED="state_changed";P.RUNNING="
 			}
 		</style>
 
-		
-		<firebase-query id="firebaseQueryPosts" path="/posts" app-name="uomgo" order-by-child="date" start-at="{{startAt}}" end-at="{{endAt}}" limit-to-first="[[limitToFirst]]" limit-to-last="[[limitToLast]]" data="{{dataDB}}"></firebase-query>
+		<firebase-query id="firebaseQueryPosts" path="/posts" app-name="uomgo" order-by-child="date" start-at="{{startAt}}" end-at="{{endAt}}" limit-to-first="[[limitToFirst]]" limit-to-last="[[limitToLast]]" data="{{dataDB}}">
+		</firebase-query>
 
-		<array-filter items="[[dataDB]]" filtered="{{filtered}}" sort="_computeSort" filter="_filter"></array-filter>
+		<array-filter items="[[dataDB]]" filtered="{{filtered}}" sort="_computeSort" filter="_filter">
+		</array-filter>
 
 		<div id="grid">
 			<template id="domRepeat" is="dom-repeat" items="[[filtered]]" as="post" target-framerate="60" on-dom-change="_renderRepeat">
-
-				<div class="postItem">
-					<template is="dom-if" if="[[post.enabled]]">
-						<x-post-item post="[[post]]"></x-post-item>
-					</template>
-				</div>
+					<div class="postItem">
+						<template is="dom-if" if="[[post.enabled]]">
+							<x-post-item post="[[post]]"></x-post-item>
+						</template>
+					</div>
 			</template>
-
 		</div>
-
 
 	</template>
 	<script>
@@ -43945,11 +43807,17 @@ Z(Q.prototype,"ref",Q.prototype.na);Ib.STATE_CHANGED="state_changed";P.RUNNING="
 					var itemDate = new Date(item.date);
 					var itemMM = itemDate.getMonth()+1;
 					var itemYYYY = itemDate.getFullYear();
+					var diffYYYY = todayYYYY - itemYYYY;
+					var diffMM = todayMM - itemMM;
 
-					if ( (todayYYYY - itemYYYY === 1) && (itemMM > 8)  ) {
-						return true;
-					};
-					if ( (todayYYYY - itemYYYY === 0) && (itemMM < 6)  ) {
+					// if ( (todayYYYY - itemYYYY === 1) && (itemMM > 8)  ) {
+					// 	return true;
+					// };
+					// if ( (todayYYYY - itemYYYY === 0) && (itemMM < 6)  ) {
+					// 	return true;
+					// };
+
+					if ( diffYYYY <= 1 ) {
 						return true;
 					};
 
@@ -44026,20 +43894,21 @@ Z(Q.prototype,"ref",Q.prototype.na);Ib.STATE_CHANGED="state_changed";P.RUNNING="
 			}
 		</style>
 
-		<firebase-query id="firebaseQuery" path="/footer" app-name="uomgo" data="{{data}}"></firebase-query>
+		<firebase-query id="firebaseQuery" path="/footer" app-name="uomgo" data="{{data}}">
+		</firebase-query>
 
 		<footer class="content shadow-elevation-4dp">
 			<div class="links">
 				<template is="dom-repeat" items="[[data]]" as="val">
 					<a class="divlink" href="[[val.href]]" tabindex="-1" target="_blank">
-
-						<iron-image src="[[val.image]]"></iron-image>
-
-						<paper-tooltip position="top" offset="6" animation-delay="250">
-							<div>
-								<template is="juicy-html" content$="[[val.name]]"></template>
-							</div>
-						</paper-tooltip>
+							<iron-image src="[[val.image]]">
+							</iron-image>
+							<paper-tooltip position="top" offset="6" animation-delay="250">
+									<div>
+										<template is="juicy-html" content$="[[val.name]]">
+										</template>
+									</div>
+							</paper-tooltip>
 					</a>
 				</template>
 			</div>
@@ -44067,15 +43936,6 @@ Z(Q.prototype,"ref",Q.prototype.na);Ib.STATE_CHANGED="state_changed";P.RUNNING="
 				background-color: white;
 				border-radius: 0 0 8px 8px;
 			}
-			/*iron-accordion {
-				background-color: var(--paper-blue-grey-50);
-			}
-			.paper-font-headline {
-				padding: 8px;
-			}
-			.accordionContent {
-				background-color: white;
-			}*/
 			iron-collapse:focus {
 				outline: none;
 			}
@@ -44092,47 +43952,47 @@ Z(Q.prototype,"ref",Q.prototype.na);Ib.STATE_CHANGED="state_changed";P.RUNNING="
 				background-color: var(--paper-blue-grey-50);
 			}
 		</style>
-		<firebase-document id="firebaseDocument" app-name="uomgo" path="/about/localGov" data="{{docData}}"></firebase-document>
+		<firebase-document id="firebaseDocument" app-name="uomgo" path="/about/localGov" data="{{docData}}">
+		</firebase-document>
 
 		<paper-material elevation="4">
 			<div class="content">
 
-				
-
 				<div class="accordeonBox">
 					<div class="accordeonHeader paper-font-headline" aria-expanded$="[[isExpanded(openedCollegium)]]" aria-controls="collegium" on-tap="toggle" data-args="#collegium">
-						Коллегия МКУ УО МГО
+							Коллегия МКУ УО МГО
 					</div>
 					<iron-collapse id="collegium" tabindex="0" opened="{{openedCollegium}}">
 						<div class="collapse-content shadow">
-							<template is="juicy-html" content$="[[docData.collegium.text]]"></template>
+							<template is="juicy-html" content$="[[docData.collegium.text]]">
+							</template>
 						</div>
 					</iron-collapse>
 				</div>
 
 				<div class="accordeonBox">
 					<div class="accordeonHeader paper-font-headline" aria-expanded$="[[isExpanded(openedConucil)]]" aria-controls="council" on-tap="toggle" data-args="#council">
-						Муниципальный управляющий совет
+							Муниципальный управляющий совет
 					</div>
 					<iron-collapse id="council" tabindex="0" opened="{{openedConucil}}">
-						<div class="collapse-content shadow">
-							<template is="juicy-html" content$="[[docData.council.text]]"></template>
-						</div>
+							<div class="collapse-content shadow">
+								<template is="juicy-html" content$="[[docData.council.text]]">
+								</template>
+							</div>
 					</iron-collapse>
 				</div>
 
 				<div class="accordeonBox">
 					<div class="accordeonHeader paper-font-headline" aria-expanded$="[[isExpanded(openedCommission)]]" aria-controls="commission" on-tap="toggle" data-args="#commission">
-						Комиссия
+							Комиссия
 					</div>
 					<iron-collapse id="commission" tabindex="0" opened="{{openedCommission}}">
-						<div class="collapse-content shadow">
-							<template is="juicy-html" content$="[[docData.commission.text]]"></template>
-						</div>
+							<div class="collapse-content shadow">
+								<template is="juicy-html" content$="[[docData.commission.text]]">
+								</template>
+							</div>
 					</iron-collapse>
 				</div>
-
-				
 
 			</div>
 		</paper-material>
@@ -44147,21 +44007,6 @@ Z(Q.prototype,"ref",Q.prototype.na);Ib.STATE_CHANGED="state_changed";P.RUNNING="
 			properties: {
 
 			},
-			// ready: function() {
-			// 	var ironAccordions = this.querySelector('iron-accordions');
-			// 	ironAccordions.addEventListener('transitionend', function() {
-			// 		var headerPanelMain = app.$.headerPanelMain;
-			// 		var scrollTop = headerPanelMain.scroller.scrollTop;
-			// 		var top = this._selection.selection[0].getBoundingClientRect().top;
-			// 		if ( this._selection.selection[0].opened ) {
-			// 			if ( top > 0 ) {
-			// 				headerPanelMain.scroll(top + scrollTop, true);
-			// 			} else if ( top < 0 ) {
-			// 				headerPanelMain.scroll( top + scrollTop - 64, true);
-			// 			};
-			// 		};
-			// 	});
-			// },
 			toggle: function(e) {
 		    document.querySelector( e.target.getAttribute('data-args') ).toggle();
 		  },
@@ -44191,14 +44036,14 @@ Z(Q.prototype,"ref",Q.prototype.na);Ib.STATE_CHANGED="state_changed";P.RUNNING="
 			}
 		</style>
 
-		<firebase-document id="firebaseDocument" app-name="uomgo" path="/sections/preschool" data="{{preschoolData}}"></firebase-document>
+		<firebase-document id="firebaseDocument" app-name="uomgo" path="/sections/preschool" data="{{preschoolData}}">
+		</firebase-document>
 
 		<paper-card heading="Отдел дошкольного образования" image="" elevation="4" animated-shadow="false">
-
-			<div class="card-content">
-				<template is="juicy-html" content$="[[preschoolData.text]]"></template>
- 			</div>
-
+				<div class="card-content">
+					<template is="juicy-html" content$="[[preschoolData.text]]">
+					</template>
+	 			</div>
 		</paper-card>
 
 	</template>
@@ -44207,10 +44052,7 @@ Z(Q.prototype,"ref",Q.prototype.na);Ib.STATE_CHANGED="state_changed";P.RUNNING="
 		'use strict';
 
 		Polymer({
-			is: 't-preschool-template',
-			properties: {
-
-			}
+			is: 't-preschool-template'
 		});
 	})();
 	</script>
@@ -44232,15 +44074,6 @@ Z(Q.prototype,"ref",Q.prototype.na);Ib.STATE_CHANGED="state_changed";P.RUNNING="
 				--paper-card-content: {
 				};
 			}
-			/*iron-accordion {
-				background-color: var(--paper-blue-grey-50);
-			}
-			.paper-font-headline {
-				padding: 8px;
-			}
-			.accordionContent {
-				background-color: white;
-			}*/
 			iron-collapse:focus {
 				outline: none;
 			}
@@ -44258,92 +44091,99 @@ Z(Q.prototype,"ref",Q.prototype.na);Ib.STATE_CHANGED="state_changed";P.RUNNING="
 			}
 		</style>
 
-		<firebase-document id="firebaseDocument" app-name="uomgo" path="/sections/sport" data="{{docData}}"></firebase-document>
+		<firebase-document id="firebaseDocument" app-name="uomgo" path="/sections/sport" data="{{docData}}">
+		</firebase-document>
 
 		<paper-card id="card" heading="Отдел по физкультурно-оздоровительной работе и обеспечению безопасности" image="" elevation="4" animated-shadow="false">
 
-			<div class="card-content"></div>
+				<div class="card-content"></div>
 				<div class="content">
-					<template is="juicy-html" content$="[[docData.text]]"></template>
+					<template is="juicy-html" content$="[[docData.text]]">
+					</template>
 
 					<div class="accordeonBox">
 						<div class="accordeonHeader paper-font-headline" aria-expanded$="[[isExpanded(openedAntiTerror)]]" aria-controls="antiTerror" on-tap="toggle" data-args="#antiTerror">
-							Антитеррор
+								Антитеррор
 						</div>
 						<iron-collapse id="antiTerror" tabindex="0" opened="{{openedAntiTerror}}">
-							<div class="collapse-content shadow">
-								<template is="juicy-html" content$="[[docData.antiTerror.text]]"></template>
-							</div>
+								<div class="collapse-content shadow">
+									<template is="juicy-html" content$="[[docData.antiTerror.text]]">
+									</template>
+								</div>
 						</iron-collapse>
 					</div>
 
 					<div class="accordeonBox">
 						<div class="accordeonHeader paper-font-headline" aria-expanded$="[[isExpanded(openedCivilDefense)]]" aria-controls="civilDefense" on-tap="toggle" data-args="#civilDefense">
-							ГО и ЧС
+								ГО и ЧС
 						</div>
 						<iron-collapse id="civilDefense" tabindex="0" opened="{{openedCivilDefense}}">
-							<div class="collapse-content shadow">
-								<template is="juicy-html" content$="[[docData.civilDefense.text]]"></template>
-							</div>
+								<div class="collapse-content shadow">
+									<template is="juicy-html" content$="[[docData.civilDefense.text]]">
+									</template>
+								</div>
 						</iron-collapse>
 					</div>
 
 					<div class="accordeonBox">
 						<div class="accordeonHeader paper-font-headline" aria-expanded$="[[isExpanded(openedRoadSafety)]]" aria-controls="roadSafety" on-tap="toggle" data-args="#roadSafety">
-							Дорожная безопасность
+								Дорожная безопасность
 						</div>
 						<iron-collapse id="roadSafety" tabindex="0" opened="{{openedRoadSafety}}">
-							<div class="collapse-content shadow">
-								<template is="juicy-html" content$="[[docData.roadSafety.text]]"></template>
-							</div>
+								<div class="collapse-content shadow">
+									<template is="juicy-html" content$="[[docData.roadSafety.text]]">
+									</template>
+								</div>
 						</iron-collapse>
 					</div>
 
 					<div class="accordeonBox">
 						<div class="accordeonHeader paper-font-headline" aria-expanded$="[[isExpanded(openedHealth)]]" aria-controls="health" on-tap="toggle" data-args="#health">
-							Здоровье
+								Здоровье
 						</div>
 						<iron-collapse id="health" tabindex="0" opened="{{openedHealth}}">
-							<div class="collapse-content shadow">
-								<template is="juicy-html" content$="[[docData.health.text]]"></template>
-							</div>
+								<div class="collapse-content shadow">
+									<template is="juicy-html" content$="[[docData.health.text]]">
+									</template>
+								</div>
 						</iron-collapse>
 					</div>
 
 					<div class="accordeonBox">
 						<div class="accordeonHeader paper-font-headline" aria-expanded$="[[isExpanded(openedFirstAid)]]" aria-controls="firstAid" on-tap="toggle" data-args="#firstAid">
-							Первая помощь
+								Первая помощь
 						</div>
 						<iron-collapse id="firstAid" tabindex="0" opened="{{openedFirstAid}}">
-							<div class="collapse-content shadow">
-								<template is="juicy-html" content$="[[docData.firstAid.text]]"></template>
-							</div>
+								<div class="collapse-content shadow">
+									<template is="juicy-html" content$="[[docData.firstAid.text]]">
+									</template>
+								</div>
 						</iron-collapse>
 					</div>
 
 					<div class="accordeonBox">
 						<div class="accordeonHeader paper-font-headline" aria-expanded$="[[isExpanded(openedFireSafety)]]" aria-controls="fireSafety" on-tap="toggle" data-args="#fireSafety">
-							Пожарная безопасность
+								Пожарная безопасность
 						</div>
 						<iron-collapse id="fireSafety" tabindex="0" opened="{{openedFireSafety}}">
-							<div class="collapse-content shadow">
-								<template is="juicy-html" content$="[[docData.fireSafety.text]]"></template>
-							</div>
+								<div class="collapse-content shadow">
+									<template is="juicy-html" content$="[[docData.fireSafety.text]]">
+									</template>
+								</div>
 						</iron-collapse>
 					</div>
 
 					<div class="accordeonBox">
 						<div class="accordeonHeader paper-font-headline" aria-expanded$="[[isExpanded(openedGTO)]]" aria-controls="GTO" on-tap="toggle" data-args="#GTO">
-							ГТО
+								ГТО
 						</div>
 						<iron-collapse id="GTO" tabindex="0" opened="{{openedGTO}}">
-							<div class="collapse-content shadow">
-								<template is="juicy-html" content$="[[docData.GTO.text]]"></template>
-							</div>
+								<div class="collapse-content shadow">
+									<template is="juicy-html" content$="[[docData.GTO.text]]">
+									</template>
+								</div>
 						</iron-collapse>
 					</div>
-
-					
 
 					<template is="juicy-html" content$="[[docData.ADD.text]]"></template>
 				</div>
@@ -44361,21 +44201,6 @@ Z(Q.prototype,"ref",Q.prototype.na);Ib.STATE_CHANGED="state_changed";P.RUNNING="
 			properties: {
 
 			},
-			// ready: function() {
-			// 	var ironAccordions = this.querySelector('iron-accordions');
-			// 	ironAccordions.addEventListener('transitionend', function() {
-			// 		var headerPanelMain = app.$.headerPanelMain;
-			// 		var scrollTop = headerPanelMain.scroller.scrollTop;
-			// 		var top = this._selection.selection[0].getBoundingClientRect().top;
-			// 		if ( this._selection.selection[0].opened ) {
-			// 			if ( top > 0 ) {
-			// 				headerPanelMain.scroll(top + scrollTop, true);
-			// 			} else if ( top < 0 ) {
-			// 				headerPanelMain.scroll( top + scrollTop - 64, true);
-			// 			};
-			// 		};
-			// 	});
-			// }
 			toggle: function(e) {
 		    document.querySelector( e.target.getAttribute('data-args') ).toggle();
 		  },
@@ -44404,15 +44229,6 @@ Z(Q.prototype,"ref",Q.prototype.na);Ib.STATE_CHANGED="state_changed";P.RUNNING="
 				--paper-card-content: {
 				};
 			}
-			/*iron-accordion {
-				background-color: var(--paper-blue-grey-50);
-			}
-			.paper-font-headline {
-				padding: 8px;
-			}
-			.accordionContent {
-				background-color: white;
-			}*/
 			iron-collapse:focus {
 				outline: none;
 			}
@@ -44430,141 +44246,151 @@ Z(Q.prototype,"ref",Q.prototype.na);Ib.STATE_CHANGED="state_changed";P.RUNNING="
 			}
 		</style>
 
-		<firebase-document id="firebaseDocument" app-name="uomgo" path="/sections/upbringe" data="{{docData}}"></firebase-document>
+		<firebase-document id="firebaseDocument" app-name="uomgo" path="/sections/upbringe" data="{{docData}}">
+		</firebase-document>
 
 		<paper-card id="card" heading="Отдел воспитательной работы и дополнительного образования" image="" elevation="4" animated-shadow="false">
 
-			<div class="card-content"></div>
-				<div class="content">
+				<div class="card-content"></div>
+					<div class="content">
 
+						<template is="juicy-html" content$="[[docData.text]]">
+						</template>
 
-					<template is="juicy-html" content$="[[docData.text]]"></template>
-
-					<div class="accordeonBox">
-						<div class="accordeonHeader paper-font-headline" aria-expanded$="[[isExpanded(openedConceptEducation)]]" aria-controls="conceptEducation" on-tap="toggle" data-args="#conceptEducation">
-							Концепция развития дополнительного образования детей
-						</div>
-						<iron-collapse id="conceptEducation" tabindex="0" opened="{{openedConceptEducation}}">
-							<div class="collapse-content shadow">
-								<template is="juicy-html" content$="[[docData.conceptEducation.text]]"></template>
+						<div class="accordeonBox">
+							<div class="accordeonHeader paper-font-headline" aria-expanded$="[[isExpanded(openedConceptEducation)]]" aria-controls="conceptEducation" on-tap="toggle" data-args="#conceptEducation">
+									Концепция развития дополнительного образования детей
 							</div>
-						</iron-collapse>
-					</div>
-
-					<div class="accordeonBox">
-						<div class="accordeonHeader paper-font-headline" aria-expanded$="[[isExpanded(openedQualityEducation)]]" aria-controls="qualityEducation" on-tap="toggle" data-args="#qualityEducation">
-							Оценка качества образования в организациях ДОД
+							<iron-collapse id="conceptEducation" tabindex="0" opened="{{openedConceptEducation}}">
+									<div class="collapse-content shadow">
+										<template is="juicy-html" content$="[[docData.conceptEducation.text]]">
+										</template>
+									</div>
+							</iron-collapse>
 						</div>
-						<iron-collapse id="qualityEducation" tabindex="0" opened="{{openedQualityEducation}}">
-							<div class="collapse-content shadow">
-								<template is="juicy-html" content$="[[docData.qualityEducation.text]]"></template>
-							</div>
-						</iron-collapse>
-					</div>
 
-					<div class="accordeonBox">
-						<div class="accordeonHeader paper-font-headline" aria-expanded$="[[isExpanded(openedCareerGuidance)]]" aria-controls="careerGuidance" on-tap="toggle" data-args="#careerGuidance">
-							Профильное обучение и профессиональная ориентация
+						<div class="accordeonBox">
+							<div class="accordeonHeader paper-font-headline" aria-expanded$="[[isExpanded(openedQualityEducation)]]" aria-controls="qualityEducation" on-tap="toggle" data-args="#qualityEducation">
+									Оценка качества образования в организациях ДОД
+							</div>
+							<iron-collapse id="qualityEducation" tabindex="0" opened="{{openedQualityEducation}}">
+									<div class="collapse-content shadow">
+										<template is="juicy-html" content$="[[docData.qualityEducation.text]]">
+										</template>
+									</div>
+							</iron-collapse>
 						</div>
-						<iron-collapse id="careerGuidance" tabindex="0" opened="{{openedCareerGuidance}}">
-							<div class="collapse-content shadow">
-								<template is="juicy-html" content$="[[docData.careerGuidance.text]]"></template>
-							</div>
-						</iron-collapse>
-					</div>
 
-					<div class="accordeonBox">
-						<div class="accordeonHeader paper-font-headline" aria-expanded$="[[isExpanded(openedYouth)]]" aria-controls="youth" on-tap="toggle" data-args="#youth">
-							Поддержка талантливой молодежи
+						<div class="accordeonBox">
+							<div class="accordeonHeader paper-font-headline" aria-expanded$="[[isExpanded(openedCareerGuidance)]]" aria-controls="careerGuidance" on-tap="toggle" data-args="#careerGuidance">
+									Профильное обучение и профессиональная ориентация
+							</div>
+							<iron-collapse id="careerGuidance" tabindex="0" opened="{{openedCareerGuidance}}">
+									<div class="collapse-content shadow">
+										<template is="juicy-html" content$="[[docData.careerGuidance.text]]">
+										</template>
+									</div>
+							</iron-collapse>
 						</div>
-						<iron-collapse id="youth" tabindex="0" opened="{{openedYouth}}">
-							<div class="collapse-content shadow">
-								<template is="juicy-html" content$="[[docData.youth.text]]"></template>
-							</div>
-						</iron-collapse>
-					</div>
 
-					<div class="accordeonBox">
-						<div class="accordeonHeader paper-font-headline" aria-expanded$="[[isExpanded(openedCouncilYouth)]]" aria-controls="councilYouth" on-tap="toggle" data-args="#councilYouth">
-							Совет детей и молодежи
+						<div class="accordeonBox">
+							<div class="accordeonHeader paper-font-headline" aria-expanded$="[[isExpanded(openedYouth)]]" aria-controls="youth" on-tap="toggle" data-args="#youth">
+									Поддержка талантливой молодежи
+							</div>
+							<iron-collapse id="youth" tabindex="0" opened="{{openedYouth}}">
+									<div class="collapse-content shadow">
+										<template is="juicy-html" content$="[[docData.youth.text]]">
+										</template>
+									</div>
+							</iron-collapse>
 						</div>
-						<iron-collapse id="councilYouth" tabindex="0" opened="{{openedCouncilYouth}}">
-							<div class="collapse-content shadow">
-								<template is="juicy-html" content$="[[docData.councilYouth.text]]"></template>
-							</div>
-						</iron-collapse>
-					</div>
 
-					<div class="accordeonBox">
-						<div class="accordeonHeader paper-font-headline" aria-expanded$="[[isExpanded(openedCompetitions)]]" aria-controls="competitions" on-tap="toggle" data-args="#competitions">
-							Конкурсы
+						<div class="accordeonBox">
+							<div class="accordeonHeader paper-font-headline" aria-expanded$="[[isExpanded(openedCouncilYouth)]]" aria-controls="councilYouth" on-tap="toggle" data-args="#councilYouth">
+									Совет детей и молодежи
+							</div>
+							<iron-collapse id="councilYouth" tabindex="0" opened="{{openedCouncilYouth}}">
+									<div class="collapse-content shadow">
+										<template is="juicy-html" content$="[[docData.councilYouth.text]]">
+										</template>
+									</div>
+							</iron-collapse>
 						</div>
-						<iron-collapse id="competitions" tabindex="0" opened="{{openedCompetitions}}">
-							<div class="collapse-content shadow">
-								<template is="juicy-html" content$="[[docData.competitions.text]]"></template>
-							</div>
-						</iron-collapse>
-					</div>
 
-					<div class="accordeonBox">
-						<div class="accordeonHeader paper-font-headline" aria-expanded$="[[isExpanded(openedCrimePrevention)]]" aria-controls="crimePrevention" on-tap="toggle" data-args="#crimePrevention">
-							Профилактика правонарушений
+						<div class="accordeonBox">
+							<div class="accordeonHeader paper-font-headline" aria-expanded$="[[isExpanded(openedCompetitions)]]" aria-controls="competitions" on-tap="toggle" data-args="#competitions">
+									Конкурсы
+							</div>
+							<iron-collapse id="competitions" tabindex="0" opened="{{openedCompetitions}}">
+									<div class="collapse-content shadow">
+										<template is="juicy-html" content$="[[docData.competitions.text]]">
+										</template>
+									</div>
+							</iron-collapse>
 						</div>
-						<iron-collapse id="crimePrevention" tabindex="0" opened="{{openedCrimePrevention}}">
-							<div class="collapse-content shadow">
-								<template is="juicy-html" content$="[[docData.crimePrevention.text]]"></template>
-							</div>
-						</iron-collapse>
-					</div>
 
-					<div class="accordeonBox">
-						<div class="accordeonHeader paper-font-headline" aria-expanded$="[[isExpanded(openedPreventionSubstanceUse)]]" aria-controls="preventionSubstanceUse" on-tap="toggle" data-args="#preventionSubstanceUse">
-							Профилактика употребления ПАВ
+						<div class="accordeonBox">
+							<div class="accordeonHeader paper-font-headline" aria-expanded$="[[isExpanded(openedCrimePrevention)]]" aria-controls="crimePrevention" on-tap="toggle" data-args="#crimePrevention">
+									Профилактика правонарушений
+							</div>
+							<iron-collapse id="crimePrevention" tabindex="0" opened="{{openedCrimePrevention}}">
+									<div class="collapse-content shadow">
+										<template is="juicy-html" content$="[[docData.crimePrevention.text]]">
+										</template>
+									</div>
+							</iron-collapse>
 						</div>
-						<iron-collapse id="preventionSubstanceUse" tabindex="0" opened="{{openedPreventionSubstanceUse}}">
-							<div class="collapse-content shadow">
-								<template is="juicy-html" content$="[[docData.preventionSubstanceUse.text]]"></template>
-							</div>
-						</iron-collapse>
-					</div>
 
-					<div class="accordeonBox">
-						<div class="accordeonHeader paper-font-headline" aria-expanded$="[[isExpanded(openedMilitaryEducation)]]" aria-controls="militaryEducation" on-tap="toggle" data-args="#militaryEducation">
-							Военно-патриотическое и гражданское воспитание
+						<div class="accordeonBox">
+							<div class="accordeonHeader paper-font-headline" aria-expanded$="[[isExpanded(openedPreventionSubstanceUse)]]" aria-controls="preventionSubstanceUse" on-tap="toggle" data-args="#preventionSubstanceUse">
+									Профилактика употребления ПАВ
+							</div>
+							<iron-collapse id="preventionSubstanceUse" tabindex="0" opened="{{openedPreventionSubstanceUse}}">
+								<div class="collapse-content shadow">
+									<template is="juicy-html" content$="[[docData.preventionSubstanceUse.text]]">
+									</template>
+								</div>
+							</iron-collapse>
 						</div>
-						<iron-collapse id="militaryEducation" tabindex="0" opened="{{openedMilitaryEducation}}">
-							<div class="collapse-content shadow">
-								<template is="juicy-html" content$="[[docData.militaryEducation.text]]"></template>
-							</div>
-						</iron-collapse>
-					</div>
 
-					<div class="accordeonBox">
-						<div class="accordeonHeader paper-font-headline" aria-expanded$="[[isExpanded(openedGubernatorialInstitutions)]]" aria-controls="gubernatorialInstitutions" on-tap="toggle" data-args="#gubernatorialInstitutions">
-							Губернаторские учреждения
+						<div class="accordeonBox">
+							<div class="accordeonHeader paper-font-headline" aria-expanded$="[[isExpanded(openedMilitaryEducation)]]" aria-controls="militaryEducation" on-tap="toggle" data-args="#militaryEducation">
+									Военно-патриотическое и гражданское воспитание
+							</div>
+							<iron-collapse id="militaryEducation" tabindex="0" opened="{{openedMilitaryEducation}}">
+									<div class="collapse-content shadow">
+										<template is="juicy-html" content$="[[docData.militaryEducation.text]]">
+										</template>
+									</div>
+							</iron-collapse>
 						</div>
-						<iron-collapse id="gubernatorialInstitutions" tabindex="0" opened="{{openedGubernatorialInstitutions}}">
-							<div class="collapse-content shadow">
-								<template is="juicy-html" content$="[[docData.gubernatorialInstitutions.text]]"></template>
-							</div>
-						</iron-collapse>
-					</div>
 
-					<div class="accordeonBox">
-						<div class="accordeonHeader paper-font-headline" aria-expanded$="[[isExpanded(openedSummer)]]" aria-controls="summer" on-tap="toggle" data-args="#summer">
-							Летний отдых
+						<div class="accordeonBox">
+							<div class="accordeonHeader paper-font-headline" aria-expanded$="[[isExpanded(openedGubernatorialInstitutions)]]" aria-controls="gubernatorialInstitutions" on-tap="toggle" data-args="#gubernatorialInstitutions">
+									Губернаторские учреждения
+							</div>
+							<iron-collapse id="gubernatorialInstitutions" tabindex="0" opened="{{openedGubernatorialInstitutions}}">
+									<div class="collapse-content shadow">
+										<template is="juicy-html" content$="[[docData.gubernatorialInstitutions.text]]">
+										</template>
+									</div>
+							</iron-collapse>
 						</div>
-						<iron-collapse id="summer" tabindex="0" opened="{{openedSummer}}">
-							<div class="collapse-content shadow">
-								<template is="juicy-html" content$="[[docData.summer.text]]"></template>
+
+						<div class="accordeonBox">
+							<div class="accordeonHeader paper-font-headline" aria-expanded$="[[isExpanded(openedSummer)]]" aria-controls="summer" on-tap="toggle" data-args="#summer">
+									Летний отдых
 							</div>
-						</iron-collapse>
+							<iron-collapse id="summer" tabindex="0" opened="{{openedSummer}}">
+									<div class="collapse-content shadow">
+										<template is="juicy-html" content$="[[docData.summer.text]]">
+										</template>
+									</div>
+							</iron-collapse>
+						</div>
+
 					</div>
-
-					
-
-				</div>
-			
+				
 
 		</paper-card>
 
@@ -44575,21 +44401,6 @@ Z(Q.prototype,"ref",Q.prototype.na);Ib.STATE_CHANGED="state_changed";P.RUNNING="
 
 		Polymer({
 			is: 't-upbringe-template',
-			// ready: function() {
-			// 	var ironAccordions = this.querySelector('iron-accordions');
-			// 	ironAccordions.addEventListener('transitionend', function() {
-			// 		var headerPanelMain = app.$.headerPanelMain;
-			// 		var scrollTop = headerPanelMain.scroller.scrollTop;
-			// 		var top = this._selection.selection[0].getBoundingClientRect().top;
-			// 		if ( this._selection.selection[0].opened ) {
-			// 			if ( top > 0 ) {
-			// 				headerPanelMain.scroll(top + scrollTop, true);
-			// 			} else if ( top < 0 ) {
-			// 				headerPanelMain.scroll( top + scrollTop - 64, true);
-			// 			};
-			// 		};
-			// 	});
-			// }
 			toggle: function(e) {
 		    document.querySelector( e.target.getAttribute('data-args') ).toggle();
 		  },
@@ -44617,15 +44428,6 @@ Z(Q.prototype,"ref",Q.prototype.na);Ib.STATE_CHANGED="state_changed";P.RUNNING="
 				--paper-card-content: {
 				};
 			}
-			/*iron-accordion {
-				background-color: var(--paper-blue-grey-50);
-			}
-			.paper-font-headline {
-				padding: 8px;
-			}
-			.accordionContent {
-				background-color: white;
-			}*/
 			iron-collapse:focus {
 				outline: none;
 			}
@@ -44643,97 +44445,104 @@ Z(Q.prototype,"ref",Q.prototype.na);Ib.STATE_CHANGED="state_changed";P.RUNNING="
 			}
 		</style>
 
-		<firebase-document id="firebaseDocument" app-name="uomgo" path="/sections/tutelage" data="{{docData}}"></firebase-document>
+		<firebase-document id="firebaseDocument" app-name="uomgo" path="/sections/tutelage" data="{{docData}}">
+		</firebase-document>
 
 		<paper-card heading="Отдел опеки и попечительства" image="" elevation="4" animated-shadow="false">
 
-			<div class="card-content">
+				<div class="card-content">
 
-				<div class="content">
+					<div class="content">
 
-					<template is="juicy-html" content$="[[docData.text]]"></template>
+						<template is="juicy-html" content$="[[docData.text]]">
+						</template>
 
-					<div class="accordeonBox">
-						<div class="accordeonHeader paper-font-headline" aria-expanded$="[[isExpanded(openedLaws)]]" aria-controls="laws" on-tap="toggle" data-args="#laws">
-							Законодательная база
-						</div>
-						<iron-collapse id="laws" tabindex="0" opened="{{openedLaws}}">
-							<div class="collapse-content shadow">
-								<template is="juicy-html" content$="[[docData.laws.text]]"></template>
+						<div class="accordeonBox">
+							<div class="accordeonHeader paper-font-headline" aria-expanded$="[[isExpanded(openedLaws)]]" aria-controls="laws" on-tap="toggle" data-args="#laws">
+									Законодательная база
 							</div>
-						</iron-collapse>
-					</div>
-
-					<div class="accordeonBox">
-						<div class="accordeonHeader paper-font-headline" aria-expanded$="[[isExpanded(openedFormsOfFamily)]]" aria-controls="formsOfFamily" on-tap="toggle" data-args="#formsOfFamily">
-							Формы семейного устройства:
+							<iron-collapse id="laws" tabindex="0" opened="{{openedLaws}}">
+									<div class="collapse-content shadow">
+										<template is="juicy-html" content$="[[docData.laws.text]]">
+										</template>
+									</div>
+							</iron-collapse>
 						</div>
-						<iron-collapse id="formsOfFamily" tabindex="0" opened="{{openedFormsOfFamily}}">
-							<div class="collapse-content shadow">
-								<template is="juicy-html" content$="[[docData.formsOfFamily.text]]"></template>
-							</div>
-						</iron-collapse>
-					</div>
 
-					<div class="accordeonBox">
-						<div class="accordeonHeader paper-font-headline" aria-expanded$="[[isExpanded(openedLegitimation)]]" aria-controls="legitimation" on-tap="toggle" data-args="#legitimation">
-							Усыновление
+						<div class="accordeonBox">
+							<div class="accordeonHeader paper-font-headline" aria-expanded$="[[isExpanded(openedFormsOfFamily)]]" aria-controls="formsOfFamily" on-tap="toggle" data-args="#formsOfFamily">
+									Формы семейного устройства:
+							</div>
+							<iron-collapse id="formsOfFamily" tabindex="0" opened="{{openedFormsOfFamily}}">
+									<div class="collapse-content shadow">
+										<template is="juicy-html" content$="[[docData.formsOfFamily.text]]">
+										</template>
+									</div>
+							</iron-collapse>
 						</div>
-						<iron-collapse id="legitimation" tabindex="0" opened="{{openedLegitimation}}">
-							<div class="collapse-content shadow">
-								<template is="juicy-html" content$="[[docData.legitimation.text]]"></template>
-							</div>
-						</iron-collapse>
-					</div>
 
-					<div class="accordeonBox">
-						<div class="accordeonHeader paper-font-headline" aria-expanded$="[[isExpanded(openedDealings)]]" aria-controls="dealings" on-tap="toggle" data-args="#dealings">
-							Сделки
+						<div class="accordeonBox">
+							<div class="accordeonHeader paper-font-headline" aria-expanded$="[[isExpanded(openedLegitimation)]]" aria-controls="legitimation" on-tap="toggle" data-args="#legitimation">
+									Усыновление
+							</div>
+							<iron-collapse id="legitimation" tabindex="0" opened="{{openedLegitimation}}">
+									<div class="collapse-content shadow">
+										<template is="juicy-html" content$="[[docData.legitimation.text]]">
+										</template>
+									</div>
+							</iron-collapse>
 						</div>
-						<iron-collapse id="dealings" tabindex="0" opened="{{openedDealings}}">
-							<div class="collapse-content shadow">
-								<template is="juicy-html" content$="[[docData.dealings.text]]"></template>
-							</div>
-						</iron-collapse>
-					</div>
 
-					<div class="accordeonBox">
-						<div class="accordeonHeader paper-font-headline" aria-expanded$="[[isExpanded(openedInformation)]]" aria-controls="information" on-tap="toggle" data-args="#information">
-							Информация для граждан
+						<div class="accordeonBox">
+							<div class="accordeonHeader paper-font-headline" aria-expanded$="[[isExpanded(openedDealings)]]" aria-controls="dealings" on-tap="toggle" data-args="#dealings">
+									Сделки
+							</div>
+							<iron-collapse id="dealings" tabindex="0" opened="{{openedDealings}}">
+									<div class="collapse-content shadow">
+										<template is="juicy-html" content$="[[docData.dealings.text]]">
+										</template>
+									</div>
+							</iron-collapse>
 						</div>
-						<iron-collapse id="information" tabindex="0" opened="{{openedInformation}}">
-							<div class="collapse-content shadow">
-								<template is="juicy-html" content$="[[docData.information.text]]"></template>
-							</div>
-						</iron-collapse>
-					</div>
 
-					<div class="accordeonBox">
-						<div class="accordeonHeader paper-font-headline" aria-expanded$="[[isExpanded(openedMama)]]" aria-controls="mama" on-tap="toggle" data-args="#mama">
-							Мама, найди меня!
+						<div class="accordeonBox">
+							<div class="accordeonHeader paper-font-headline" aria-expanded$="[[isExpanded(openedInformation)]]" aria-controls="information" on-tap="toggle" data-args="#information">
+									Информация для граждан
+							</div>
+							<iron-collapse id="information" tabindex="0" opened="{{openedInformation}}">
+									<div class="collapse-content shadow">
+										<template is="juicy-html" content$="[[docData.information.text]]">
+										</template>
+									</div>
+							</iron-collapse>
 						</div>
-						<iron-collapse id="mama" tabindex="0" opened="{{openedMama}}">
-							<div class="collapse-content shadow">
-								<template is="juicy-html" content$="[[docData.mama.text]]"></template>
-							</div>
-						</iron-collapse>
-					</div>
 
-					<div class="accordeonBox">
-						<div class="accordeonHeader paper-font-headline" aria-expanded$="[[isExpanded(openedSeptember)]]" aria-controls="september" on-tap="toggle" data-args="#september">
-							Акция «Первое сентября – каждому школьнику
+						<div class="accordeonBox">
+							<div class="accordeonHeader paper-font-headline" aria-expanded$="[[isExpanded(openedMama)]]" aria-controls="mama" on-tap="toggle" data-args="#mama">
+									Мама, найди меня!
+							</div>
+							<iron-collapse id="mama" tabindex="0" opened="{{openedMama}}">
+									<div class="collapse-content shadow">
+										<template is="juicy-html" content$="[[docData.mama.text]]">
+										</template>
+									</div>
+							</iron-collapse>
 						</div>
-						<iron-collapse id="september" tabindex="0" opened="{{openedSeptember}}">
-							<div class="collapse-content shadow">
-								<template is="juicy-html" content$="[[docData.september.text]]"></template>
+
+						<div class="accordeonBox">
+							<div class="accordeonHeader paper-font-headline" aria-expanded$="[[isExpanded(openedSeptember)]]" aria-controls="september" on-tap="toggle" data-args="#september">
+									Акция «Первое сентября – каждому школьнику
 							</div>
-						</iron-collapse>
+							<iron-collapse id="september" tabindex="0" opened="{{openedSeptember}}">
+									<div class="collapse-content shadow">
+										<template is="juicy-html" content$="[[docData.september.text]]">
+										</template>
+									</div>
+							</iron-collapse>
+						</div>
+
 					</div>
-
-					
-
 				</div>
-			</div>
 		</paper-card>
 
 	</template>
@@ -44743,21 +44552,6 @@ Z(Q.prototype,"ref",Q.prototype.na);Ib.STATE_CHANGED="state_changed";P.RUNNING="
 
 		Polymer({
 			is: 't-tutelage-template',
-			// ready: function() {
-			// 	var ironAccordions = this.querySelector('iron-accordions');
-			// 	ironAccordions.addEventListener('transitionend', function() {
-			// 		var headerPanelMain = app.$.headerPanelMain;
-			// 		var scrollTop = headerPanelMain.scroller.scrollTop;
-			// 		var top = this._selection.selection[0].getBoundingClientRect().top;
-			// 		if ( this._selection.selection[0].opened ) {
-			// 			if ( top > 0 ) {
-			// 				headerPanelMain.scroll(top + scrollTop, true);
-			// 			} else if ( top < 0 ) {
-			// 				headerPanelMain.scroll( top + scrollTop - 64, true);
-			// 			};
-			// 		};
-			// 	});
-			// }
 			toggle: function(e) {
 		    document.querySelector( e.target.getAttribute('data-args') ).toggle();
 		  },
@@ -44811,7 +44605,8 @@ Z(Q.prototype,"ref",Q.prototype.na);Ib.STATE_CHANGED="state_changed";P.RUNNING="
 			}
 		</style>
 
-		<firebase-document id="firebaseDocument" app-name="uomgo" path="/sections/legal" data="{{docData}}"></firebase-document>
+		<firebase-document id="firebaseDocument" app-name="uomgo" path="/sections/legal" data="{{docData}}">
+		</firebase-document>
 
 		<paper-card heading="Организационно-правовой отдел" image="" elevation="4" animated-shadow="false">
 
@@ -44819,29 +44614,32 @@ Z(Q.prototype,"ref",Q.prototype.na);Ib.STATE_CHANGED="state_changed";P.RUNNING="
 
 				<div class="content">
 
-				<div class="accordeonBox">
-				 <div class="accordeonHeader paper-font-headline" aria-expanded$="[[isExpanded(openedNorm)]]" aria-controls="norm" on-tap="toggle" data-args="#norm">
-					Нормативно-правовая база:
-				 </div>
-				 <iron-collapse id="norm" tabindex="0" opened="{{openedNorm}}">
-					 <div class="collapse-content shadow">
-						 <template is="juicy-html" content$="[[docData.norm.text]]"></template>
-					 </div>
-				 </iron-collapse>
-				</div>
+					<template is="juicy-html" content$="[[docData.text]]">
+					</template>
 
-				<div class="accordeonBox">
-				 <div class="accordeonHeader paper-font-headline" aria-expanded$="[[isExpanded(openedProsecutor)]]" aria-controls="prosecutor" on-tap="toggle" data-args="#prosecutor">
-					Прокуратура разъясняет
-				 </div>
-				 <iron-collapse id="prosecutor" tabindex="0" opened="{{openedProsecutor}}">
-					 <div class="collapse-content shadow">
-						 <template is="juicy-html" content$="[[docData.prosecutor.text]]"></template>
-					 </div>
-				 </iron-collapse>
-				</div>
+					<div class="accordeonBox">
+						<div class="accordeonHeader paper-font-headline" aria-expanded$="[[isExpanded(openedNorm)]]" aria-controls="norm" on-tap="toggle" data-args="#norm">
+								Нормативно-правовая база:
+						</div>
+						 <iron-collapse id="norm" tabindex="0" opened="{{openedNorm}}">
+								<div class="collapse-content shadow">
+									<template is="juicy-html" content$="[[docData.norm.text]]">
+									</template>
+								</div>
+						 </iron-collapse>
+					</div>
 
-					
+					<div class="accordeonBox">
+						<div class="accordeonHeader paper-font-headline" aria-expanded$="[[isExpanded(openedProsecutor)]]" aria-controls="prosecutor" on-tap="toggle" data-args="#prosecutor">
+								Прокуратура разъясняет
+						</div>
+						 <iron-collapse id="prosecutor" tabindex="0" opened="{{openedProsecutor}}">
+								<div class="collapse-content shadow">
+									<template is="juicy-html" content$="[[docData.prosecutor.text]]">
+									</template>
+							 </div>
+						 </iron-collapse>
+					</div>
 
 				</div>
 			</div>
@@ -44854,21 +44652,6 @@ Z(Q.prototype,"ref",Q.prototype.na);Ib.STATE_CHANGED="state_changed";P.RUNNING="
 
 		Polymer({
 			is: 't-legal-template',
-			// ready: function() {
-			// 	var ironAccordions = this.querySelector('iron-accordions');
-			// 	ironAccordions.addEventListener('transitionend', function() {
-			// 		var headerPanelMain = app.$.headerPanelMain;
-			// 		var scrollTop = headerPanelMain.scroller.scrollTop;
-			// 		var top = this._selection.selection[0].getBoundingClientRect().top;
-			// 		if ( this._selection.selection[0].opened ) {
-			// 			if ( top > 0 ) {
-			// 				headerPanelMain.scroll(top + scrollTop, true);
-			// 			} else if ( top < 0 ) {
-			// 				headerPanelMain.scroll( top + scrollTop - 64, true);
-			// 			};
-			// 		};
-			// 	});
-			// }
 			toggle: function(e) {
 		    document.querySelector( e.target.getAttribute('data-args') ).toggle();
 		  },
@@ -44895,15 +44678,6 @@ Z(Q.prototype,"ref",Q.prototype.na);Ib.STATE_CHANGED="state_changed";P.RUNNING="
 				--paper-card-content: {
 				};
 			}
-			/*iron-accordion {
-				background-color: var(--paper-blue-grey-50);
-			}
-			.paper-font-headline {
-				padding: 8px;
-			}
-			.accordionContent {
-				background-color: white;
-			}*/
 			iron-collapse:focus {
 				outline: none;
 			}
@@ -44927,73 +44701,102 @@ Z(Q.prototype,"ref",Q.prototype.na);Ib.STATE_CHANGED="state_changed";P.RUNNING="
 			}
 		</style>
 
-		<firebase-document id="firebaseDocument" app-name="uomgo" path="/orgs" data="{{docData}}"></firebase-document>
+		<firebase-document id="firebaseDocument" app-name="uomgo" path="/orgs" data="{{docData}}">
+		</firebase-document>
 
 		<paper-card heading="Образовательные организации" image="" elevation="4" animated-shadow="false">
 
-			<div class="card-content">
+				<div class="card-content">
 
 					<div class="accordeonBox">
 						<div class="accordeonHeader paper-font-headline" aria-expanded$="[[isExpanded(openedPreschool)]]" aria-controls="preschool" on-tap="toggle" data-args="#preschool">
-							Дошкольные образовательные организации
+								Дошкольные образовательные организации
 						</div>
 						<iron-collapse id="preschool" tabindex="0" opened="{{openedPreschool}}">
-							<div class="collapse-content shadow">
-								<firebase-query id="firebaseQuery" path="/orgs/preschool/table" app-name="uomgo" data="{{dataPreschool}}"></firebase-query>
+								<div class="collapse-content shadow">
+									<firebase-query id="firebaseQuery" path="/orgs/preschool/table" app-name="uomgo" data="{{dataPreschool}}">
+									</firebase-query>
 
-								<template is="dom-repeat" items="[[dataPreschool]]" as="val" target-framerate="60">
+									<template is="dom-repeat" items="[[dataPreschool]]" as="val" target-framerate="60">
 
-									<grid-element ga="16" class="content green-gradient">
-										<grid-col>
-											<p class="red">
-												<b>Наименование по Уставу:</b>
-											</p>
-											<template is="juicy-html" content$="[[val.name]]"></template>
-										</grid-col>
-										<grid-col>
-											<p class="red">
-												<b>Юридический и фактический адрес, телефон, e-mail:</b>
-											</p>
-											<template is="juicy-html" content$="[[val.address]]"></template>
-										</grid-col>
-										<grid-col>
-											<p class="red">
-												<b>ФИО руководителя:</b>
-											</p>
-											<template is="juicy-html" content$="[[val.chief]]"></template>
-										</grid-col>
-									</grid-element>
-								</template>
-							</div>
+											<grid-element class="content green-gradient" ga="16">
+												<grid-col>
+													<p class="red">
+														<b>
+															Наименование по Уставу:
+														</b>
+													</p>
+													<template is="juicy-html" content$="[[val.name]]">
+													</template>
+												</grid-col>
+												<grid-col>
+													<p class="red">
+														<b>
+															Юридический и фактический адрес, телефон, e-mail:
+														</b>
+													</p>
+													<template is="juicy-html" content$="[[val.address]]">
+													</template>
+												</grid-col>
+												<grid-col>
+													<p class="red">
+														<b>
+															ФИО руководителя:
+														</b>
+													</p>
+													<template is="juicy-html" content$="[[val.chief]]">
+													</template>
+												</grid-col>
+											</grid-element>
+
+									</template>
+								</div>
 						</iron-collapse>
 					</div>
 
 					<div class="accordeonBox">
 						<div class="accordeonHeader paper-font-headline" aria-expanded$="[[isExpanded(openedOveral)]]" aria-controls="overal" on-tap="toggle" data-args="#overal">
-							Общеобразовательные организации
+								Общеобразовательные организации
 						</div>
 						<iron-collapse id="overal" tabindex="0" opened="{{openedOveral}}">
-							<div class="collapse-content shadow">
-								<firebase-query id="firebaseQuery" path="/orgs/overal/table" app-name="uomgo" data="{{dataOveral}}"></firebase-query>
+								<div class="collapse-content shadow">
+									<firebase-query id="firebaseQuery" path="/orgs/overal/table" app-name="uomgo" data="{{dataOveral}}">
+									</firebase-query>
 
-								<template is="dom-repeat" items="[[dataOveral]]" as="val" target-framerate="60">
+									<template is="dom-repeat" items="[[dataOveral]]" as="val" target-framerate="60">
 
-									<grid-element ga="16" class="content green-gradient">
-										<grid-col>
-											<p class="red"><b>Наименование по Уставу:</b></p>
-											<template is="juicy-html" content$="[[val.name]]"></template>
-										</grid-col>
-										<grid-col>
-											<p class="red"><b>Юридический и фактический адрес, телефон, e-mail:</b></p>
-											<template is="juicy-html" content$="[[val.address]]"></template>
-										</grid-col>
-										<grid-col>
-											<p class="red"><b>ФИО руководителя:</b></p>
-											<template is="juicy-html" content$="[[val.chief]]"></template>
-										</grid-col>
-									</grid-element>
-								</template>
-							</div>
+											<grid-element ga="16" class="content green-gradient">
+												<grid-col>
+													<p class="red">
+														<b>
+															Наименование по Уставу:
+														</b>
+													</p>
+													<template is="juicy-html" content$="[[val.name]]">
+													</template>
+												</grid-col>
+												<grid-col>
+													<p class="red">
+														<b>
+															Юридический и фактический адрес, телефон, e-mail:
+														</b>
+													</p>
+													<template is="juicy-html" content$="[[val.address]]">
+													</template>
+												</grid-col>
+												<grid-col>
+													<p class="red">
+														<b>
+															ФИО руководителя:
+														</b>
+													</p>
+													<template is="juicy-html" content$="[[val.chief]]">
+													</template>
+												</grid-col>
+											</grid-element>
+
+									</template>
+								</div>
 						</iron-collapse>
 					</div>
 
@@ -45009,66 +44812,99 @@ Z(Q.prototype,"ref",Q.prototype.na);Ib.STATE_CHANGED="state_changed";P.RUNNING="
 
 									<grid-element ga="16" class="content green-gradient">
 										<grid-col>
-											<p class="red"><b>Наименование по Уставу:</b></p>
-											<template is="juicy-html" content$="[[val.name]]"></template>
+											<p class="red">
+												<b>
+													Наименование по Уставу:
+												</b>
+											</p>
+											<template is="juicy-html" content$="[[val.name]]">
+											</template>
 										</grid-col>
 										<grid-col>
-											<p class="red"><b>Юридический и фактический адрес, телефон, e-mail:</b></p>
-											<template is="juicy-html" content$="[[val.address]]"></template>
+											<p class="red">
+												<b>
+													Юридический и фактический адрес, телефон, e-mail:
+												</b>
+											</p>
+											<template is="juicy-html" content$="[[val.address]]">
+											</template>
 										</grid-col>
 										<grid-col>
-											<p class="red"><b>ФИО руководителя:</b></p>
-											<template is="juicy-html" content$="[[val.chief]]"></template>
+											<p class="red">
+												<b>
+													ФИО руководителя:
+												</b>
+											</p>
+											<template is="juicy-html" content$="[[val.chief]]">
+											</template>
 										</grid-col>
 									</grid-element>
+
 								</template>
+
 							</div>
 						</iron-collapse>
 					</div>
 
 					<div class="accordeonBox">
 						<div class="accordeonHeader paper-font-headline" aria-expanded$="[[isExpanded(openedAdditional)]]" aria-controls="additional" on-tap="toggle" data-args="#additional">
-							Организации дополнительного образования
+								Организации дополнительного образования
 						</div>
 						<iron-collapse id="additional" tabindex="0" opened="{{openedAdditional}}">
-							<div class="collapse-content shadow">
-								<firebase-query id="firebaseQuery" path="/orgs/additional/table" app-name="uomgo" data="{{dataAdditional}}"></firebase-query>
+								<div class="collapse-content shadow">
+									<firebase-query id="firebaseQuery" path="/orgs/additional/table" app-name="uomgo" data="{{dataAdditional}}">
+									</firebase-query>
 
-								<template is="dom-repeat" items="[[dataAdditional]]" as="val" target-framerate="60">
+									<template is="dom-repeat" items="[[dataAdditional]]" as="val" target-framerate="60">
 
-									<grid-element ga="16" class="content green-gradient">
-										<grid-col>
-											<p class="red"><b>Наименование по Уставу:</b></p>
-											<template is="juicy-html" content$="[[val.name]]"></template>
-										</grid-col>
-										<grid-col>
-											<p class="red"><b>Юридический и фактический адрес, телефон, e-mail:</b></p>
-											<template is="juicy-html" content$="[[val.address]]"></template>
-										</grid-col>
-										<grid-col>
-											<p class="red"><b>ФИО руководителя:</b></p>
-											<template is="juicy-html" content$="[[val.chief]]"></template>
-										</grid-col>
-									</grid-element>
-								</template>
-							</div>
+											<grid-element ga="16" class="content green-gradient">
+												<grid-col>
+													<p class="red">
+														<b>
+															Наименование по Уставу:
+														</b>
+													</p>
+													<template is="juicy-html" content$="[[val.name]]">
+													</template>
+												</grid-col>
+												<grid-col>
+													<p class="red">
+														<b>
+															Юридический и фактический адрес, телефон, e-mail:
+														</b>
+													</p>
+													<template is="juicy-html" content$="[[val.address]]">
+													</template>
+												</grid-col>
+												<grid-col>
+													<p class="red">
+														<b>
+															ФИО руководителя:
+														</b>
+													</p>
+													<template is="juicy-html" content$="[[val.chief]]">
+													</template>
+												</grid-col>
+											</grid-element>
+
+									</template>
+								</div>
 						</iron-collapse>
 					</div>
 
 					<div class="accordeonBox">
 						<div class="accordeonHeader paper-font-headline" aria-expanded$="[[isExpanded(openedIncome)]]" aria-controls="income" on-tap="toggle" data-args="#income">
-							Сведения о доходах руководителей ОО
+								Сведения о доходах руководителей ОО
 						</div>
 						<iron-collapse id="income" tabindex="0" opened="{{openedIncome}}">
-							<div class="collapse-content shadow">
-								<template is="juicy-html" content$="[[docData.income.text]]"></template>
-							</div>
+								<div class="collapse-content shadow">
+									<template is="juicy-html" content$="[[docData.income.text]]">
+									</template>
+								</div>
 						</iron-collapse>
 					</div>
 
-					
-
-			</div>
+				</div>
 		</paper-card>
 
 	</template>
@@ -45080,21 +44916,6 @@ Z(Q.prototype,"ref",Q.prototype.na);Ib.STATE_CHANGED="state_changed";P.RUNNING="
 			is: 't-orgs-template',
 			properties: {
 			},
-			// ready: function() {
-			// 	var ironAccordions = this.querySelector('iron-accordions');
-			// 	ironAccordions.addEventListener('transitionend', function() {
-			// 		var headerPanelMain = app.$.headerPanelMain;
-			// 		var scrollTop = headerPanelMain.scroller.scrollTop;
-			// 		var top = this._selection.selection[0].getBoundingClientRect().top;
-			// 		if ( this._selection.selection[0].opened ) {
-			// 			if ( top > 0 ) {
-			// 				headerPanelMain.scroll(top + scrollTop, true);
-			// 			} else if ( top < 0 ) {
-			// 				headerPanelMain.scroll( top + scrollTop - 64, true);
-			// 			};
-			// 		};
-			// 	});
-			// }
 			toggle: function(e) {
 		    document.querySelector( e.target.getAttribute('data-args') ).toggle();
 		  },
@@ -45139,96 +44960,102 @@ Z(Q.prototype,"ref",Q.prototype.na);Ib.STATE_CHANGED="state_changed";P.RUNNING="
 			}
 		</style>
 
-		<firebase-document id="firebaseDocument" app-name="uomgo" path="/sections/metod" data="{{docData}}"></firebase-document>
+		<firebase-document id="firebaseDocument" app-name="uomgo" path="/sections/metod" data="{{docData}}">
+		</firebase-document>
 
 		<paper-card heading="МБУ Информационно-методический центр УО МГО" image="" elevation="4" animated-shadow="false">
 
-			<div class="card-content">
+				<div class="card-content">
 
-					<template is="juicy-html" content$="[[docData.text]]"></template>
+						<template is="juicy-html" content$="[[docData.text]]">
+						</template>
 
-					
 
-					<div class="accordeonBox">
-						<div class="accordeonHeader paper-font-headline" aria-expanded$="[[isExpanded(openedValidation)]]" aria-controls="validation" on-tap="toggle" data-args="#validation">
-							Аттестация
-						</div>
-						<iron-collapse id="validation" tabindex="0" opened="{{openedValidation}}">
-							<div class="collapse-content shadow">
-								<template is="juicy-html" content$="[[docData.validation.text]]"></template>
+						<div class="accordeonBox">
+							<div class="accordeonHeader paper-font-headline" aria-expanded$="[[isExpanded(openedValidation)]]" aria-controls="validation" on-tap="toggle" data-args="#validation">
+									Аттестация
 							</div>
-						</iron-collapse>
-					</div>
-
-					<div class="accordeonBox">
-						<div class="accordeonHeader paper-font-headline" aria-expanded$="[[isExpanded(openedStandards)]]" aria-controls="standards" on-tap="toggle" data-args="#standards">
-							Профессиональные стандарты
+							<iron-collapse id="validation" tabindex="0" opened="{{openedValidation}}">
+									<div class="collapse-content shadow">
+										<template is="juicy-html" content$="[[docData.validation.text]]">
+										</template>
+									</div>
+							</iron-collapse>
 						</div>
-						<iron-collapse id="standards" tabindex="0" opened="{{openedStandards}}">
-							<div class="collapse-content shadow">
-								<template is="juicy-html" content$="[[docData.standards.text]]"></template>
-							</div>
-						</iron-collapse>
-					</div>
 
-					<div class="accordeonBox">
-						<div class="accordeonHeader paper-font-headline" aria-expanded$="[[isExpanded(openedPlan)]]" aria-controls="plan" on-tap="toggle" data-args="#plan">
-							План работы
+						<div class="accordeonBox">
+							<div class="accordeonHeader paper-font-headline" aria-expanded$="[[isExpanded(openedStandards)]]" aria-controls="standards" on-tap="toggle" data-args="#standards">
+									Профессиональные стандарты
+							</div>
+							<iron-collapse id="standards" tabindex="0" opened="{{openedStandards}}">
+									<div class="collapse-content shadow">
+										<template is="juicy-html" content$="[[docData.standards.text]]">
+										</template>
+									</div>
+							</iron-collapse>
 						</div>
-						<iron-collapse id="plan" tabindex="0" opened="{{openedPlan}}">
-							<div class="collapse-content shadow">
-								<template is="juicy-html" content$="[[docData.plan.text]]"></template>
-							</div>
-						</iron-collapse>
-					</div>
 
-					<div class="accordeonBox">
-						<div class="accordeonHeader paper-font-headline" aria-expanded$="[[isExpanded(openedUnions)]]" aria-controls="unions" on-tap="toggle" data-args="#unions">
-							Муниципальные методические объединения
+						<div class="accordeonBox">
+							<div class="accordeonHeader paper-font-headline" aria-expanded$="[[isExpanded(openedPlan)]]" aria-controls="plan" on-tap="toggle" data-args="#plan">
+									План работы
+							</div>
+							<iron-collapse id="plan" tabindex="0" opened="{{openedPlan}}">
+									<div class="collapse-content shadow">
+										<template is="juicy-html" content$="[[docData.plan.text]]">
+										</template>
+									</div>
+							</iron-collapse>
 						</div>
-						<iron-collapse id="unions" tabindex="0" opened="{{openedUnions}}">
-							<div class="collapse-content shadow">
-								<template is="juicy-html" content$="[[docData.unions.text]]"></template>
-							</div>
-						</iron-collapse>
-					</div>
 
-					<div class="accordeonBox">
-						<div class="accordeonHeader paper-font-headline" aria-expanded$="[[isExpanded(openedBasePlaces)]]" aria-controls="basePlaces" on-tap="toggle" data-args="#basePlaces">
-							Муниципальные базовые методические площадки
+						<div class="accordeonBox">
+							<div class="accordeonHeader paper-font-headline" aria-expanded$="[[isExpanded(openedUnions)]]" aria-controls="unions" on-tap="toggle" data-args="#unions">
+									Муниципальные методические объединения
+							</div>
+							<iron-collapse id="unions" tabindex="0" opened="{{openedUnions}}">
+									<div class="collapse-content shadow">
+										<template is="juicy-html" content$="[[docData.unions.text]]">
+										</template>
+									</div>
+							</iron-collapse>
 						</div>
-						<iron-collapse id="basePlaces" tabindex="0" opened="{{openedBasePlaces}}">
-							<div class="collapse-content shadow">
-								<template is="juicy-html" content$="[[docData.basePlaces.text]]"></template>
+
+						<div class="accordeonBox">
+							<div class="accordeonHeader paper-font-headline" aria-expanded$="[[isExpanded(openedBasePlaces)]]" aria-controls="basePlaces" on-tap="toggle" data-args="#basePlaces">
+									Муниципальные базовые методические площадки
 							</div>
-						</iron-collapse>
-					</div>
-
-					
-
-					<div class="accordeonBox">
-						<div class="accordeonHeader paper-font-headline" aria-expanded$="[[isExpanded(openedYoungTeachers)]]" aria-controls="youngTeachers" on-tap="toggle" data-args="#youngTeachers">
-							Школа Молодого педагога
+							<iron-collapse id="basePlaces" tabindex="0" opened="{{openedBasePlaces}}">
+									<div class="collapse-content shadow">
+										<template is="juicy-html" content$="[[docData.basePlaces.text]]">
+										</template>
+									</div>
+							</iron-collapse>
 						</div>
-						<iron-collapse id="youngTeachers" tabindex="0" opened="{{openedYoungTeachers}}">
-							<div class="collapse-content shadow">
-								<template is="juicy-html" content$="[[docData.youngTeachers.text]]"></template>
-							</div>
-						</iron-collapse>
-					</div>
 
-					<div class="accordeonBox">
-						<div class="accordeonHeader paper-font-headline" aria-expanded$="[[isExpanded(openedMovement)]]" aria-controls="movement" on-tap="toggle" data-args="#movement">
-							Конкурсное движение
+						<div class="accordeonBox">
+							<div class="accordeonHeader paper-font-headline" aria-expanded$="[[isExpanded(openedYoungTeachers)]]" aria-controls="youngTeachers" on-tap="toggle" data-args="#youngTeachers">
+									Школа Молодого педагога
+							</div>
+							<iron-collapse id="youngTeachers" tabindex="0" opened="{{openedYoungTeachers}}">
+									<div class="collapse-content shadow">
+										<template is="juicy-html" content$="[[docData.youngTeachers.text]]">
+										</template>
+									</div>
+							</iron-collapse>
 						</div>
-						<iron-collapse id="movement" tabindex="0" opened="{{openedMovement}}">
-							<div class="collapse-content shadow">
-								<template is="juicy-html" content$="[[docData.movement.text]]"></template>
-							</div>
-						</iron-collapse>
-					</div>
 
-			</div>
+						<div class="accordeonBox">
+							<div class="accordeonHeader paper-font-headline" aria-expanded$="[[isExpanded(openedMovement)]]" aria-controls="movement" on-tap="toggle" data-args="#movement">
+									Конкурсное движение
+							</div>
+							<iron-collapse id="movement" tabindex="0" opened="{{openedMovement}}">
+									<div class="collapse-content shadow">
+										<template is="juicy-html" content$="[[docData.movement.text]]">
+										</template>
+									</div>
+							</iron-collapse>
+						</div>
+
+				</div>
 		</paper-card>
 
 	</template>
@@ -45238,21 +45065,6 @@ Z(Q.prototype,"ref",Q.prototype.na);Ib.STATE_CHANGED="state_changed";P.RUNNING="
 
 		Polymer({
 			is: 't-metod-template',
-			ready: function() {
-				// var ironAccordions = this.querySelector('iron-accordions');
-				// ironAccordions.addEventListener('transitionend', function() {
-				// 	var headerPanelMain = app.$.headerPanelMain;
-				// 	var scrollTop = headerPanelMain.scroller.scrollTop;
-				// 	var top = this._selection.selection[0].getBoundingClientRect().top;
-				// 	if ( this._selection.selection[0].opened ) {
-				// 		if ( top > 0 ) {
-				// 			headerPanelMain.scroll(top + scrollTop, true);
-				// 		} else if ( top < 0 ) {
-				// 			headerPanelMain.scroll( top + scrollTop - 64, true);
-				// 		};
-				// 	};
-				// });
-			},
 			toggle: function(e) {
 		    document.querySelector( e.target.getAttribute('data-args') ).toggle();
 		  },
@@ -45280,15 +45092,6 @@ Z(Q.prototype,"ref",Q.prototype.na);Ib.STATE_CHANGED="state_changed";P.RUNNING="
 				--paper-card-content: {
 				};
 			}
-			/*iron-accordion {
-				background-color: var(--paper-blue-grey-50);
-			}
-			.paper-font-headline {
-				padding: 8px;
-			}
-			.accordionContent {
-				background-color: white;
-			}*/
 			iron-collapse:focus {
 				outline: none;
 			}
@@ -45307,64 +45110,66 @@ Z(Q.prototype,"ref",Q.prototype.na);Ib.STATE_CHANGED="state_changed";P.RUNNING="
 		</style>
 
 
-		<firebase-document id="firebaseDocument" app-name="uomgo" path="/sections/diet" data="{{docData}}"></firebase-document>
+		<firebase-document id="firebaseDocument" app-name="uomgo" path="/sections/diet" data="{{docData}}">
+		</firebase-document>
 
 		<paper-card heading="МБУ Комбинат питания  МГО" image="" elevation="4" animated-shadow="false">
+				<div class="card-content">
 
-			<div class="card-content">
+					<div class="content">
 
-				<div class="content">
+						<template is="juicy-html" content$="[[docData.text]]"></template>
 
-					<template is="juicy-html" content$="[[docData.text]]"></template>
-
-					<div class="accordeonBox">
-						<div class="accordeonHeader paper-font-headline" aria-expanded$="[[isExpanded(openedRegulatory)]]" aria-controls="regulatory" on-tap="toggle" data-args="#regulatory">
-							Положение о питании
-						</div>
-						<iron-collapse id="regulatory" tabindex="0" opened="{{openedRegulatory}}">
-							<div class="collapse-content shadow">
-								<template is="juicy-html" content$="[[docData.regulatory.text]]"></template>
+						<div class="accordeonBox">
+							<div class="accordeonHeader paper-font-headline" aria-expanded$="[[isExpanded(openedRegulatory)]]" aria-controls="regulatory" on-tap="toggle" data-args="#regulatory">
+									Положение о питании
 							</div>
-						</iron-collapse>
-					</div>
-
-					<div class="accordeonBox">
-						<div class="accordeonHeader paper-font-headline" aria-expanded$="[[isExpanded(openedMenu)]]" aria-controls="menu" on-tap="toggle" data-args="#menu">
-							Школьное меню
+							<iron-collapse id="regulatory" tabindex="0" opened="{{openedRegulatory}}">
+									<div class="collapse-content shadow">
+										<template is="juicy-html" content$="[[docData.regulatory.text]]">
+										</template>
+									</div>
+							</iron-collapse>
 						</div>
-						<iron-collapse id="menu" tabindex="0" opened="{{openedMenu}}">
-							<div class="collapse-content shadow">
-								<template is="juicy-html" content$="[[docData.menu.text]]"></template>
-							</div>
-						</iron-collapse>
-					</div>
 
-					<div class="accordeonBox">
-						<div class="accordeonHeader paper-font-headline" aria-expanded$="[[isExpanded(openedTechnology)]]" aria-controls="technology" on-tap="toggle" data-args="#technology">
-							Технология приготовления
+						<div class="accordeonBox">
+							<div class="accordeonHeader paper-font-headline" aria-expanded$="[[isExpanded(openedMenu)]]" aria-controls="menu" on-tap="toggle" data-args="#menu">
+									Школьное меню
+							</div>
+							<iron-collapse id="menu" tabindex="0" opened="{{openedMenu}}">
+									<div class="collapse-content shadow">
+										<template is="juicy-html" content$="[[docData.menu.text]]">
+										</template>
+									</div>
+							</iron-collapse>
 						</div>
-						<iron-collapse id="technology" tabindex="0" opened="{{openedTechnology}}">
-							<div class="collapse-content shadow">
-								<template is="juicy-html" content$="[[docData.technology.text]]"></template>
-							</div>
-						</iron-collapse>
-					</div>
 
-					<div class="accordeonBox">
-						<div class="accordeonHeader paper-font-headline" aria-expanded$="[[isExpanded(openedHealthyEating)]]" aria-controls="healthyEating" on-tap="toggle" data-args="#healthyEating">
-							Здоровое питание
+						<div class="accordeonBox">
+							<div class="accordeonHeader paper-font-headline" aria-expanded$="[[isExpanded(openedTechnology)]]" aria-controls="technology" on-tap="toggle" data-args="#technology">
+									Технология приготовления
+							</div>
+							<iron-collapse id="technology" tabindex="0" opened="{{openedTechnology}}">
+									<div class="collapse-content shadow">
+										<template is="juicy-html" content$="[[docData.technology.text]]">
+										</template>
+									</div>
+							</iron-collapse>
 						</div>
-						<iron-collapse id="healthyEating" tabindex="0" opened="{{openedHealthyEating}}">
-							<div class="collapse-content shadow">
-								<template is="juicy-html" content$="[[docData.healthyEating.text]]"></template>
+
+						<div class="accordeonBox">
+							<div class="accordeonHeader paper-font-headline" aria-expanded$="[[isExpanded(openedHealthyEating)]]" aria-controls="healthyEating" on-tap="toggle" data-args="#healthyEating">
+									Здоровое питание
 							</div>
-						</iron-collapse>
+							<iron-collapse id="healthyEating" tabindex="0" opened="{{openedHealthyEating}}">
+									<div class="collapse-content shadow">
+										<template is="juicy-html" content$="[[docData.healthyEating.text]]">
+										</template>
+									</div>
+							</iron-collapse>
+						</div>
+
 					</div>
-
-					
-
 				</div>
-			</div>
 		</paper-card>
 
 	</template>
@@ -45374,21 +45179,6 @@ Z(Q.prototype,"ref",Q.prototype.na);Ib.STATE_CHANGED="state_changed";P.RUNNING="
 
 		Polymer({
 			is: 't-diet-template',
-			// ready: function() {
-			// 	var ironAccordions = this.querySelector('iron-accordions');
-			// 	ironAccordions.addEventListener('transitionend', function() {
-			// 		var headerPanelMain = app.$.headerPanelMain;
-			// 		var scrollTop = headerPanelMain.scroller.scrollTop;
-			// 		var top = this._selection.selection[0].getBoundingClientRect().top;
-			// 		if ( this._selection.selection[0].opened ) {
-			// 			if ( top > 0 ) {
-			// 				headerPanelMain.scroll(top + scrollTop, true);
-			// 			} else if ( top < 0 ) {
-			// 				headerPanelMain.scroll( top + scrollTop - 64, true);
-			// 			};
-			// 		};
-			// 	});
-			// }
 			toggle: function(e) {
 		    document.querySelector( e.target.getAttribute('data-args') ).toggle();
 		  },
@@ -45416,15 +45206,6 @@ Z(Q.prototype,"ref",Q.prototype.na);Ib.STATE_CHANGED="state_changed";P.RUNNING="
 				--paper-card-content: {
 				};
 			}
-			/*iron-accordion {
-				background-color: var(--paper-blue-grey-50);
-			}
-			.paper-font-headline {
-				padding: 8px;
-			}
-			.accordionContent {
-				background-color: white;
-			}*/
 			iron-collapse:focus {
 				outline: none;
 			}
@@ -45443,42 +45224,45 @@ Z(Q.prototype,"ref",Q.prototype.na);Ib.STATE_CHANGED="state_changed";P.RUNNING="
 		</style>
 
 
-		<firebase-document id="firebaseDocument" app-name="uomgo" path="/sections/counting" data="{{docData}}"></firebase-document>
+		<firebase-document id="firebaseDocument" app-name="uomgo" path="/sections/counting" data="{{docData}}">
+		</firebase-document>
 
 		<paper-card heading="МБУ Централизованная бухгалтерия УО МГО" image="" elevation="4" animated-shadow="false">
 
-			<div class="card-content">
+				<div class="card-content">
+					<div class="content">
 
-				<div class="content">
+						<template is="juicy-html" content$="[[docData.text]]"></template>
 
-					<template is="juicy-html" content$="[[docData.text]]"></template>
-
-					<div class="accordeonBox">
-						<div class="accordeonHeader paper-font-headline" aria-expanded$="[[isExpanded(openedNSOT)]]" aria-controls="NSOT" on-tap="toggle" data-args="#NSOT">
-							НСОТ
-						</div>
-						<iron-collapse id="NSOT" tabindex="0" opened="{{openedNSOT}}">
-							<div class="collapse-content shadow">
-								<template is="juicy-html" content$="[[docData.NSOT.text]]"></template>
+						<div class="accordeonBox">
+							<div class="accordeonHeader paper-font-headline" aria-expanded$="[[isExpanded(openedNSOT)]]" aria-controls="NSOT" on-tap="toggle" data-args="#NSOT">
+									НСОТ
 							</div>
-						</iron-collapse>
-					</div>
-
-					<div class="accordeonBox">
-						<div class="accordeonHeader paper-font-headline" aria-expanded$="[[isExpanded(openedPayroll)]]" aria-controls="payroll" on-tap="toggle" data-args="#payroll">
-							Начисление заработной платы
+							<iron-collapse id="NSOT" tabindex="0" opened="{{openedNSOT}}">
+									<div class="collapse-content shadow">
+										<template is="juicy-html" content$="[[docData.NSOT.text]]">
+										</template>
+									</div>
+							</iron-collapse>
 						</div>
-						<iron-collapse id="payroll" tabindex="0" opened="{{openedPayroll}}">
-							<div class="collapse-content shadow">
-								<template is="juicy-html" content$="[[docData.payroll.text]]"></template>
+
+						<div class="accordeonBox">
+
+							<div class="accordeonHeader paper-font-headline" aria-expanded$="[[isExpanded(openedPayroll)]]" aria-controls="payroll" on-tap="toggle" data-args="#payroll">
+									Начисление заработной платы
 							</div>
-						</iron-collapse>
+
+							<iron-collapse id="payroll" tabindex="0" opened="{{openedPayroll}}">
+									<div class="collapse-content shadow">
+										<template is="juicy-html" content$="[[docData.payroll.text]]">
+										</template>
+									</div>
+							</iron-collapse>
+
+						</div>
+
 					</div>
-
-					
-
 				</div>
-			</div>
 		</paper-card>
 
 	</template>
@@ -45529,15 +45313,6 @@ Z(Q.prototype,"ref",Q.prototype.na);Ib.STATE_CHANGED="state_changed";P.RUNNING="
 				--paper-card-content: {
 				};
 			}
-			/*iron-accordion {
-				background-color: var(--paper-blue-grey-50);
-			}
-			.paper-font-headline {
-				padding: 8px;
-			}
-			.accordionContent {
-				background-color: white;
-			}*/
 			iron-collapse:focus {
 				outline: none;
 			}
@@ -45556,42 +45331,44 @@ Z(Q.prototype,"ref",Q.prototype.na);Ib.STATE_CHANGED="state_changed";P.RUNNING="
 		</style>
 
 
-		<firebase-document id="firebaseDocument" app-name="uomgo" path="/transport" data="{{docData}}"></firebase-document>
+		<firebase-document id="firebaseDocument" app-name="uomgo" path="/transport" data="{{docData}}">
+		</firebase-document>
 
 		<paper-card heading="МБУ Транспортно-хозяйственное учреждение УО МГО" image="" elevation="4" animated-shadow="false">
 
-			<div class="card-content">
+				<div class="card-content">
 
-				<div class="content">
+					<div class="content">
 
-					<template is="juicy-html" content$="[[docData.text]]"></template>
+						<template is="juicy-html" content$="[[docData.text]]">
+						</template>
 
-					<div class="accordeonBox">
-						<div class="accordeonHeader paper-font-headline" aria-expanded$="[[isExpanded(openedRules)]]" aria-controls="rules" on-tap="toggle" data-args="#rules">
-							Правила перевозки детей
-						</div>
-						<iron-collapse id="rules" tabindex="0" opened="{{openedRules}}">
-							<div class="collapse-content shadow">
-								<template is="juicy-html" content$="[[docData.rules.text]]"></template>
+						<div class="accordeonBox">
+							<div class="accordeonHeader paper-font-headline" aria-expanded$="[[isExpanded(openedRules)]]" aria-controls="rules" on-tap="toggle" data-args="#rules">
+									Правила перевозки детей
 							</div>
-						</iron-collapse>
-					</div>
-
-					<div class="accordeonBox">
-						<div class="accordeonHeader paper-font-headline" aria-expanded$="[[isExpanded(openedSchedule)]]" aria-controls="schedule" on-tap="toggle" data-args="#schedule">
-							Расписание школьных автобусов
+							<iron-collapse id="rules" tabindex="0" opened="{{openedRules}}">
+									<div class="collapse-content shadow">
+										<template is="juicy-html" content$="[[docData.rules.text]]">
+										</template>
+									</div>
+							</iron-collapse>
 						</div>
-						<iron-collapse id="schedule" tabindex="0" opened="{{openedSchedule}}">
-							<div class="collapse-content shadow">
-								<template is="juicy-html" content$="[[docData.schedule.text]]"></template>
+
+						<div class="accordeonBox">
+							<div class="accordeonHeader paper-font-headline" aria-expanded$="[[isExpanded(openedSchedule)]]" aria-controls="schedule" on-tap="toggle" data-args="#schedule">
+									Расписание школьных автобусов
 							</div>
-						</iron-collapse>
+							<iron-collapse id="schedule" tabindex="0" opened="{{openedSchedule}}">
+									<div class="collapse-content shadow">
+										<template is="juicy-html" content$="[[docData.schedule.text]]">
+										</template>
+									</div>
+							</iron-collapse>
+						</div>
+
 					</div>
-
-					
-
 				</div>
-			</div>
 		</paper-card>
 
 	</template>
@@ -45601,21 +45378,6 @@ Z(Q.prototype,"ref",Q.prototype.na);Ib.STATE_CHANGED="state_changed";P.RUNNING="
 
 		Polymer({
 			is: 't-transport-template',
-			// ready: function() {
-			// 	var ironAccordions = this.querySelector('iron-accordions');
-			// 	ironAccordions.addEventListener('transitionend', function() {
-			// 		var headerPanelMain = app.$.headerPanelMain;
-			// 		var scrollTop = headerPanelMain.scroller.scrollTop;
-			// 		var top = this._selection.selection[0].getBoundingClientRect().top;
-			// 		if ( this._selection.selection[0].opened ) {
-			// 			if ( top > 0 ) {
-			// 				headerPanelMain.scroll(top + scrollTop, true);
-			// 			} else if ( top < 0 ) {
-			// 				headerPanelMain.scroll( top + scrollTop - 64, true);
-			// 			};
-			// 		};
-			// 	});
-			// }
 			toggle: function(e) {
 		    document.querySelector( e.target.getAttribute('data-args') ).toggle();
 		  },
@@ -45643,15 +45405,6 @@ Z(Q.prototype,"ref",Q.prototype.na);Ib.STATE_CHANGED="state_changed";P.RUNNING="
 				--paper-card-content: {
 				};
 			}
-			/*iron-accordion {
-				background-color: var(--paper-blue-grey-50);
-			}
-			.paper-font-headline {
-				padding: 8px;
-			}
-			.accordionContent {
-				background-color: white;
-			}*/
 			iron-collapse:focus {
 				outline: none;
 			}
@@ -45670,36 +45423,39 @@ Z(Q.prototype,"ref",Q.prototype.na);Ib.STATE_CHANGED="state_changed";P.RUNNING="
 		</style>
 
 
-		<firebase-document id="firebaseDocument" app-name="uomgo" path="/public" data="{{docData}}"></firebase-document>
+		<firebase-document id="firebaseDocument" app-name="uomgo" path="/public" data="{{docData}}">
+		</firebase-document>
 
 		<paper-card heading="Общественные организации" image="" elevation="4" animated-shadow="false">
 
-			<div class="card-content">
+				<div class="card-content">
 
-				<div class="accordeonBox">
-					<div class="accordeonHeader paper-font-headline" aria-expanded$="[[isExpanded(openedVeterans)]]" aria-controls="veterans" on-tap="toggle" data-args="#veterans">
-						Совет ветеранов
-					</div>
-					<iron-collapse id="veterans" tabindex="0" opened="{{openedVeterans}}">
-						<div class="collapse-content shadow">
-							<template is="juicy-html" content$="[[docData.veterans.text]]"></template>
+					<div class="accordeonBox">
+						<div class="accordeonHeader paper-font-headline" aria-expanded$="[[isExpanded(openedVeterans)]]" aria-controls="veterans" on-tap="toggle" data-args="#veterans">
+								Совет ветеранов
 						</div>
-					</iron-collapse>
+						<iron-collapse id="veterans" tabindex="0" opened="{{openedVeterans}}">
+								<div class="collapse-content shadow">
+									<template is="juicy-html" content$="[[docData.veterans.text]]">
+									</template>
+								</div>
+						</iron-collapse>
+					</div>
+
+					<div class="accordeonBox">
+						<div class="accordeonHeader paper-font-headline" aria-expanded$="[[isExpanded(openedTradeUnion)]]" aria-controls="tradeUnion" on-tap="toggle" data-args="#tradeUnion">
+								Профсоюз работников образования
+						</div>
+						<iron-collapse id="tradeUnion" tabindex="0" opened="{{openedTradeUnion}}">
+								<div class="collapse-content shadow">
+									<template is="juicy-html" content$="[[docData.tradeUnion.text]]">
+									</template>
+								</div>
+						</iron-collapse>
+					</div>
+
 				</div>
 
-				<div class="accordeonBox">
-					<div class="accordeonHeader paper-font-headline" aria-expanded$="[[isExpanded(openedTradeUnion)]]" aria-controls="tradeUnion" on-tap="toggle" data-args="#tradeUnion">
-						Профсоюз работников образования
-					</div>
-					<iron-collapse id="tradeUnion" tabindex="0" opened="{{openedTradeUnion}}">
-						<div class="collapse-content shadow">
-							<template is="juicy-html" content$="[[docData.tradeUnion.text]]"></template>
-						</div>
-					</iron-collapse>
-				</div>
-
-				
-			</div>
 		</paper-card>
 
 	</template>
@@ -45709,21 +45465,6 @@ Z(Q.prototype,"ref",Q.prototype.na);Ib.STATE_CHANGED="state_changed";P.RUNNING="
 
 		Polymer({
 			is: 't-public-template',
-			// ready: function() {
-			// 	var ironAccordions = this.querySelector('iron-accordions');
-			// 	ironAccordions.addEventListener('transitionend', function() {
-			// 		var headerPanelMain = app.$.headerPanelMain;
-			// 		var scrollTop = headerPanelMain.scroller.scrollTop;
-			// 		var top = this._selection.selection[0].getBoundingClientRect().top;
-			// 		if ( this._selection.selection[0].opened ) {
-			// 			if ( top > 0 ) {
-			// 				headerPanelMain.scroll(top + scrollTop, true);
-			// 			} else if ( top < 0 ) {
-			// 				headerPanelMain.scroll( top + scrollTop - 64, true);
-			// 			};
-			// 		};
-			// 	});
-			// }
 			toggle: function(e) {
 		    document.querySelector( e.target.getAttribute('data-args') ).toggle();
 		  },
@@ -45808,58 +45549,45 @@ Z(Q.prototype,"ref",Q.prototype.na);Ib.STATE_CHANGED="state_changed";P.RUNNING="
 		</style>
 
 
-		<firebase-document id="firebaseDocument" app-name="uomgo" path="/business" data="{{docData}}"></firebase-document>
+		<firebase-document id="firebaseDocument" app-name="uomgo" path="/business" data="{{docData}}">
+		</firebase-document>
 
 		<paper-card heading="Реестр индивидуальных предпринимателей оказывающих образовательные услуги для детей дошкольного возраста на территории Мысковского городского округа" image="" elevation="4" animated-shadow="false">
+				<div class="card-content">
+					<div class="content">
 
-			<div class="card-content">
+						<template is="juicy-html" content$="[[docData.text]]"></template>
 
-				<div class="content">
+						<iron-data-table id="table" items="[[docData.table]]" selection-enabled="" multi-selection="">
 
+								<data-table-column name="№" width="20px" flex="0">
+										<template>[[index]]</template>
+								</data-table-column>
 
-				<iron-data-table id="table" items="[[docData.table]]" selection-enabled="" multi-selection="">
+								<data-table-column name="Ф.И.О." width="150px" sort-by="name">
+										<template>[[item.name]]</template>
+								</data-table-column>
 
-					<data-table-column name="№" width="20px" flex="0">
+								<data-table-column name="Свидетельство о регистрации" width="130px" sort-by="certificate">
+										<template>[[item.certificate]]</template>
+								</data-table-column>
 
-						<template>[[index]]</template>
+								<data-table-column name="ОКВЭД" sort-by="OKVED">
+										<template>[[item.OKVED]]</template>
+								</data-table-column>
 
-					</data-table-column>
+								<data-table-column name="Телефон, e-mail" width="180px" sort-by="phone">
+										<template>[[item.phone]]</template>
+								</data-table-column>
 
-					<data-table-column name="Ф.И.О." width="150px" sort-by="name">
+								<data-table-column name="Виды услуг" width="180px">
+										<template>[[item.services]]</template>
+								</data-table-column>
 
-						<template>[[item.name]]</template>
+						</iron-data-table>
 
-					</data-table-column>
-
-					<data-table-column name="Свидетельство о регистрации" width="130px" sort-by="certificate">
-
-						<template>[[item.certificate]]</template>
-
-					</data-table-column>
-
-					<data-table-column name="ОКВЭД" sort-by="OKVED">
-
-						<template>[[item.OKVED]]</template>
-
-					</data-table-column>
-
-					<data-table-column name="Телефон, e-mail" width="180px" sort-by="phone">
-
-						<template>[[item.phone]]</template>
-
-					</data-table-column>
-
-					<data-table-column name="Виды услуг" width="180px">
-
-						<template>[[item.services]]</template>
-
-					</data-table-column>
-
-				</iron-data-table>
-
-
+					</div>
 				</div>
-			</div>
 		</paper-card>
 
 	</template>
@@ -45890,15 +45618,6 @@ Z(Q.prototype,"ref",Q.prototype.na);Ib.STATE_CHANGED="state_changed";P.RUNNING="
 				--paper-card-content: {
 				};
 			}
-			/*iron-accordion {
-				background-color: var(--paper-blue-grey-50);
-			}
-			.paper-font-headline {
-				padding: 8px;
-			}
-			.accordionContent {
-				background-color: white;
-			}*/
 			iron-collapse:focus {
 				outline: none;
 			}
@@ -45917,50 +45636,53 @@ Z(Q.prototype,"ref",Q.prototype.na);Ib.STATE_CHANGED="state_changed";P.RUNNING="
 		</style>
 
 
-		<firebase-document id="firebaseDocument" app-name="uomgo" path="/museum" data="{{docData}}"></firebase-document>
+		<firebase-document id="firebaseDocument" app-name="uomgo" path="/museum" data="{{docData}}">
+		</firebase-document>
 
 		<paper-card heading="Виртуальный музей" image="" elevation="4" animated-shadow="false">
 
-			<div class="card-content">
+				<div class="card-content">
 
+					<template is="juicy-html" content$="[[docData.text]]">
+					</template>
 
+					<div class="accordeonBox">
+						<div class="accordeonHeader paper-font-headline" aria-expanded$="[[isExpanded(openedHistory)]]" aria-controls="history" on-tap="toggle" data-args="#history">
+								История развития муниципальной системы образования МГО
+						</div>
+						<iron-collapse id="history" tabindex="0" opened="{{openedHistory}}">
+								<div class="collapse-content shadow">
+									<template is="juicy-html" content$="[[docData.history.text]]">
+									</template>
+								</div>
+						</iron-collapse>
+					</div>
 
-				<div class="accordeonBox">
-				 <div class="accordeonHeader paper-font-headline" aria-expanded$="[[isExpanded(openedHistory)]]" aria-controls="history" on-tap="toggle" data-args="#history">
-						История развития муниципальной системы образования МГО
-				 </div>
-				 <iron-collapse id="history" tabindex="0" opened="{{openedHistory}}">
-					 <div class="collapse-content shadow">
-						 <template is="juicy-html" content$="[[docData.history.text]]"></template>
-					 </div>
-				 </iron-collapse>
+					<div class="accordeonBox">
+						<div class="accordeonHeader paper-font-headline" aria-expanded$="[[isExpanded(openedHistoryOrgs)]]" aria-controls="historyOrgs" on-tap="toggle" data-args="#historyOrgs">
+								История образовательных организаций города
+						</div>
+						<iron-collapse id="historyOrgs" tabindex="0" opened="{{openedHistoryOrgs}}">
+								<div class="collapse-content shadow">
+									<template is="juicy-html" content$="[[docData.historyOrgs.text]]">
+									</template>
+								</div>
+						</iron-collapse>
+					</div>
+
+					<div class="accordeonBox">
+						<div class="accordeonHeader paper-font-headline" aria-expanded$="[[isExpanded(openedHistoryFame)]]" aria-controls="fame" on-tap="toggle" data-args="#fame">
+								Доска почёта
+						</div>
+						<iron-collapse id="fame" tabindex="0" opened="{{openedHistoryFame}}">
+								<div class="collapse-content shadow">
+									 <template is="juicy-html" content$="[[docData.fame.text]]">
+									</template>
+								</div>
+						</iron-collapse>
+					</div>
+
 				</div>
-
-				<div class="accordeonBox">
-				 <div class="accordeonHeader paper-font-headline" aria-expanded$="[[isExpanded(openedHistoryOrgs)]]" aria-controls="historyOrgs" on-tap="toggle" data-args="#historyOrgs">
-						История образовательных организаций города
-				 </div>
-				 <iron-collapse id="historyOrgs" tabindex="0" opened="{{openedHistoryOrgs}}">
-					 <div class="collapse-content shadow">
-						 <template is="juicy-html" content$="[[docData.historyOrgs.text]]"></template>
-					 </div>
-				 </iron-collapse>
-				</div>
-
-				<div class="accordeonBox">
-				 <div class="accordeonHeader paper-font-headline" aria-expanded$="[[isExpanded(openedHistoryFame)]]" aria-controls="fame" on-tap="toggle" data-args="#fame">
-						Доска почёта
-				 </div>
-				 <iron-collapse id="fame" tabindex="0" opened="{{openedHistoryFame}}">
-					 <div class="collapse-content shadow">
-						 <template is="juicy-html" content$="[[docData.fame.text]]"></template>
-					 </div>
-				 </iron-collapse>
-				</div>
-
-					
-
-			</div>
 		</paper-card>
 
 	</template>
@@ -45970,80 +45692,12 @@ Z(Q.prototype,"ref",Q.prototype.na);Ib.STATE_CHANGED="state_changed";P.RUNNING="
 
 		Polymer({
 			is: 't-museum-template',
-			// ready: function() {
-			// 	var ironAccordions = this.querySelector('iron-accordions');
-			// 	ironAccordions.addEventListener('transitionend', function() {
-			// 		var headerPanelMain = app.$.headerPanelMain;
-			// 		var scrollTop = headerPanelMain.scroller.scrollTop;
-			// 		var top = this._selection.selection[0].getBoundingClientRect().top;
-			// 		if ( this._selection.selection[0].opened ) {
-			// 			if ( top > 0 ) {
-			// 				headerPanelMain.scroll(top + scrollTop, true);
-			// 			} else if ( top < 0 ) {
-			// 				headerPanelMain.scroll( top + scrollTop - 64, true);
-			// 			};
-			// 		};
-			// 	});
-			// }
 			toggle: function(e) {
 		    document.querySelector( e.target.getAttribute('data-args') ).toggle();
 		  },
 			isExpanded: function(opened) {
 				return String(opened);
 			}
-		});
-	})();
-	</script>
-</dom-module>
-<dom-module id="t-hotline-template" assetpath="t-hotline-template/">
-	<template>
-		<style is="custom-style" include="shared-styles">
-			:host {
-				display: block;
-				word-wrap: break-word;
-				/*word-break: break-all;*/
-			}
-			paper-card {
-				width: 100%;
-				border-radius: 8px;
-				--paper-card-header-text: {
-					text-align: center;
-				};
-				--paper-card-content: {
-				};
-			}
-			iron-accordion {
-				/*padding: 8px 0;*/
-				background-color: var(--paper-blue-grey-50);
-			}
-			.paper-font-headline {
-				padding: 8px;
-			}
-			.accordionContent {
-				background-color: white;
-			}
-		</style>
-
-
-		<paper-card heading="Горячая линия" image="" elevation="4" animated-shadow="false">
-
-			<div class="card-content">
-
-				<div class="content">
-
- 					Горячая линия
-
-				</div>
-			</div>
-		</paper-card>
-
-	</template>
-	<script>
-	(function() {
-		'use strict';
-
-		Polymer({
-			is: 't-hotline-template'
 		});
 	})();
 	</script>
@@ -46122,51 +45776,46 @@ Z(Q.prototype,"ref",Q.prototype.na);Ib.STATE_CHANGED="state_changed";P.RUNNING="
 		</style>
 
 
-		<firebase-document id="firebaseDocument" app-name="uomgo" path="/jobs" data="{{jobs}}"></firebase-document>
+		<firebase-document id="firebaseDocument" app-name="uomgo" path="/jobs" data="{{jobs}}">
+		</firebase-document>
 
 		<paper-card heading="Вакансии" image="" elevation="4" animated-shadow="false">
 
-			<div class="card-content">
+				<div class="card-content">
 
-				<template is="juicy-html" content$="[[jobs.text]]"></template>
+					<template is="juicy-html" content$="[[jobs.text]]"></template>
 
-				<iron-data-table id="table" items="[[jobs.table]]" selection-enabled="" multi-selection="">
+					<iron-data-table id="table" items="[[jobs.table]]" selection-enabled="" multi-selection="">
 
-					<data-table-column name="Организации" sort-by="name" width="224px" flex="3">
+							<data-table-column name="Организации" sort-by="name" width="224px" flex="3">
+									<template>[[item.name]]</template>
+							</data-table-column>
 
-						<template>[[item.name]]</template>
+							<data-table-column name="Вакансии" sort-by="position" width="134px" flex="1">
+									<template>
+										<div class="position">
+											[[item.position]]
+										</div>
+									</template>
+							</data-table-column>
 
-					</data-table-column>
+							<data-table-column name="Ставки" flex="1" width="134px">
+									<template>[[item.rate]]</template>
+							</data-table-column>
 
-					<data-table-column name="Вакансии" sort-by="position" width="134px" flex="1">
+							<data-table-column name="Контакты" flex="1" width="134px">
+									<template>
+										<template is="juicy-html" content$="[[item.contact]]">
+										</template>
+									</template>
+							</data-table-column>
 
-						<template>
-							<div class="position">
-								[[item.position]]
-							</div>
-						</template>
+					</iron-data-table>
 
-					</data-table-column>
+					<template is="juicy-html" content$="[[jobs.footer]]">
+					</template>
 
-					<data-table-column name="Ставки" flex="1" width="134px">
-
-						<template>[[item.rate]]</template>
-
-					</data-table-column>
-
-					<data-table-column name="Контакты" flex="1" width="134px">
-
-						<template>
-							<template is="juicy-html" content$="[[item.contact]]"></template>
-						</template>
-
-					</data-table-column>
-
-				</iron-data-table>
-
-				<template is="juicy-html" content$="[[jobs.footer]]"></template>
-
-			</div>
+				</div>
 		</paper-card>
 
 	</template>
@@ -46362,142 +46011,178 @@ Z(Q.prototype,"ref",Q.prototype.na);Ib.STATE_CHANGED="state_changed";P.RUNNING="
 			}
 		</style>
 
-		<firebase-auth id="auth" user="{{user}}" provider="google" app-name="uomgo" on-error="showError"></firebase-auth>
+		<firebase-auth id="auth" user="{{user}}" provider="google" app-name="uomgo" on-error="showError">
+		</firebase-auth>
 
-		<firebase-document id="firebaseDocument" data="{{docData}}" app-name="uomgo"></firebase-document>
+		<firebase-document id="firebaseDocument" data="{{docData}}" app-name="uomgo">
+		</firebase-document>
 
-		<firebase-query id="firebaseQuery" path="/virt/messages" app-name="uomgo" data="{{data}}"></firebase-query>
+		<firebase-query id="firebaseQuery" path="/virt/messages" app-name="uomgo" data="{{data}}">
+		</firebase-query>
 
 		<template is="dom-if" if="[[user]]">
 			<div class="layout horizontal end-justified wrap">
 				<paper-toggle-button checked="{{show}}" class="shadow" style="margin-top: 0px; cursor: pointer;">
-					<span hidden$="[[!show]]">Отображать</span>
-					<span hidden$="[[show]]">Скрывать</span>
-					<span>удаленные</span>
+						<span hidden$="[[!show]]">Отображать</span>
+						<span hidden$="[[show]]">Скрывать</span>
+						<span>удаленные</span>
 				</paper-toggle-button>
 			</div>
 		</template>
 
 		<template id="formDomIf" is="dom-if" if="[[!user]]" restamp="" on-dom-change="_formChanged">
+				<form id="form" is="iron-form" on-iron-form-presubmit="_presubmit">
 
-			<form id="form" is="iron-form" on-iron-form-presubmit="_presubmit">
-				<paper-card heading="Форма обращения" elevation="4">
-					<div class="card-content">
+						<paper-card heading="Форма обращения" elevation="4">
+								<div class="card-content">
+									<div id="formLayout" class="layout horizontal center-center wrap">
 
-						<div id="formLayout" class="layout horizontal center-center wrap">
+										<paper-input class="formElement" name="firstname" label="Фамилия" required="" auto-validate="">
+										</paper-input>
 
-							<paper-input class="formElement" name="firstname" label="Фамилия" required="" auto-validate=""></paper-input>
+										<paper-input class="formElement" name="secondname" label="Имя" required="" auto-validate="">
+										</paper-input>
 
-							<paper-input class="formElement" name="secondname" label="Имя" required="" auto-validate=""></paper-input>
+										<paper-input class="formElement" name="lastname" label="Отчество" required="" auto-validate="">
+										</paper-input>
 
-							<paper-input class="formElement" name="lastname" label="Отчество" required="" auto-validate=""></paper-input>
+										<gold-email-input class="formElement" name="email" label="E-mail" auto-validate="" required="">
+										</gold-email-input>
 
-							<gold-email-input class="formElement" name="email" label="E-mail" auto-validate="" required=""></gold-email-input>
+										<paper-dropdown-menu class="formElement" label="Тема">
+												<paper-menu class="dropdown-content" selected="{{selected}}">
+														<template is="dom-repeat" items="[[themes]]" as="theme">
+																<paper-item>
+																	[[theme]]
+																</paper-item>
+														</template>
+												</paper-menu>
+										</paper-dropdown-menu>
 
-							<paper-dropdown-menu label="Тема" class="formElement">
+										<input id="dropdownMenuInput" is="iron-input" name="theme" type="hidden" value="[[selected]]">
+										
 
-								<paper-menu selected="{{selected}}" class="dropdown-content">
-										<template is="dom-repeat" items="[[themes]]" as="theme">
-												<paper-item>[[theme]]</paper-item>
-										</template>
-								</paper-menu>
+									</div>
 
-							</paper-dropdown-menu>
+									<paper-textarea required="" name="text" class="formElement" auto-validate="" label="Текст обращения">
+									</paper-textarea>
 
-							<input id="dropdownMenuInput" is="iron-input" name="theme" type="hidden" value="[[selected]]">
+									<div class="formElement">
+										<re-captcha id="recaptcha" sitekey="6LfvTSkTAAAAAJddQYrmqJZB81BILzdaOOKjGGSq">
+										</re-captcha>
+									</div>
 
-						</div>
+								</div>
 
-							<paper-textarea required="" name="text" class="formElement" auto-validate="" label="Текст обращения"></paper-textarea>
+								<div class="card-actions">
+									<div class="content layout horizontal wrap">
+										<paper-button id="submit" class="custom green" raised="" disabled="" on-tap="_submit">
+												<iron-icon icon="check"></iron-icon>
+												Отправить
+										</paper-button>
+										<div class="spacer"></div>
+									</div>
+								</div>
 
-							<div class="formElement">
-								<re-captcha id="recaptcha" sitekey="6LfvTSkTAAAAAJddQYrmqJZB81BILzdaOOKjGGSq"></re-captcha>
-							</div>
+						</paper-card>
 
-					</div>
-
-					<div class="card-actions">
-						<div class="content layout horizontal wrap">
-
-							<paper-button id="submit" class="custom green" raised="" disabled="" on-tap="_submit"><iron-icon icon="check"></iron-icon>Отправить</paper-button>
-							<div class="spacer"></div>
-						</div>
-					</div>
-
-				</paper-card>
-			</form>
-
+				</form>
 		</template>
 
 		<div id="messages">
 			<template id="domRepeat" is="dom-repeat" items="[[data]]" as="val" sort="_computeSort" filter="_filter" observe="deleted" target-framerate="60">
 
-				<paper-card heading="" elevation="4">
-					<div class="card-content">
-						<div class="element">
-							<grid-element ga="16px" center="">
-								<grid-col>
+					<paper-card heading="" elevation="4">
+						<div class="card-content">
+							<div class="element">
 
-									<strong>Дата:</strong><br><moment-js date="[[val.date]]" format="DD.MM.YYYYг."></moment-js>
-								</grid-col>
-								<grid-col>
-									<strong>Отправитель:</strong><br>[[val.name]]
-								</grid-col>
-								<grid-col>
-									<strong>E-mail:</strong><br>[[val.email]]
-								</grid-col>
-								<grid-col>
-									<strong>Тема:</strong><br>[[val.theme]]
-								</grid-col>
-							</grid-element>
-							<grid-element ga="16px" center="">
-								<grid-col>
-									[[val.text]]
-								</grid-col>
-							</grid-element>
-							<template id="replyDomIf" is="dom-if" if="[[val.reply]]">
-								<hr>
 								<grid-element ga="16px" center="">
 									<grid-col>
-										<b>
-											<moment-js date="[[val.replyDate]]" format="DD.MM.YYYYг."></moment-js>
-										</b>
+										<strong>
+											Дата:
+										</strong><br>
+										<moment-js date="[[val.date]]" format="DD.MM.YYYYг.">
+										</moment-js>
 									</grid-col>
-								</grid-element>
-
-								<grid-element class="textReply" hidden$="[[!val.reply]]" ga="16px" center="">
 									<grid-col>
-										<b>[[val.reply]]</b>
+										<strong>
+											Отправитель:
+										</strong><br>
+										[[val.name]]
+									</grid-col>
+									<grid-col>
+										<strong>
+											E-mail:
+										</strong><br>
+										[[val.email]]
+									</grid-col>
+									<grid-col>
+										<strong>
+											Тема:
+										</strong><br>
+										[[val.theme]]
 									</grid-col>
 								</grid-element>
-							</template>
-							<grid-element class="textReplyEdit" hidden="" ga="16px" center="">
-								<grid-col>
-									<paper-textarea class="textarea" label="Ответ" value="[[val.reply]]"></paper-textarea>
-								</grid-col>
-							</grid-element>
-						</div>
-					</div>
-					<template is="dom-if" if="[[user]]">
-						<div class="card-actions">
-							<div class="content layout horizontal wrap">
 
-								<paper-button class="saveButton custom green" raised="" hidden="" on-tap="save">
-									<iron-icon icon="check"></iron-icon>
-									<span>Ok!</span>
-								</paper-button>
+								<grid-element ga="16px" center="">
+									<grid-col>
+										[[val.text]]
+									</grid-col>
+								</grid-element>
 
-								<div class="spacer"></div>
-								<div class="buttonBox content layout horizontal center-center wrap">
+								<template id="replyDomIf" is="dom-if" if="[[val.reply]]">
+										<hr>
+										<grid-element ga="16px" center="">
+											<grid-col>
+												<b>
+													<moment-js date="[[val.replyDate]]" format="DD.MM.YYYYг.">
+													</moment-js>
+												</b>
+											</grid-col>
+										</grid-element>
 
-									<paper-icon-button class="edit" icon="image:edit" on-tap="edit"></paper-icon-button>
+										<grid-element class="textReply" hidden$="[[!val.reply]]" ga="16px" center="">
+												<grid-col>
+													<b>
+														[[val.reply]]
+													</b>
+												</grid-col>
+										</grid-element>
+								</template>
+								<grid-element class="textReplyEdit" hidden="" ga="16px" center="">
+										<grid-col>
+											<paper-textarea class="textarea" label="Ответ" value="[[val.reply]]">
+											</paper-textarea>
+										</grid-col>
+								</grid-element>
 
-									<paper-icon-button class="delete" icon="delete" on-tap="delete"></paper-icon-button>
-								</div>
 							</div>
 						</div>
-					</template>
-				</paper-card>
+
+						<template is="dom-if" if="[[user]]">
+							<div class="card-actions">
+								<div class="content layout horizontal wrap">
+
+									<paper-button class="saveButton custom green" raised="" hidden="" on-tap="save">
+											<iron-icon icon="check"></iron-icon>
+											<span>Ok!</span>
+									</paper-button>
+
+									<div class="spacer"></div>
+
+									<div class="buttonBox content layout horizontal center-center wrap">
+
+										<paper-icon-button class="edit" icon="image:edit" on-tap="edit">
+										</paper-icon-button>
+
+										<paper-icon-button class="delete" icon="delete" on-tap="delete">
+										</paper-icon-button>
+
+									</div>
+								</div>
+							</div>
+						</template>
+					</paper-card>
 
 			</template>
 		</div>
@@ -46697,22 +46382,24 @@ Z(Q.prototype,"ref",Q.prototype.na);Ib.STATE_CHANGED="state_changed";P.RUNNING="
 			}
 		</style>
 
-		<firebase-document id="firebaseDocument" data="{{docData}}" path="/virt/rules" app-name="uomgo"></firebase-document>
+		<firebase-document id="firebaseDocument" data="{{docData}}" path="/virt/rules" app-name="uomgo">
+		</firebase-document>
 
 		<paper-card image="" elevation="4" animated-shadow="false">
 
-			<div class="card-header">
-				<paper-button raised="" on-tap="changePage">
-					<div class="flex"></div>
-					Обратиться
-					<div class="flex"></div>
-					<iron-icon icon="check"></iron-icon>
-				</paper-button>
-			</div>
+				<div class="card-header">
+					<paper-button raised="" on-tap="changePage">
+							<div class="flex"></div>
+							Обратиться
+							<div class="flex"></div>
+							<iron-icon icon="check"></iron-icon>
+					</paper-button>
+				</div>
 
-			<div class="card-content">
-				<template is="juicy-html" content$="[[docData.text]]"></template>
-			</div>
+				<div class="card-content">
+					<template is="juicy-html" content$="[[docData.text]]">
+					</template>
+				</div>
 
 		</paper-card>
 
@@ -46824,66 +46511,6 @@ Z(Q.prototype,"ref",Q.prototype.na);Ib.STATE_CHANGED="state_changed";P.RUNNING="
 	})();
 	</script>
 </dom-module>
-<dom-module id="t-plan-template" assetpath="t-plan-template/">
-	<template>
-		<style is="custom-style" include="shared-styles">
-			:host {
-				display: block;
-				word-wrap: break-word;
-				/*word-break: break-all;*/
-			}
-			paper-card {
-				width: 100%;
-				border-radius: 8px;
-				--paper-card-header-text: {
-					text-align: center;
-				};
-				--paper-card-content: {
-				};
-			}
-			iron-accordion {
-				/*padding: 8px 0;*/
-				background-color: var(--paper-blue-grey-50);
-			}
-			.paper-font-headline {
-				padding: 8px;
-			}
-			.accordionContent {
-				background-color: white;
-			}
-			#html {
-				@apply(--layout-vertical);
-				@apply(--layout-center-center);
-				text-align: center;
-				height: 100vh
-			}
-		</style>
-
-		<firebase-document id="firebaseDocument" app-name="uomgo" path="/plan" data="{{docData}}"></firebase-document>
-
-		<paper-card heading="Еженедельный план Управления образованием Мысковского городского округа" image="" elevation="4" animated-shadow="false">
-
-			<div class="card-content">
-
-				<div id="html" class="content">
-
-
-
-
-				</div>
-			</div>
-		</paper-card>
-	</template>
-	<script>
-	(function() {
-		'use strict';
-
-		Polymer({
-			is: 't-plan-template'
-		});
-	})();
-	</script>
-</dom-module>
 <dom-module id="x-inspect-GIA" assetpath="x-inspect-GIA/">
 	<template>
 		<style is="custom-style" include="shared-styles">
@@ -46923,34 +46550,38 @@ Z(Q.prototype,"ref",Q.prototype.na);Ib.STATE_CHANGED="state_changed";P.RUNNING="
 		<iron-pages selected="{{selection}}">
 			<section>
 				<paper-card heading="Государственная итоговая аттестация" image="" elevation="1" animated-shadow="false">
-				  <div class="card-content">
-						<template is="juicy-html" content$="[[docData.GIA.text]]"></template>
-				  </div>
-				  
+					  <div class="card-content">
+							<template is="juicy-html" content$="[[docData.GIA.text]]">
+							</template>
+					  </div>
+					  
 				</paper-card>
 			</section>
 			<section>
 				<paper-card heading="Единый государственный экзамен" image="" elevation="1" animated-shadow="false">
-				  <div class="card-content">
-						<template is="juicy-html" content$="[[docData.EGE.text]]"></template>
-				  </div>
-				  
+					  <div class="card-content">
+							<template is="juicy-html" content$="[[docData.EGE.text]]">
+							</template>
+					  </div>
+					  
 				</paper-card>
 			</section>
 			<section>
 				<paper-card heading="Основной государственный экзамен" image="" elevation="1" animated-shadow="false">
-				  <div class="card-content">
-						<template is="juicy-html" content$="[[docData.OGE.text]]"></template>
-				  </div>
-				  
+					  <div class="card-content">
+							<template is="juicy-html" content$="[[docData.OGE.text]]">
+							</template>
+					  </div>
+					  
 				</paper-card>
 			</section>
 			<section>
 				<paper-card heading="Государственный выпускной экзамен" image="" elevation="1" animated-shadow="false">
-				  <div class="card-content">
-						<template is="juicy-html" content$="[[docData.GVE.text]]"></template>
-				  </div>
-				  
+					  <div class="card-content">
+							<template is="juicy-html" content$="[[docData.GVE.text]]">
+							</template>
+					  </div>
+					  
 				</paper-card>
 			</section>
 		</iron-pages>
@@ -47015,45 +46646,51 @@ Z(Q.prototype,"ref",Q.prototype.na);Ib.STATE_CHANGED="state_changed";P.RUNNING="
 
     <paper-dialog id="dialog" entry-animation="scale-up-animation" exit-animation="fade-out-animation" opened="{{showDialogVisible}}" on-iron-overlay-closed="_dialogClosed" with-backdrop="" always-on-top="">
 
-      <div class="header layout horizontal center-center">
-        <div class="paper-font-headline flex">[[postItem.name]]</div>
-        <paper-icon-button icon="close" title="Закрыть" on-tap="_close"></paper-icon-button>
-      </div>
+	      <div class="header layout horizontal center-center">
+	        <div class="paper-font-headline flex">
+						[[postItem.name]]
+					</div>
+	        <paper-icon-button icon="close" title="Закрыть" on-tap="_close">
+					</paper-icon-button>
+	      </div>
 
-      <paper-dialog-scrollable>
-        <div class="scrollable-box layout vertical center-center">
+	      <paper-dialog-scrollable>
+	        <div class="scrollable-box layout vertical center-center">
 
-					<template is="dom-if" if="[[postItem.image]]">
-						<div class="image-box">
-	      			<iron-image class="postImage" src="[[postItem.image]]" sizing="contain" preload=""></iron-image>
-						</div>
-      		</template>
+						<template is="dom-if" if="[[postItem.image]]">
+							<div class="image-box">
+		      			<iron-image class="postImage" src="[[postItem.image]]" sizing="contain" preload="">
+								</iron-image>
+							</div>
+	      		</template>
 
-					<template is="dom-if" if="[[postItem.video_id]]">
-						<div class="video-box layout vertical center-center">
-							<google-youtube id="youtube" video-id="[[postItem.video_id]]" width="704px" height="396px" rel="0" start="0" autoplay="0" style="max-width: 704px; max-height: 396px; width: 100%; height: 100%;">
-							</google-youtube>
-						</div>
-					</template>
+						<template is="dom-if" if="[[postItem.video_id]]">
+							<div class="video-box layout vertical center-center">
+								<google-youtube id="youtube" video-id="[[postItem.video_id]]" width="704px" height="396px" rel="0" start="0" autoplay="0" style="max-width: 704px; max-height: 396px; width: 100%; height: 100%;">
+								</google-youtube>
+							</div>
+						</template>
 
-          <template is="dom-if" if="[[postItem.images]]">
-            <template is="dom-repeat" items="[[postItem.images]]" as="image">
-              <div class="image-box" style="margin-top: 16px;">
-                <iron-image class="postImage" sizing="contain" src="[[image]]" preload=""></iron-image>
-              </div>
-            </template>
-          </template>
+	          <template is="dom-if" if="[[postItem.images]]">
+	            <template is="dom-repeat" items="[[postItem.images]]" as="image">
+		              <div class="image-box" style="margin-top: 16px;">
+		                <iron-image class="postImage" sizing="contain" src="[[image]]" preload="">
+										</iron-image>
+		              </div>
+	            </template>
+	          </template>
 
-          <template is="dom-if" if="[[postItem.text]]">
-            <div class="post-text">
-							<template is="juicy-html" content$="[[postItem.text]]"></template>
-						</div>
-      		</template>
+	          <template is="dom-if" if="[[postItem.text]]">
+	            <div class="post-text">
+								<template is="juicy-html" content$="[[postItem.text]]">
+								</template>
+							</div>
+	      		</template>
 
-        </div>
-      </paper-dialog-scrollable>
-    </paper-dialog>
+	        </div>
+	      </paper-dialog-scrollable>
 
+		</paper-dialog>
   </template>
   <script>
   (function() {
@@ -47136,16 +46773,20 @@ Z(Q.prototype,"ref",Q.prototype.na);Ib.STATE_CHANGED="state_changed";P.RUNNING="
 
 		<paper-dialog id="dialog" entry-animation="scale-up-animation" exit-animation="fade-out-animation" opened="{{showDialogVisible}}" on-iron-overlay-closed="_dialogClosed" with-backdrop="" always-on-top="">
 
-      <div class="header layout horizontal center-center">
-        <div class="paper-font-headline flex">[[postItem.name]]</div>
-        <paper-icon-button icon="close" title="Закрыть" on-tap="_close"></paper-icon-button>
-      </div>
+	      <div class="header layout horizontal center-center">
+	        <div class="paper-font-headline flex">
+						[[postItem.name]]
+					</div>
+	        <paper-icon-button icon="close" title="Закрыть" on-tap="_close">
+					</paper-icon-button>
+	      </div>
 
-      <paper-dialog-scrollable>
-        <div class="scrollable-box layout vertical center-center">
+	      <paper-dialog-scrollable>
+	        <div class="scrollable-box layout vertical center-center">
 
-        </div>
-      </paper-dialog-scrollable>
+	        </div>
+	      </paper-dialog-scrollable>
+
     </paper-dialog>
 
   </template>
@@ -47154,16 +46795,9 @@ Z(Q.prototype,"ref",Q.prototype.na);Ib.STATE_CHANGED="state_changed";P.RUNNING="
     'use strict';
 
     Polymer({
-      is: 'x-post-dialog-add',
-
-      properties: {
-        foo: {
-          type: String,
-          value: 'x-post-dialog-add',
-          notify: true
-        }
-      }
+      is: 'x-post-dialog-add'
     });
+
   })();
   </script>
 </dom-module>
@@ -47179,159 +46813,119 @@ Z(Q.prototype,"ref",Q.prototype.na);Ib.STATE_CHANGED="state_changed";P.RUNNING="
     <animated-lazy-pages attr-for-selected="data-route" selected="{{data.page}}" animate-initial-selection="" loading="{{loading}}">
 
       <template is="animated-lazy-page" data-route="main">
-       <neon-animatable entry-animation="fade-in-animation" exit-animation="fade-out-animation" animation-target="">
-
-          <t-main-template data-page="{{data.page}}" sub-page="{{subPage}}"></t-main-template>
-
+        <neon-animatable entry-animation="fade-in-animation" exit-animation="fade-out-animation" animation-target="">
+            <t-main-template data-page="{{data.page}}" sub-page="{{subPage}}">
+            </t-main-template>
         <neon-animatable>
       </neon-animatable></neon-animatable></template>
 
       <template is="animated-lazy-page" data-route="about">
         <neon-animatable entry-animation="fade-in-animation" exit-animation="fade-out-animation" animation-target="">
-
-          <t-about-template sub-page="{{subPage}}"></t-about-template>
-
-      </neon-animatable></template>
+            <t-about-template sub-page="{{subPage}}"></t-about-template>
+        </neon-animatable>
+      </template>
 
       <template is="animated-lazy-page" data-route="virt">
         <neon-animatable entry-animation="fade-in-animation" exit-animation="fade-out-animation" animation-target="">
-
-          <t-virt-template></t-virt-template>
-
-      </neon-animatable>
+            <t-virt-template></t-virt-template>
+        </neon-animatable>
       </template>
 
       <template is="animated-lazy-page" data-route="plan">
         <neon-animatable entry-animation="fade-in-animation" exit-animation="fade-out-animation" animation-target="">
-
-          <t-plan-template></t-plan-template>
-
-      </neon-animatable>
+            <t-plan-template></t-plan-template>
+        </neon-animatable>
       </template>
 
       <template is="animated-lazy-page" data-route="inspect">
         <neon-animatable entry-animation="fade-in-animation" exit-animation="fade-out-animation" animation-target="">
-
-          <t-inspect-template></t-inspect-template>
-
+            <t-inspect-template></t-inspect-template>
       </neon-animatable>
       </template>
 
       <template is="animated-lazy-page" data-route="preschool">
         <neon-animatable entry-animation="fade-in-animation" exit-animation="fade-out-animation" animation-target="">
-
-          <t-preschool-template></t-preschool-template>
-
+            <t-preschool-template></t-preschool-template>
       </neon-animatable>
       </template>
 
       <template is="animated-lazy-page" data-route="sport">
         <neon-animatable entry-animation="fade-in-animation" exit-animation="fade-out-animation" animation-target="">
-
-          <t-sport-template></t-sport-template>
-
-      </neon-animatable>
+            <t-sport-template></t-sport-template>
+        </neon-animatable>
       </template>
 
       <template is="animated-lazy-page" data-route="upbringe">
         <neon-animatable entry-animation="fade-in-animation" exit-animation="fade-out-animation" animation-target="">
-
-          <t-upbringe-template></t-upbringe-template>
-
-      </neon-animatable>
+            <t-upbringe-template></t-upbringe-template>
+        </neon-animatable>
       </template>
 
       <template is="animated-lazy-page" data-route="tutelage">
         <neon-animatable entry-animation="fade-in-animation" exit-animation="fade-out-animation" animation-target="">
-
-          <t-tutelage-template></t-tutelage-template>
-
-      </neon-animatable>
+            <t-tutelage-template></t-tutelage-template>
+        </neon-animatable>
       </template>
 
       <template is="animated-lazy-page" data-route="legal">
         <neon-animatable entry-animation="fade-in-animation" exit-animation="fade-out-animation" animation-target="">
-
-          <t-legal-template></t-legal-template>
-
-      </neon-animatable>
+            <t-legal-template></t-legal-template>
+        </neon-animatable>
       </template>
 
       <template is="animated-lazy-page" data-route="orgs">
         <neon-animatable entry-animation="fade-in-animation" exit-animation="fade-out-animation" animation-target="">
-
-          <t-orgs-template>
-
+            <t-orgs-template>
         </t-orgs-template></neon-animatable>
       </template>
 
       <template is="animated-lazy-page" data-route="metod">
         <neon-animatable entry-animation="fade-in-animation" exit-animation="fade-out-animation" animation-target="">
-
-          <t-metod-template>
-
+            <t-metod-template>
         </t-metod-template></neon-animatable>
       </template>
 
       <template is="animated-lazy-page" data-route="diet">
         <neon-animatable entry-animation="fade-in-animation" exit-animation="fade-out-animation" animation-target="">
-
-          <t-diet-template>
-
+            <t-diet-template>
         </t-diet-template></neon-animatable>
       </template>
 
       <template is="animated-lazy-page" data-route="counting">
         <neon-animatable entry-animation="fade-in-animation" exit-animation="fade-out-animation" animation-target="">
-
-          <t-counting-template>
-
+            <t-counting-template>
         </t-counting-template></neon-animatable>
       </template>
 
       <template is="animated-lazy-page" data-route="transport">
         <neon-animatable entry-animation="fade-in-animation" exit-animation="fade-out-animation" animation-target="">
-
-          <t-transport-template>
-
+            <t-transport-template>
         </t-transport-template></neon-animatable>
       </template>
 
       <template is="animated-lazy-page" data-route="public">
         <neon-animatable entry-animation="fade-in-animation" exit-animation="fade-out-animation" animation-target="">
-
-          <t-public-template>
-
+            <t-public-template>
         </t-public-template></neon-animatable>
       </template>
 
       <template is="animated-lazy-page" data-route="business">
         <neon-animatable entry-animation="fade-in-animation" exit-animation="fade-out-animation" animation-target="">
-
-          <t-business-template>
-
+            <t-business-template>
         </t-business-template></neon-animatable>
       </template>
 
       <template is="animated-lazy-page" data-route="museum">
         <neon-animatable entry-animation="fade-in-animation" exit-animation="fade-out-animation" animation-target="">
-
-          <t-museum-template>
-
+            <t-museum-template>
         </t-museum-template></neon-animatable>
       </template>
 
-      
-
       <template is="animated-lazy-page" data-route="jobs">
         <neon-animatable entry-animation="fade-in-animation" exit-animation="fade-out-animation" animation-target="">
-
-          <t-jobs-template>
-
+            <t-jobs-template>
         </t-jobs-template></neon-animatable>
       </template>
-
-      
 
     </animated-lazy-pages>
 

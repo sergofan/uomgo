@@ -122,11 +122,17 @@
 					var itemDate = new Date(item.date);
 					var itemMM = itemDate.getMonth()+1;
 					var itemYYYY = itemDate.getFullYear();
+					var diffYYYY = todayYYYY - itemYYYY;
+					var diffMM = todayMM - itemMM;
 
-					if ( (todayYYYY - itemYYYY === 1) && (itemMM > 8)  ) {
-						return true;
-					};
-					if ( (todayYYYY - itemYYYY === 0) && (itemMM < 6)  ) {
+					// if ( (todayYYYY - itemYYYY === 1) && (itemMM > 8)  ) {
+					// 	return true;
+					// };
+					// if ( (todayYYYY - itemYYYY === 0) && (itemMM < 6)  ) {
+					// 	return true;
+					// };
+
+					if ( diffYYYY <= 1 ) {
 						return true;
 					};
 
