@@ -430,6 +430,7 @@
 				saveButton.hidden = false;
 			},
 			save: function(e) {
+				var domRepeat = this.$.domRepeat;
 				var today = new Date();
 				var fireDoc = this.$.firebaseDocument;
 				var parent = e.currentTarget.offsetParent.offsetParent;
@@ -439,20 +440,18 @@
 				var saveButton = parent.querySelector('.saveButton');
 				var modelForElement = domRepeat.modelForElement(e.target);
 				var key = modelForElement.val.$key;
-
-				this.docData.reply = textarea.value;
+				var docData = Object.assign({}, modelForElement.val);
+				delete docData.$key;
 				if (textarea.value) {
-					if (!this.docData.replyDate) {
-						this.docData.replyDate = this._extractDate(today);
+					if (!docData.replyDate) {
+						docData.replyDate = this._extractDate(today);
 					};
+					docData.reply = textarea.value;
 				} else {
-					delete this.docData.replyDate;
-					delete this.docData.reply;
+					delete docData.replyDate;
 				};
-
-				fireDoc.path = "/virt/messages/"+key;
+				this.docData = Object.assign({}, docData);
 				fireDoc.saveValue('/virt/messages/', key);
-
 				if (textReply) {
 					textReply.hidden = false;
 				}
@@ -461,13 +460,16 @@
 				this.messageKey = "";
 			},
 			delete: function(e) {
+				var domRepeat = this.$.domRepeat;
 				var fireDoc = this.$.firebaseDocument;
 				var modelForElement = domRepeat.modelForElement(e.target);
+				var key = modelForElement.val.$key;
+				var docData = Object.assign({}, modelForElement.val);
 				fireDoc.path = "";
-				this.docData = Object.assign({}, modelForElement.val);
-				delete this.docData.$key;
-				this.docData.deleted = true;
-				fireDoc.saveValue('/virt/messages/', modelForElement.val.$key);
+				delete docData.$key;
+				docData.deleted = true;
+				this.docData = Object.assign({}, docData);
+				fireDoc.saveValue('/virt/messages/', key);
 			},
 			_extractDate: function(val) {
 				var ret;
