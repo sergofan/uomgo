@@ -28,9 +28,14 @@
 		</style>
 
 		<div id="drawio">
+			<firebase-document
+				path="/about"
+				app-name="uomgo"
+				data="{{dataDB}}">
+			</firebase-document>
 
 			<iron-image
-				src="https://firebasestorage.googleapis.com/v0/b/uomgo-fab6c.appspot.com/o/about%2Fstruct%2FDiagram.png?alt=media&token=6be16e9c-fa6a-4184-a9e8-56a08115d3b1"
+				src="[[dataDB.struct.image]]"
 				fade
 				preload
 				width="100%">

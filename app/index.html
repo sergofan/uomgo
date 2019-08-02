@@ -77,9 +77,9 @@
 		background-color: rgba(33,150,243,0);
 		width: 100%;
 	}
-	#drawer.paper-drawer-panel > [drawer] {
-		background-color: white;
-	}
+	/* #drawer.paper-drawer-panel > [drawer] {
+    background-color: inherit;
+	} */
 	#div-background {
 		margin: 16px;
 		max-width: 652px;
@@ -117,17 +117,6 @@
 	}
 </style>
 
-<script type="text/javascript">
-	var $buoop = {vs:{i:11,f:-4,o:-4,s:7,c:-4},c:4};
-	function $buo_f(){
-		var e = document.createElement("script");
-		e.src = "https://browser-update.org/update.min.js";
-		document.body.appendChild(e);
-	};
-	try {document.addEventListener("DOMContentLoaded", $buo_f,false)}
-	catch(e){window.attachEvent("onload", $buo_f)}
-</script>
-
 <body unresolved>
 
 	<span id="browser-sync-binding"></span>
@@ -150,7 +139,7 @@
 			responsive-width="1280px">
 
 				<!-- Drawer Scroll Header Panel -->
-				<paper-scroll-header-panel drawer>
+				<paper-scroll-header-panel drawer style="background-color: white;">
 					<x-drawer-menu
 						route="{{route}}"
 						data="{{data}}"
@@ -275,13 +264,13 @@
 					Ok
 			</span>
 		</paper-toast>
- -->
+-->
 
 		<!-- Uncomment next block to enable Service Worker support (1/2) -->
 		<!--
 		<paper-toast id="caching-complete"
 			duration="6000"
-			text="Caching complete! This app will work offline.">
+			text="Кеширование завершено! Теперь приложение может работать автономно.">
 		</paper-toast>
 
 		<platinum-sw-register
