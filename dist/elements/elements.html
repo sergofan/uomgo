@@ -46265,16 +46265,13 @@ Z(Q.prototype,"ref",Q.prototype.na);Ib.STATE_CHANGED="state_changed";P.RUNNING="
 									<paper-textarea required="" name="text" class="formElement" auto-validate="" label="Текст обращения">
 									</paper-textarea>
 
-									<div class="formElement">
-										<re-captcha id="recaptcha" sitekey="6LfvTSkTAAAAAJddQYrmqJZB81BILzdaOOKjGGSq">
-										</re-captcha>
-									</div>
+									
 
 								</div>
 
 								<div class="card-actions">
 									<div class="content layout horizontal wrap">
-										<paper-button id="submit" class="custom green" raised="" disabled="" on-tap="_submit">
+										<paper-button id="submit" class="custom green" raised="" on-tap="_submit">
 												<iron-icon icon="check"></iron-icon>
 												Отправить
 										</paper-button>
@@ -46530,18 +46527,18 @@ Z(Q.prototype,"ref",Q.prototype.na);Ib.STATE_CHANGED="state_changed";P.RUNNING="
 			},
 			_formChanged: function(e) {
 				var element = e.target.parentElement;
-				var recaptcha = element.querySelector('#recaptcha');
+				// var recaptcha = element.querySelector('#recaptcha');
 				var submit = element.querySelector('#submit');
 				var dropdownMenuInput = element.querySelector('#dropdownMenuInput');
 				var paperMenu = element.querySelector('paper-menu');
-				if (recaptcha) {
-					recaptcha.addEventListener('captcha-response', function(e) {
-						submit.disabled = false;
-					});
-					recaptcha.addEventListener('captcha-expired', function(e) {
-						submit.disabled = true;
-					});
-				};
+				// if (recaptcha) {
+				// 	recaptcha.addEventListener('captcha-response', function(e) {
+				// 		submit.disabled = false;
+				// 	});
+				// 	recaptcha.addEventListener('captcha-expired', function(e) {
+				// 		submit.disabled = true;
+				// 	});
+				// };
 			}
 		});
 	})();
