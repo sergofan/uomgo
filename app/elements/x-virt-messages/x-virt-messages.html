@@ -216,7 +216,8 @@
 									</div>
 
 									<paper-textarea required
-										name="text"
+                    id="#text"
+                    name="text"
 										class="formElement"
 										auto-validate
 										label="Текст обращения">
@@ -499,6 +500,13 @@
 				this.docData.email = formData.email;
 				this.docData.text = formData.text;
 				this.docData.theme = this.themes[formData.theme];
+
+        form.elements.firstname.value=null;
+        form.elements.secondname.value=null;
+        form.elements.lastname.value=null;
+        form.elements.email.value=null;
+        form.elements.text.value=null;
+
 				// fireDoc.path = "/virt/messages/"
 				// e.preventDefault();
 
