@@ -17099,7 +17099,7 @@ event and do your own custom submission:
        * overlaps the label.
        * See https://github.com/PolymerElements/paper-input/issues/468.
        */
-      var IS_IOS = navigator.userAgent.match(/iP(?:[oa]d|hone)/);
+      var IS_IOS = navigator.userAgent.match(/iP(?:[oa]d|hone)/) && !navigator.userAgent.match(/OS 1[3456789]/);
       if (IS_IOS) {
         this.$.textarea.style.marginLeft = '-3px';
       }
@@ -43029,7 +43029,7 @@ Z(Q.prototype,"ref",Q.prototype.na);Ib.STATE_CHANGED="state_changed";P.RUNNING="
 				</div>
 
 				<div class="shadow" style="width: 500px; height: 300px">
-					<google-map id="google_map" api-key="AIzaSyAepf-iIF_1XRmDYWpKTDpXhelRAYt6Cfw" map-type="roadmap" latitude="53.713446" longitude="87.807527" zoom="15" title="г. Мыски, ул. Серафимовича, 4" fit-to-markers="">
+					<google-map id="google_map" api-key="AIzaSyC3netPDxkVjuDOnoM7rLePlkWtLd1WvN8" map-type="roadmap" latitude="53.713446" longitude="87.807527" zoom="15" title="г. Мыски, ул. Серафимовича, 4" fit-to-markers="">
 							<google-map-marker latitude="53.713446" longitude="87.807527"></google-map-marker>
 					</google-map>
 				</div>
@@ -43229,98 +43229,93 @@ Z(Q.prototype,"ref",Q.prototype.na);Ib.STATE_CHANGED="state_changed";P.RUNNING="
 	</script>
 </dom-module>
 <dom-module id="x-about-docs" assetpath="x-about-docs/">
-	<template>
-		<style is="custom-style" include="shared-styles">
-			:host {
-				display: block;
-				word-wrap: break-word;
-			}
-			paper-material {
-				background-color: white;
-				border-radius: 0 0 8px 8px;
-			}
-			iron-collapse:focus {
-				outline: none;
-			}
-			.collapse-content {
-				padding: 15px;
-				background-color: white;
-			}
-			.accordeonHeader {
-				padding: 0 8px;
-				cursor: pointer;
-			}
-			.accordeonBox {
-				padding: 8px 0;
-				background-color: var(--paper-blue-grey-50);
-			}
-		</style>
-		<firebase-document id="firebaseDocument" app-name="uomgo" path="/about/docs" data="{{docData}}">
-		</firebase-document>
+  <template>
+    <style is="custom-style" include="shared-styles">
+      :host {
+        display: block;
+        word-wrap: break-word;
+      }
+      paper-material {
+        background-color: white;
+        border-radius: 0 0 8px 8px;
+      }
+      iron-collapse:focus {
+        outline: none;
+      }
+      .collapse-content {
+        padding: 15px;
+        background-color: white;
+      }
+      .accordeonHeader {
+        padding: 0 8px;
+        cursor: pointer;
+      }
+      .accordeonBox {
+        padding: 8px 0;
+        background-color: var(--paper-blue-grey-50);
+      }
+    </style>
+    <firebase-document id="firebaseDocument" app-name="uomgo" path="/about/docs" data="{{docData}}">
+    </firebase-document>
 
-		<paper-material elevation="4">
-			<div class="content">
+    <paper-material elevation="4">
+      <div class="content">
+        <template is="juicy-html" content$="[[docData.text]]"> </template>
 
-				<template is="juicy-html" content$="[[docData.text]]">
-				</template>
+        <div class="accordeonBox">
+          <div class="accordeonHeader paper-font-headline" aria-expanded$="[[isExpanded(openedDOIN)]]" aria-controls="DOIN" on-tap="toggle" data-args="#DOIN">
+            Приказы министерства образования и науки Кузбасса
+          </div>
+          <iron-collapse id="DOIN" tabindex="0" opened="{{openedDOIN}}">
+            <div class="collapse-content shadow">
+              <template is="juicy-html" content$="[[docData.DOIN.text]]">
+              </template>
+            </div>
+          </iron-collapse>
+        </div>
 
-				<div class="accordeonBox">
-					<div class="accordeonHeader paper-font-headline" aria-expanded$="[[isExpanded(openedDOIN)]]" aria-controls="DOIN" on-tap="toggle" data-args="#DOIN">
-							Приказы департамента образования и науки Кемеровской области
-					</div>
-					<iron-collapse id="DOIN" tabindex="0" opened="{{openedDOIN}}">
-							<div class="collapse-content shadow">
-								<template is="juicy-html" content$="[[docData.DOIN.text]]">
-								</template>
-							</div>
-					</iron-collapse>
-				</div>
+        <div class="accordeonBox">
+          <div class="accordeonHeader paper-font-headline" aria-expanded$="[[isExpanded(openedAdminMGO)]]" aria-controls="adminMGO" on-tap="toggle" data-args="#adminMGO">
+            Постановления администрации МГО
+          </div>
+          <iron-collapse id="adminMGO" tabindex="0" opened="{{openedAdminMGO}}">
+            <div class="collapse-content shadow">
+              <template is="juicy-html" content$="[[docData.adminMGO.text]]">
+              </template>
+            </div>
+          </iron-collapse>
+        </div>
 
-				<div class="accordeonBox">
-					<div class="accordeonHeader paper-font-headline" aria-expanded$="[[isExpanded(openedAdminMGO)]]" aria-controls="adminMGO" on-tap="toggle" data-args="#adminMGO">
-							Постановления администрации МГО
-					</div>
-					<iron-collapse id="adminMGO" tabindex="0" opened="{{openedAdminMGO}}">
-							<div class="collapse-content shadow">
-								<template is="juicy-html" content$="[[docData.adminMGO.text]]">
-								</template>
-							</div>
-					</iron-collapse>
-				</div>
+        <div class="accordeonBox">
+          <div class="accordeonHeader paper-font-headline" aria-expanded$="[[isExpanded(openedAdminPrograms)]]" aria-controls="programs" on-tap="toggle" data-args="#programs">
+            Программы
+          </div>
+          <iron-collapse id="programs" tabindex="0" opened="{{openedAdminPrograms}}">
+            <div class="collapse-content shadow">
+              <template is="juicy-html" content$="[[docData.programs.text]]">
+              </template>
+            </div>
+          </iron-collapse>
+        </div>
+      </div>
+    </paper-material>
+  </template>
+  <script>
+    (function () {
+      "use strict";
 
-				<div class="accordeonBox">
-					<div class="accordeonHeader paper-font-headline" aria-expanded$="[[isExpanded(openedAdminPrograms)]]" aria-controls="programs" on-tap="toggle" data-args="#programs">
-							Программы
-					</div>
-					<iron-collapse id="programs" tabindex="0" opened="{{openedAdminPrograms}}">
-							<div class="collapse-content shadow">
-								<template is="juicy-html" content$="[[docData.programs.text]]">
-								</template>
-							</div>
-					</iron-collapse>
-				</div>
-
-			</div>
-		</paper-material>
-	</template>
-	<script>
-	(function() {
-		'use strict';
-
-		Polymer({
-			is: 'x-about-docs',
-			properties: {
-
-			},
-			toggle: function(e) {
-		    document.querySelector( e.target.getAttribute('data-args') ).toggle();
-		  },
-			isExpanded: function(opened) {
-				return String(opened);
-			}
-		});
-	})();
-	</script>
+      Polymer({
+        is: "x-about-docs",
+        properties: {},
+        toggle: function (e) {
+          document.querySelector(e.target.getAttribute("data-args")).toggle();
+        },
+        isExpanded: function (opened) {
+          return String(opened);
+        },
+      });
+    })();
+  </script>
 </dom-module>
 <dom-module id="x-route" assetpath="x-route/">
 	<template>
